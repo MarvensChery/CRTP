@@ -30,7 +30,7 @@ app.get("/utilisateurs", async(req, rep) => {
 
 app.get("/ippe", async(req, rep) => {
     try {
-        let ippe = await requeteKnex.getIPPE();
+        let ippe = await requeteKnex.getIPPE('Michaud', 'Noémie', null, false, "2002-08-07T00:00:00.000Z");
         rep.status(200).json(ippe);
         
     } catch (error) {
