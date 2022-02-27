@@ -28,10 +28,12 @@ Pour run le serveur (port 5000) et client (port 2000)
 
 step 1: cd /Projet2/appweb/client
 
-step 2: npm run start
+step 2: npm install
+step 2.1: npm run start
 
 step 3: cd /Projet2/backend/serveur
 
-step 4: npm run start
+step 4: npm install
+step 4.1: npm run start
 
 step 5: SI IL Y A ERREUR, CHECK LE SYSTEME DE FICHIERS
