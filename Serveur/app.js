@@ -28,9 +28,15 @@ app.get("/utilisateurs", async(req, rep) => {
     }
 })
 
-app.get("/ippe", async(req, rep) => {
+app.get("/ippe/:nom/:prenom1/:prenom2/:masculin/:datenaissance", async(req, rep) => {
     try {
-        let ippe = await requeteKnex.getIPPE('Michaud', 'Noémie', null, false, "2002-08-07T00:00:00.000Z");
+        let nom = req.params.nom
+        let prenom1 = req.params.prenom1
+        let prenom2 = req.params.prenom2
+        let masculin = req.params.masculin
+        let datenaissance = req.params.datenaissance
+                                        //'Michaud', 'Noémie', null, false, "2002-08-07T00:00:00.000Z"
+        let ippe = await requeteKnex.getIPPE(nom, prenom1, prenom2, masculin, datenaissance);
         rep.status(200).json(ippe);
         
     } catch (error) {
