@@ -28,26 +28,26 @@ app.get('/utilisateurs', async (req, rep) => {
 
 app.get('/ippe/:nomFamille/:prenom1/:prenom2/:masculin/:anne/:mois/:jour', async (req, rep) => {
   try {
-    const nomFamille = req.params.nomFamille;
-    const prenom1 = req.params.prenom1;
-    const prenom2 = req.params.prenom2;
-    const masculin = req.params.masculin;
+    const { nomFamille } = req.params;
+    const { prenom1 } = req.params;
+    const { prenom2 } = req.params;
+    const { masculin } = req.params;
 
-    const anne = req.params.anne;
-    const mois = req.params.mois;
-    const jour = req.params.jour;
+    const { anne } = req.params;
+    const { mois } = req.params;
+    const { jour } = req.params;
 
     // 'Ducharme','Benoit', null, true, new Date('1975-08-31')
     // 'Michaud', 'Noémie', null, false, new Date('2002-08-07')
     // 'Sirois','Danielle', null, false, new Date('1980-02-14')
     // 'Bélanger','Claude', null, true, new Date('1976-07-12')
-    //'Levasseur', 'Marc', null, true, new Date('1971-11-07')
-    //'Lemire', 'Jessy', null, false, new Date('1985-10-28')
-    //'Amoussougbo', 'Yaken', null, true, new Date('2000-03-14')
-    //'Hébert', 'Francis', null, true, new Date('1992-10-19')
-    //?nomFamille=Ducharme?prenom1=Benoit?prenom2=null?masculin=true?datenaissance=new Date('1975-08-31')
-    //nomFamille, prenom1, prenom2, masculin, datenaissance
-    ///:nomFamille/:prenom1/:prenom2/:masculin/:datenaissance
+    // 'Levasseur', 'Marc', null, true, new Date('1971-11-07')
+    // 'Lemire', 'Jessy', null, false, new Date('1985-10-28')
+    // 'Amoussougbo', 'Yaken', null, true, new Date('2000-03-14')
+    // 'Hébert', 'Francis', null, true, new Date('1992-10-19')
+    // ?nomFamille=Ducharme?prenom1=Benoit?prenom2=null?masculin=true?datenaissance=new Date('1975-08-31')
+    // nomFamille, prenom1, prenom2, masculin, datenaissance
+    /// :nomFamille/:prenom1/:prenom2/:masculin/:datenaissance
     const ippe = await requeteKnex.getIPPE(nomFamille, prenom1, prenom2, masculin, new Date(`${anne}-${mois}-${jour}`));
     rep.status(200).json(ippe);
   } catch (error) {

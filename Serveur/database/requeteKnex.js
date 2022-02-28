@@ -50,7 +50,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     });
 
   console.log(resultat[0]);
-  
+
   const date = new Date(resultat[0].DateNaissance);
 
   switch (resultat[0].TypeEvenement) {
@@ -66,6 +66,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         noMandat: resultat[0].NoCour,
         natureCrime: resultat[0].NatureCrime,
         noEvenement: resultat[0].NoEvenement,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Sous observation':
@@ -79,6 +80,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         natureCrime: resultat[0].NatureCrime,
         noEvenement: resultat[0].NoEvenement,
         DossierEnquete: resultat[0].DossierEnquete,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Accusé':
@@ -93,10 +95,11 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         natureCrime: resultat[0].NatureCrime,
         noEvenement: resultat[0].NoEvenement,
         Conditions: resultat[0].Conditions,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Probation':
-        const datefinsentence = new Date(resultat[0].FinSentence);
+      const datefinsentence = new Date(resultat[0].FinSentence);
       return {
         nomFamille: resultat[0].NomFamille,
         prenom1: resultat[0].Prenom1,
@@ -112,10 +115,11 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         Agent: resultat[0].Agent,
         Telephone: resultat[0].Telephone,
         Poste: resultat[0].Poste,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Libération Conditionnelle':
-        const datefinsentencee = new Date(resultat[0].FinSentence);
+      const datefinsentencee = new Date(resultat[0].FinSentence);
       return {
         nomFamille: resultat[0].NomFamille,
         prenom1: resultat[0].Prenom1,
@@ -126,12 +130,13 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         noMandat: resultat[0].NoCour,
         natureCrime: resultat[0].NatureCrime,
         noEvenement: resultat[0].NoEvenement,
-        //Conditions: resultat[0].Conditions,
+        // Conditions: resultat[0].Conditions,
         LieuDetention: resultat[0].LieuDetention,
         FinSentence: datefinsentencee.toLocaleDateString('zh-Hans-CN'),
         Agent: resultat[0].Agent,
         Telephone: resultat[0].Telephone,
         Poste: resultat[0].Poste,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Disparu':
@@ -144,10 +149,11 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         mandat: resultat[0].Raison,
         noEvenement: resultat[0].NoEvenement,
         VuDerniereFois: resultat[0].VuDerniereFois,
+        TypeEvenement: resultat[0].TypeEvenement,
       };
 
     case 'Interdit':
-        const datefinsentenceee = new Date(resultat[0].FinSentence);
+      const datefinsentenceee = new Date(resultat[0].FinSentence);
       return {
         nomFamille: resultat[0].NomFamille,
         prenom1: resultat[0].Prenom1,
@@ -160,6 +166,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
         natureCrime: resultat[0].NatureCrime,
         noEvenement: resultat[0].NoEvenement,
         FinSentence: datefinsentenceee.toLocaleDateString('zh-Hans-CN'),
+        TypeEvenement: resultat[0].TypeEvenement,
       };
   }
 
