@@ -54,6 +54,50 @@ app.get('/ippeInfo', async (req, res) => {
 	}
 });
 
+
+app.post('/ajouter', async (req, res)=> {
+	try{
+		let data = {
+			"NoSerie":req.query.serie,
+			"NoEvenement":req.query.evenement,
+			"Description":req.query.desc
+		}
+		await request.addData("IBOB",data);
+	}catch (err) {
+		console.log(err);
+	}
+	
+});
+
+app.put('/modifier', async(req,res) => {
+	try {
+		let data = {
+			"NoSerie":req.query.serie,
+			"NoEvenement":req.query.evenement,
+			"Description":req.query.desc
+		}
+		await request.updateData("IBOB",data);
+	} catch (error) {
+		console.log(error);
+		
+	}
+});
+
+app.delete('/delete', async(req,res) => {
+	try {
+		let data = {
+			"NoSerie":req.query.serie,
+			"NoEvenement":req.query.evenement,
+			"Description":req.query.desc
+		}
+		await request.deleteData("IBOB",data);
+	} catch (error) {
+		console.log(error);
+		
+	}
+});
+
+
 app.listen(PORT, () => {
 	console.log(`Mon application roule sur http://localhost:${PORT}`);
 });

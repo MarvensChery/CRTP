@@ -2,9 +2,9 @@ const knex = require('knex')({
 	client: 'mssql',
 	connection: {
 		host: 'sv55.cmaisonneuve.qc.ca',
-		user: 'xxx',
-		password: 'xxx',
-		database: 'xxx',
+		user: '4D1Equipe05',
+		password: 'njt862',
+		database: '4D1Equipe05',
 		options: {
 			enableArithAbort: false
 		},
@@ -227,8 +227,31 @@ function formatterFPS(dataFPS){
 	return dataToSend;
 }
 
+
+async function addData(bd,data) {
+	return await knex(bd)
+	.insert(data);
+}
+
+async function updateData(bd,data) {
+	return await knex(bd)
+	.update(data)
+	.where('NoSerie','=',data.NoSerie)
+}
+
+async function deleteData(bd,data) {
+	return await knex(bd)
+	.where('NoSerie','=',data.NoSerie)
+	.del()
+}
+
+
 module.exports = {
 	connexion,
 	getIPPE,
-	getFPS
+	getFPS,
+	addData,
+	updateData,
+	deleteData
+
 };
