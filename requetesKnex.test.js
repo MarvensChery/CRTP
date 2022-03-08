@@ -1,4 +1,4 @@
-const reqKnex = require('./requestKnex.js');
+const reqKnex = require('./requetesKnex.js');
 
 test('asdasdsad', () => {
     expect(1).toEqual(1);
