@@ -2,9 +2,9 @@ const knex = require('knex')({
     client: 'mssql',
     connection: {
         host: 'sv55.cmaisonneuve.qc.ca',
-        user: 'AppCRTP',
-        password: 'fgjj30g5;$e5',
-        database: 'CRTP',
+        user: '4D1Equipe06',
+        password: 'pwn852',
+        database: '4D1Equipe06',
         options: {
             enableArithAbort: false,
         },
@@ -251,6 +251,11 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
             resultat.push(element);
         });
     }
+    resultat[0].nomFamille = nomFamille
+    resultat[0].prenom1 = prenom1
+    resultat[0].prenom2 = prenom2
+    resultat[0].masculin = masculin
+    resultat[0].dateNaissance = dateNaissance
     return resultat;
 }
 

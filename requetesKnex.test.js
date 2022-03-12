@@ -14,6 +14,7 @@ test('Réponse ***RECHERCHÉ***', async () => {
         noMandat: 'CM-LGL-A-26840',
         natureCrime: 'Agression armée',
         noEvenement: '108-220208-0031',
+        titre: "Recherché"
     }];
     const ippe = await reqKnex.getIPPE(
         resultat[0].nomFamille,
