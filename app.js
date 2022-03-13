@@ -55,6 +55,24 @@ app.get('/ippeInfo', async (req, res) => {
     }
 });
 
+app.get('/banquepersonne', async (req, res) => {
+    try {
+        let resultat = await request.getPersonnes();
+        let resultatformater = []
+        resultat.forEach(element => {
+            resultatformater.push({
+                Id: element.IdPersonne,
+                NomFamille: element.NomFamille,
+                Prenom1: element.Prenom1,
+                Prenom2: element.Prenom2,
+                Categorie: element.TypePersonne})
+        });
+        res.send(resultatformater);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);
 });

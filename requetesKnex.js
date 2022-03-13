@@ -12,6 +12,11 @@ const knex = require('knex')({
     pool: { min: 0, max: 7 },
 });
 
+// Requete knex qui retourne les informations de personnes pour la banque de personnes - Nathan
+function getPersonnes() {
+    return knex('Personnes');
+}
+
 // Requete knex qui retourne les informations de connexion
 function connexion(identifiant, motDePasse) {
     return knex('Utilisateurs')
@@ -263,4 +268,5 @@ module.exports = {
     connexion,
     getIPPE,
     getFPS,
+    getPersonnes,
 };
