@@ -21,15 +21,19 @@ function connexion(identifiant, motDePasse){
 
 async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 	const resultat = new Array();
+	console.log(ddn)
 	const reponseIPPe = await knex('Personnes')
 		.where('NomFamille', nom)
 		.andWhere('DateNaissance', ddn)
 		.andWhere('Prenom1', prenomUn)
 		.andWhere('Prenom2', prenomDeux)
 		.andWhere('Masculin', sexe)
-		.leftJoin('IPPE', 'Personnes.id', 'IPPE.IdPersonne')
-		.leftJoin('Conditions', 'Conditions.IdIPPE', 'IPPE.Id')
+		.leftJoin('PersonnesIPPE', 'PersonnesIPPE.IdPersonne', 'Personnes.idPersonne')
+		.leftJoin('IPPE', 'IPPE.idIPPE', 'PersonnesIPPE.IdIPPE')
+		.leftJoin('Conditions', 'Conditions.IdIPPE', 'IPPE.IdIPPE')
 		.select('*');
+
+		console.log(reponseIPPe)
 
 	//Recherche si la personne possede un dossier FPS et le push a la reponse
 	const reponseFPS = await getFPS(reponseIPPe[0].IdPersonne);
@@ -49,8 +53,8 @@ async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 
 function getFPS(DataIdPersonne){
 	return knex('FPS')
-		.where('FPS.IdPersonne', DataIdPersonne)
-		.join('Personnes', 'FPS.IdPersonne', 'Personnes.Id')
+		.where('FPS.IdPersonne', parseInt(DataIdPersonne))
+		.join('Personnes', 'Personnes.IdPersonne', 'FPS.IdPersonne')
 		.select('FPS.*', 
 			'Personnes.Race',
 			'Personnes.Taille',
@@ -86,9 +90,9 @@ function formatterIPPE(dataIPPE, dataFps){
 				dataToSend.push(
 					{
 						titre:'Recherché',
-						mandat: data.Raison,
+						mandat: data.Mandat,
 						cour: data.Cour,
-						numMandat: data.NoCour,
+						numMandat: data.NoMandat,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement
 					});
@@ -97,7 +101,7 @@ function formatterIPPE(dataIPPE, dataFps){
 				dataToSend.push(
 					{
 						titre:'Sous Observation',
-						motif: data.Raison,
+						motif: data.Motif,
 						cour: data.Cour,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement,
@@ -110,9 +114,10 @@ function formatterIPPE(dataIPPE, dataFps){
 					{
 						titre:'Accusé',
 						cour: data.Cour,
-						numCause: data.NoCour,
+						numCause: data.NoCause,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement,
+						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
 						condition: libelleList
 					});
 				break;
@@ -121,12 +126,13 @@ function formatterIPPE(dataIPPE, dataFps){
 					{
 						titre:'Probation',
 						cour: data.Cour,
-						numCause: data.NoCour,
+						numCause: data.NoCause,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement,
 						finSentence: data.FinSentence,
+						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
 						condition: libelleList,
-						agent: data.Agent,
+						agent: data.AgentProbation,
 						telephone: data.Telephone,
 						poste: data.Poste
 					});
@@ -136,14 +142,15 @@ function formatterIPPE(dataIPPE, dataFps){
 					{
 						titre:'Libération Conditionnelle',
 						cour: data.Cour,
-						numCause: data.NoCour,
+						numCause: data.NoCause,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement,
 						fps: dataFps[0].NoFPS,
 						lieuDetention: data.LieuDetention,
 						finSentence: data.FinSentence,
+						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
 						condition: libelleList,
-						agent: data.Agent,
+						agent: data.AgentLiberation,
 						telephone: data.Telephone,
 						poste: data.Poste
 					});
@@ -153,20 +160,20 @@ function formatterIPPE(dataIPPE, dataFps){
 					{
 						titre:'Disparu',
 						noEvenement: data.NoEvenement,
-						motif: data.Raison,
+						nature: data.Nature,
 						derniereVu: data.VuDerniereFois,
-						descrPhys:{ 
+						descrPhysique:{ 
 							race: data.Race, 
 							taille: data.Taille, 
 							poids: data.Poids,
 							yeux: data.Yeux,
 							cheveux: data.Cheveux,
 							marques: data.Marques},
-						descrVest:{
+						descrVestimentaire:{
 							gilet: data.Gilet,
 							pantalon: data.Pantalon,
 							autreVetements: data.AutreVetement},
-						problemeSante:{
+						problemesSante:{
 							toxicomanie: data.Toxicomanie,
 							desorganise: data.Desorganise,
 							depressif: data.Depressif,
@@ -178,9 +185,9 @@ function formatterIPPE(dataIPPE, dataFps){
 				dataToSend.push(
 					{
 						titre:'Interdit',
-						nature: data.Raison,
+						nature: data.Nature,
 						cour: data.Cour,
-						numCour: data.NoCour,
+						numCour: data.NoCause,
 						natureCrime: data.NatureCrime,
 						noEvenement: data.NoEvenement,
 						expiration: data.FinSentence

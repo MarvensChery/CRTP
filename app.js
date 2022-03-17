@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const request = require('./requestKnex');
+const request = require('./requestKnex.js');
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
@@ -35,19 +35,19 @@ app.post('/login', async (req, res) => {
 
 app.get('/ippeInfo', async (req, res) => {
 	try {
-		const { nomFamille, prenom1} = req.query;
+		const nomFamille = req.query.nomFamille;
+		const prenom1 = req.query.prenom1;
 		const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
 		const masculin = (req.query.masculin === 'true') ? true : false;
 		const dateNaissance = new Date(req.query.dateNaissance);
 		const resultat = await request.getIPPE(nomFamille, dateNaissance, prenom1, prenom2, masculin);
-			
 		if(resultat.length!=0)
 		{   
 			//retourne que les valeurs au client; necessaire a la recherche IPPE
 			res.send(resultat);
 		} else {
 			//retourne la valeur negative si la personne na pas de fichier IPPE
-			res.send({result : 'Negatif'});
+			res.send({ titre : 'Negatif' });
 		}
 	} catch (error) {
 		res.status(500).json(error.message);
