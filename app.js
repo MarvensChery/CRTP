@@ -61,7 +61,7 @@ app.post('/ajouter', async (req, res)=> {
 			"NoSerie":req.query.serie,
 			"NoEvenement":req.query.evenement,
 			"Description":req.query.desc
-		}
+		};
 		await request.addData("IBOB",data);
 	}catch (err) {
 		console.log(err);

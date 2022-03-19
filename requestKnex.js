@@ -21,7 +21,6 @@ function connexion(identifiant, motDePasse){
 
 async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 	const resultat = new Array();
-	console.log(ddn)
 	const reponseIPPe = await knex('Personnes')
 		.where('NomFamille', nom)
 		.andWhere('DateNaissance', ddn)
@@ -31,9 +30,10 @@ async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 		.leftJoin('PersonnesIPPE', 'PersonnesIPPE.IdPersonne', 'Personnes.idPersonne')
 		.leftJoin('IPPE', 'IPPE.idIPPE', 'PersonnesIPPE.IdIPPE')
 		.leftJoin('Conditions', 'Conditions.IdIPPE', 'IPPE.IdIPPE')
+		.leftJoin('Crimes', 'IPPE.IdNatureCrime', 'Crimes.IdCrime')
 		.select('*');
 
-		console.log(reponseIPPe)
+	console.log(reponseIPPe);
 
 	//Recherche si la personne possede un dossier FPS et le push a la reponse
 	const reponseFPS = await getFPS(reponseIPPe[0].IdPersonne);
@@ -76,125 +76,130 @@ function formatterIPPE(dataIPPE, dataFps){
 
 	dataIPPE.forEach((data)=>{
 		//Verifie si l'information IPPE se trouve deja dans les datas a envoyer
-		const dupCheck = dataToSend.some(element => {element.IdIPPE === data.IdIPPE;} );
-		if(dupCheck){
-			//ajoute les conditions aux tableau afin de les afficher plus tard
-			libelleList.push(data.Libelle); 
-		} else {
+		//const dupCheck = dataToSend.some(element => {element.IdIPPE === data.IdIPPE;} );
+
+		if(data.Libelle!==null){
+			if (data.Libelle.includes('entrer en contact')) libelleList.push(`${data.Libelle} ${data.Victime}`);
+			else if (data.Libelle.includes('fréquenter')) libelleList.push(`${data.Libelle} ${data.Frequentation}`);
+			else libelleList.push(data.Libelle);
+		}else {
 			//si aucunes conditions n'est presente rien est envoyer dans le tableau de conditions
-			libelleList.push(data.Libelle ? data.Libelle:null);
-
-			//le switch trie les elements a envoyer pour ne pas envoyer d'information inutile
-			switch(data.TypeEvenement){
-			case 'Recherché':
-				dataToSend.push(
-					{
-						titre:'Recherché',
-						mandat: data.Mandat,
-						cour: data.Cour,
-						numMandat: data.NoMandat,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement
-					});
-				break;
-			case 'Sous observation':
-				dataToSend.push(
-					{
-						titre:'Sous Observation',
-						motif: data.Motif,
-						cour: data.Cour,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement,
-						dossierEnq: data.DossierEnquete
-
-					});
-				break;
-			case 'Accusé':
-				dataToSend.push(
-					{
-						titre:'Accusé',
-						cour: data.Cour,
-						numCause: data.NoCause,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement,
-						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
-						condition: libelleList
-					});
-				break;
-			case 'Probation':
-				dataToSend.push(
-					{
-						titre:'Probation',
-						cour: data.Cour,
-						numCause: data.NoCause,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement,
-						finSentence: data.FinSentence,
-						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
-						condition: libelleList,
-						agent: data.AgentProbation,
-						telephone: data.Telephone,
-						poste: data.Poste
-					});
-				break;
-			case 'Libération Conditionnelle':
-				dataToSend.push(
-					{
-						titre:'Libération Conditionnelle',
-						cour: data.Cour,
-						numCause: data.NoCause,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement,
-						fps: dataFps[0].NoFPS,
-						lieuDetention: data.LieuDetention,
-						finSentence: data.FinSentence,
-						adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
-						condition: libelleList,
-						agent: data.AgentLiberation,
-						telephone: data.Telephone,
-						poste: data.Poste
-					});
-				break;
-			case 'Disparu':
-				dataToSend.push(
-					{
-						titre:'Disparu',
-						noEvenement: data.NoEvenement,
-						nature: data.Nature,
-						derniereVu: data.VuDerniereFois,
-						descrPhysique:{ 
-							race: data.Race, 
-							taille: data.Taille, 
-							poids: data.Poids,
-							yeux: data.Yeux,
-							cheveux: data.Cheveux,
-							marques: data.Marques},
-						descrVestimentaire:{
-							gilet: data.Gilet,
-							pantalon: data.Pantalon,
-							autreVetements: data.AutreVetement},
-						problemesSante:{
-							toxicomanie: data.Toxicomanie,
-							desorganise: data.Desorganise,
-							depressif: data.Depressif,
-							suicidaire: data.Suicidaire,
-							violent: data.Violent}
-					});
-				break;
-			case 'Interdit':
-				dataToSend.push(
-					{
-						titre:'Interdit',
-						nature: data.Nature,
-						cour: data.Cour,
-						numCour: data.NoCause,
-						natureCrime: data.NatureCrime,
-						noEvenement: data.NoEvenement,
-						expiration: data.FinSentence
-					});
-				break;
-			}
+			libelleList = null;
 		}
+		//le switch trie les elements a envoyer pour ne pas envoyer d'information inutile
+		switch(data.TypeEvenement){
+		case 'Recherché':
+			dataToSend.push(
+				{
+					titre:'Recherché',
+					mandat: data.Mandat,
+					cour: data.Cour,
+					numMandat: data.NoMandat,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement
+				});
+			break;
+		case 'Sous observation':
+			dataToSend.push(
+				{
+					titre:'Sous Observation',
+					motif: data.Motif,
+					cour: data.Cour,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement,
+					dossierEnq: data.DossierEnquete
+
+				});
+			break;
+		case 'Accusé':
+			dataToSend.push(
+				{
+					titre:'Accusé',
+					cour: data.Cour,
+					numCause: data.NoCause,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement,
+					frequentation: data.Frequentation,
+					adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
+					condition: libelleList
+				});
+			break;
+		case 'Probation':
+			dataToSend.push(
+				{
+					titre:'Probation',
+					cour: data.Cour,
+					numCause: data.NoCause,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement,
+					finSentence: data.FinSentence,
+					adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
+					condition: libelleList,
+					frequentation: data.Frequentation,
+					agent: data.AgentProbation,
+					telephone: data.Telephone,
+					poste: data.Poste
+				});
+			break;
+		case 'Libération Conditionnelle':
+			dataToSend.push(
+				{
+					titre:'Libération Conditionnelle',
+					cour: data.Cour,
+					numCause: data.NoCause,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement,
+					fps: dataFps[0].NoFPS,
+					lieuDetention: data.LieuDetention,
+					finSentence: data.FinSentence,
+					adresse: `${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`,
+					condition: libelleList,
+					frequentation: data.Frequentation,
+					agent: data.AgentLiberation,
+					telephone: data.Telephone,
+					poste: data.Poste
+				});
+			break;
+		case 'Disparu':
+			dataToSend.push(
+				{
+					titre:'Disparu',
+					noEvenement: data.NoEvenement,
+					nature: data.Nature,
+					derniereVu: data.VuDerniereFois,
+					descrPhysique:{ 
+						race: data.Race, 
+						taille: data.Taille, 
+						poids: data.Poids,
+						yeux: data.Yeux,
+						cheveux: data.Cheveux,
+						marques: data.Marques},
+					descrVestimentaire:{
+						gilet: data.Gilet,
+						pantalon: data.Pantalon,
+						autreVetements: data.AutreVetement},
+					problemesSante:{
+						toxicomanie: data.Toxicomanie,
+						desorganise: data.Desorganise,
+						depressif: data.Depressif,
+						suicidaire: data.Suicidaire,
+						violent: data.Violent}
+				});
+			break;
+		case 'Interdit':
+			dataToSend.push(
+				{
+					titre:'Interdit',
+					nature: data.Nature,
+					cour: data.Cour,
+					numCour: data.NoCause,
+					natureCrime: data.NatureCrime,
+					noEvenement: data.NoEvenement,
+					expiration: data.FinSentence
+				});
+			break;
+		}
+		
 	});
 	//gere les doublons en les supprimants
 	let result = dataToSend.reduce((unique, o) => {
@@ -237,19 +242,19 @@ function formatterFPS(dataFPS){
 
 async function addData(bd,data) {
 	return await knex(bd)
-	.insert(data);
+		.insert(data);
 }
 
 async function updateData(bd,data) {
 	return await knex(bd)
-	.update(data)
-	.where('NoSerie','=',data.NoSerie)
+		.update(data)
+		.where('NoSerie','=',data.NoSerie);
 }
 
 async function deleteData(bd,data) {
 	return await knex(bd)
-	.where('NoSerie','=',data.NoSerie)
-	.del()
+		.where('NoSerie','=',data.NoSerie)
+		.del();
 }
 
 
