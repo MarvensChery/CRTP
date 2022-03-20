@@ -36,6 +36,7 @@ async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 	//Recherche si la personne possede un dossier FPS et le push a la reponse
 	if(reponseIPPe.length !=0 ){
 		const reponseFPS = await getFPS(reponseIPPe[0].IdPersonne);
+		if(reponseIPPe[0].IdIPPE===null) resultat.push({ 'titre': 'Negatif'});
 		let IPPEresult = formatterIPPE(reponseIPPe, reponseFPS);
 		IPPEresult.forEach(element => {
 			resultat.push(element);	
@@ -48,6 +49,7 @@ async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 			});
 		}
 	}
+
 	return resultat;
 }
 
