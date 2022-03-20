@@ -33,20 +33,20 @@ async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 		.leftJoin('Crimes', 'IPPE.IdNatureCrime', 'Crimes.IdCrime')
 		.select('*');
 
-	console.log(reponseIPPe);
-
 	//Recherche si la personne possede un dossier FPS et le push a la reponse
-	const reponseFPS = await getFPS(reponseIPPe[0].IdPersonne);
-	let IPPEresult = formatterIPPE(reponseIPPe, reponseFPS);
-	IPPEresult.forEach(element => {
-		resultat.push(element);	
-	});
-	if(reponseFPS.length !=0 ){
-		const FPSresult =  formatterFPS(reponseFPS);
-
-		FPSresult.forEach(element => {
+	if(reponseIPPe.length !=0 ){
+		const reponseFPS = await getFPS(reponseIPPe[0].IdPersonne);
+		let IPPEresult = formatterIPPE(reponseIPPe, reponseFPS);
+		IPPEresult.forEach(element => {
 			resultat.push(element);	
 		});
+		if(reponseFPS.length !=0 ){
+			const FPSresult =  formatterFPS(reponseFPS);
+
+			FPSresult.forEach(element => {
+				resultat.push(element);	
+			});
+		}
 	}
 	return resultat;
 }
