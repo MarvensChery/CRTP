@@ -286,7 +286,7 @@ function formatterIPPE(IPPEs) {
                     noCause: ippe.NoCause,
                     idNatureCrime: ippe.idNatureCrime,
                     lieuDetention: ippe.LieuDetention,
-                    finSentence: ippe.FinSentence,
+                    finSentence: ippe.FinSentence.toJSON(),
                     vuDerniereFois: ippe.VuDerniereFois,
                     conditions: libelleList,
                     agentProbation: ippe.AgentProbation,
@@ -342,7 +342,8 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 
     // La personne a des événements IPPE associés: on les formate
     resultat[0].IPPE = formatterIPPE(resultat[0].IPPE);
-
+    
+    resultat[0].DateNaissance = resultat[0].DateNaissance.toJSON()
     console.log(resultat)
 
     return resultat;

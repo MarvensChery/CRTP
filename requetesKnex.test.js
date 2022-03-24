@@ -45,18 +45,32 @@ test('Réponse ***RECHERCHÉ***', async () => {
                 "lieuDetention":null,
                 "finSentence":"2022-03-01T00:00:00.000Z",
                 "vuDerniereFois":null,
+                "idNatureCrime": undefined,
+                "dossierEnquête": undefined,
                 "conditions":[
                     {
                         "idCondition":13,
-                        "libelle":"Ne pas entrer en contact avec Alain Coutu"
+                        "libelle":"Ne pas entrer en contact avec Alain Coutu",
+                        "frequentation": undefined,
+                        "heureDebut": undefined,
+                        "heureFin": undefined,
+                        "victime": undefined,
                     },
                     {
                         "idCondition":14,
-                        "libelle":"Aucune consommation d'alcool ou de drogue non prescrite\n"
+                        "libelle":"Aucune consommation d'alcool ou de drogue non prescrite\n",
+                        "frequentation": undefined,
+                        "heureDebut": undefined,
+                        "heureFin": undefined,
+                        "victime": undefined,
                     },
                     {
                         "idCondition":15,
-                        "libelle":"Doit garder la paix et avoir bonne conduite"
+                        "libelle":"Doit garder la paix et avoir bonne conduite",
+                        "frequentation": undefined,
+                        "heureDebut": undefined,
+                        "heureFin": undefined,
+                        "victime": undefined,
                     }
                 ],
                 "agentProbation":"David Chapdelaine\n",
