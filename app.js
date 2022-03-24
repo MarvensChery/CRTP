@@ -60,6 +60,27 @@ app.get('/ippeInfo', async (req, res) => {
 });
 
 
+app.get('/modifier/:type', async (req,res)=> {
+	try{
+		const typedb = req.params.type.toUpperCase();
+		let data;
+		if (!typedb.includes('IBOB','IBVA','IBAF')) 
+			return res.status(400).json({'message':'non autorisé'});
+		if (req.query.id!==undefined)  data = await request.getDataById(typedb, req.query.id);
+		else data = await request.getData(typedb);
+		if(data.length===0)
+		{   
+			//retourne la valeur negative
+			return res.status(404).json({'message':'aucune donnée trouvé'});
+		}
+		//retourne que les valeurs au client;
+		return res.status(200).json(data);
+	} catch (error) {
+		res.status(500).json(error.message);
+	}
+});
+
+
 app.post('/ajouter', async (req)=> {
 	try{
 		let data = {
@@ -88,17 +109,25 @@ app.put('/modifier', async(req) => {
 	}
 });
 
-app.delete('/delete', async(req) => {
-	try {
-		let data = {
-			'NoSerie':req.query.serie,
-			'NoEvenement':req.query.evenement,
-			'Description':req.query.desc
-		};
-		await request.deleteData('IBOB',data);
+app.delete('/delete/:type', async(req,res) => {
+	let data;
+	const typedb = req.params.type;
+	if (!typedb.includes('IBOB','IBVA','IBAF')||req.query.id===null) 
+		return res.status(400).json('non autorisé');
+	try{
+		data = await request.getDataById(typedb, req.query.id);
+		if(data.length===0)
+		{   
+			//retourne la valeur negative
+			return res.status(404).json({'message':'aucune donnée trouvé'});
+		}
+		else {
+			await request.deleteData(typedb,req.query.id);
+			//retourne que les valeurs au client;
+			return res.status(200).json({ 'message': 'l\'objet a bien été supprimé'});
+		}
 	} catch (error) {
-		console.log(error);
-		
+		res.status(500).json(error.message);
 	}
 });
 

@@ -19,6 +19,14 @@ function connexion(identifiant, motDePasse){
 		.andWhere('MotDePasse', motDePasse);
 }
 
+function getData(typedb){
+	return knex(typedb);
+}
+
+function getDataById(typedb, id){
+	return knex(typedb).where(`Id${typedb}`,id);
+}
+
 async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
 	const resultat = new Array();
 	const reponseIPPe = await knex('Personnes')
@@ -253,9 +261,9 @@ async function updateData(bd,data) {
 		.where('NoSerie','=',data.NoSerie);
 }
 
-async function deleteData(bd,data) {
-	return await knex(bd)
-		.where('NoSerie','=',data.NoSerie)
+async function deleteData(typedb, id) {
+	return await knex(typedb)
+		.where(`Id${typedb}`,id)
 		.del();
 }
 
@@ -264,8 +272,9 @@ module.exports = {
 	connexion,
 	getIPPE,
 	getFPS,
+	getData,
 	addData,
 	updateData,
-	deleteData
-
+	deleteData,
+	getDataById
 };
