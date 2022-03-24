@@ -35,25 +35,52 @@ app.post('/login', async (req, res) => {
     });
 });
 
+// app.get('/ippeInfo', async (req, res) => {
+//     let resultat;
+
+//     try {
+//         const { nomFamille, prenom1 } = req.query;
+//         const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
+//         const masculin = (req.query.masculin === 'true');
+//         const { dateNaissance } = req.query;
+//         resultat = await request.getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance);
+//     } catch (error) {
+//         res.status(500).json(error.message);
+//     }
+
+//     if (resultat.length === 0) {
+//         res.send({ result: 'Negatif' });
+//     } else {
+//         res.send(resultat);
+//     }
+// });
+
 app.get('/ippeInfo', async (req, res) => {
+    //?nomFamille=Levasseur&prenom1=Marc&prenom2=&masculin=true&dateNaissance=1971-11-07T00:00:00.000Z
     let resultat;
 
+    const { nomFamille, prenom1 } = req.query;
+    const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
+    const masculin = (req.query.masculin === 'true');
+    const { dateNaissance } = req.query;
+
+    if (nomFamille === undefined || prenom1 === undefined || prenom2 === undefined
+        || masculin === undefined || dateNaissance === undefined) {
+        return res.status(400).json('paramètre manquant');
+    }
     try {
-        const { nomFamille, prenom1 } = req.query;
-        const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
-        const masculin = (req.query.masculin === 'true');
-        const { dateNaissance } = req.query;
         resultat = await request.getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance);
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
 
     if (resultat.length === 0) {
-        res.send({ result: 'Negatif' });
-    } else {
-        res.send(resultat);
+        return res.status(404).json('Cette personne n\'est pas répertoriée');
     }
+
+    return res.status(200).json(resultat);
 });
+
 
 app.get('/banquepersonne', async (req, res) => {
     try {
