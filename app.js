@@ -97,6 +97,39 @@ app.delete('/delete', async(req,res) => {
 	}
 });
 
+app.get('/ListIBAF', async(req,res) => {
+	try {
+		const resultat = await request.getListData('IBAF');
+
+		res.send(resultat);
+	}
+	catch (error) {
+		console.log(error);
+	}
+});
+
+app.get('/ListIBOB', async(req,res) => {
+	try {
+		const resultat = await request.getListData('IBOB');
+
+		res.send(resultat);
+	}
+	catch (error) {
+		console.log(error);
+	}
+});
+
+app.get('/ListIBVA', async(req,res) => {
+	try {
+		const resultat = await request.getListData('IBVA');
+
+		res.send(resultat);
+	}
+	catch (error) {
+		console.log(error);
+	}
+});
+
 
 app.listen(PORT, () => {
 	console.log(`Mon application roule sur http://localhost:${PORT}`);

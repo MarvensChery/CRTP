@@ -245,6 +245,10 @@ async function deleteData(bd,data) {
 	.del()
 }
 
+async function getListData(bd) {
+	return knex(bd);
+}
+
 
 module.exports = {
 	connexion,
@@ -252,6 +256,7 @@ module.exports = {
 	getFPS,
 	addData,
 	updateData,
-	deleteData
+	deleteData,
+	getListData
 
 };
