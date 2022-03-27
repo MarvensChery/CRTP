@@ -269,6 +269,7 @@ function formatterIPPE(IPPEs) {
     const libelleList = [];
 
     IPPEs.forEach((ippe) => {
+        console.log(ippe)
         // Verifie si l'information IPPE se trouve deja dans les datas a envoyer
         if (!resultat.some((element) => element.idIPPE === ippe.IdIPPE[0])) {
             // Nouvel événement IPPE, on ajoute un objet IPPE au résultat
@@ -280,13 +281,13 @@ function formatterIPPE(IPPEs) {
                     mandat: ippe.Mandat,
                     motif: ippe.Motif,
                     nature: ippe.Nature,
-                    dossierEnquête: ippe.dossierEnquete,
+                    dossierEnquete: ippe.DossierEnquete,
                     cour: ippe.Cour,
                     noMandat: ippe.NoMandat,
                     noCause: ippe.NoCause,
                     idNatureCrime: ippe.idNatureCrime,
                     lieuDetention: ippe.LieuDetention,
-                    finSentence: ippe.FinSentence.toJSON(),
+                    finSentence: ippe.FinSentence,
                     vuDerniereFois: ippe.VuDerniereFois,
                     conditions: libelleList,
                     agentProbation: ippe.AgentProbation,
@@ -297,6 +298,7 @@ function formatterIPPE(IPPEs) {
                 },
             );
         } else {
+            
             resultat[resultat.length - 1].conditions.push(
                 {
                     idCondition: ippe.IdCondition,
@@ -309,7 +311,6 @@ function formatterIPPE(IPPEs) {
             );
         }
     });
-
     return resultat;
 }
 
@@ -323,7 +324,6 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
             Masculin: masculin,
             DateNaissance: dateNaissance,
         });
-    console.log(resultat)
     if (resultat.length === 0) return resultat;
 
     // La personne existe: on récupère sa signalisation FPS si elle en a une
@@ -343,10 +343,74 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     // La personne a des événements IPPE associés: on les formate
     resultat[0].IPPE = formatterIPPE(resultat[0].IPPE);
     
-    resultat[0].DateNaissance = resultat[0].DateNaissance.toJSON()
-    console.log(resultat)
-
+    resultat[0].DateNaissance = resultat[0].DateNaissance
+    
     return resultat;
+}
+
+// Requete knex qui retourne les informations de la personnes avec son id
+function ReturnPersonne(Idpersonne) {
+    return knex('Personnes')
+        .where('IdPersonne', Idpersonne);
+}
+
+// Requete knex qui retourne les informations de la condition
+function ReturnCondition(idcondition) {
+    return knex('Conditions')
+        .where('IdCondition', idcondition);
+}
+// Requete knex qui insert la nouvelle condition
+function AjouterCondition(Idippe, Condition, Idpersonne) {
+    return knex('Conditions')
+        .insert({ IdIPPE: Idippe, Libelle: Condition, IdPersonne: Idpersonne });
+}
+// Requete knex qui insert la nouvelle condition avec une victime
+function AjouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne, 
+        });
+}
+// Requete knex qui insert la nouvelle condition avec une frequentation
+function AjouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne, 
+        });
+}
+// Requete knex qui insert la nouvelle condition avec une frequentation
+function AjouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne, 
+        });
+}
+// Requete knex qui update une condition avec une adresse
+function UpdateAdresse(Idpersonne, Adresse1) {
+    return knex('Personnes')
+        .where({ Idpersonne })
+        .update({ Adresse1 });
+}
+
+// Requete knex qui update une condition avec une victime
+function UpdateVictime(IdCondition, Victime) {
+    return knex('Conditions')
+        .where({ IdCondition })
+        .update({ Victime });
+}
+
+// Requete knex qui update une condition avec une frequentation
+function UpdateFrequentation(IdCondition, Frequentation) {
+    return knex('Conditions')
+        .where({ IdCondition })
+        .update({ Frequentation });
+}
+
+// Requete knex qui delete une conditions
+function DeleteCondition(IdCondition) {
+    return knex('Conditions')
+        .where({ IdCondition })
+        .del();
 }
 
 
@@ -355,4 +419,14 @@ module.exports = {
     getIPPE,
     // getFPS,
     getPersonnes,
+    AjouterCondition,
+    UpdateAdresse,
+    UpdateVictime,
+    DeleteCondition,
+    UpdateFrequentation,
+    AjouterConditionAvecVictime,
+    AjouterConditionAvecFrequentation,
+    AjouterConditionAvecHeure,
+    ReturnCondition,
+    ReturnPersonne,
 };

@@ -35,26 +35,6 @@ app.post('/login', async (req, res) => {
     });
 });
 
-// app.get('/ippeInfo', async (req, res) => {
-//     let resultat;
-
-//     try {
-//         const { nomFamille, prenom1 } = req.query;
-//         const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
-//         const masculin = (req.query.masculin === 'true');
-//         const { dateNaissance } = req.query;
-//         resultat = await request.getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance);
-//     } catch (error) {
-//         res.status(500).json(error.message);
-//     }
-
-//     if (resultat.length === 0) {
-//         res.send({ result: 'Negatif' });
-//     } else {
-//         res.send(resultat);
-//     }
-// });
-
 app.get('/ippeInfo', async (req, res) => {
     //?nomFamille=Levasseur&prenom1=Marc&prenom2=&masculin=true&dateNaissance=1971-11-07T00:00:00.000Z
     let resultat;
@@ -98,7 +78,200 @@ app.get('/banquepersonne', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-})
+});
+
+
+// Ajouter une condition sans paramètre
+app.post('/ajoutercondition/:Idpersonne/:Idippe/:Conditions', async (req, res) => {
+    try {
+        const IdIPPE = req.params.Idippe;
+        const Condition = req.params.Conditions;
+        const IdPersonne = req.params.Idpersonne;
+        await request.AjouterCondition(IdIPPE, Condition, IdPersonne);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Ajouter une condition avec une victime
+app.post('/ajouterconditionvictime/:Idpersonne/:Idippe/:Conditions/:Victime', async (req, res) => {
+    try {
+        const IdIPPE = req.params.Idippe;
+        const Condition = req.params.Conditions;
+        const Victime = req.params.Victime;
+        const IdPersonne = req.params.Idpersonne;
+        await request.AjouterConditionAvecVictime(IdIPPE, Condition, Victime, IdPersonne);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Ajouter une condition avec une frequentation
+app.post('/ajouterconditionfrequentation/:Idpersonne/:Idippe/:Conditions/:Frequentation', async (req, res) => {
+    try {
+        const IdIPPE = req.params.Idippe;
+        const Condition = req.params.Conditions;
+        const Frequentation = req.params.Frequentation;
+        const IdPersonne = req.params.Idpersonne;
+        await request.AjouterConditionAvecFrequentation(IdIPPE, Condition, Frequentation, IdPersonne);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Ajouter une condition avec des heures
+app.post('/ajouterconditionheure/:Idpersonne/:Idippe/:Conditions/:HeureDebut/:HeureFin', async (req, res) => {
+    try {
+        const IdIPPE = req.params.Idippe;
+        const Condition = req.params.Conditions;
+        const HeureDebut = req.params.HeureDebut;
+        const HeureFin = req.params.HeureFin;
+        const IdPersonne = req.params.Idpersonne;
+        await request.AjouterConditionAvecHeure(IdIPPE, Condition, HeureDebut, HeureFin, IdPersonne);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Ajouter une condition avec une adresse
+app.post('/ajouterconditionadresse/:Idippe/:Conditions/:Idpersonne/:adresse', async (req, res) => {
+    try {
+        const IdIPPE = req.params.Idippe;
+        const Condition = req.params.Conditions;
+        const IdPersonne = req.params.Idpersonne;
+        await request.AjouterCondition(IdIPPE, Condition, IdPersonne);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+    try {
+        const IdPersonne = req.params.Idpersonne;
+        const Adresse1 = req.params.adresse;
+        await request.UpdateAdresse(IdPersonne, Adresse1);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Update une condition avec une adresse
+app.put('/updateadresse/:Idpersonne/:Adresse1', async (req, res) => {
+    try {
+        const Idpersonne = req.params.Idpersonne;
+        const Adresse1 = req.params.Adresse1;
+        await request.UpdateAdresse(Idpersonne, Adresse1);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Update une condition avec une victime
+app.put('/updatevictime/:IdCondition/:Victime', async (req, res) => {
+    try {
+        const IdCondition = req.params.IdCondition;
+        const Victime = req.params.Victime;
+        await request.UpdateVictime(IdCondition, Victime);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Update une condition avec une frequentation
+app.put('/updatefrequentation/:IdCondition/:Frequentation', async (req, res) => {
+    try {
+        const IdCondition = req.params.IdCondition;
+        const Frequentation = req.params.Frequentation;
+        await request.UpdateFrequentation(IdCondition, Frequentation);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Supprimer une condition
+app.delete('/deletecondition/:IdCondition', async (req, res) => {
+    try {
+        const IdCondition = req.params.IdCondition;
+        await request.DeleteCondition(IdCondition);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
+});
+
+// Retourner la condition
+app.get('/returncondition/:IdCondition', async (req, res) => {
+    try {
+        const IdCondition = req.params.IdCondition;
+        const resultat = await request.ReturnCondition(IdCondition);
+        const resultatformater = [];
+        resultat.forEach((element) => {
+            resultatformater.push({
+                Id: element.IdCondition,
+                IdIPPE: element.IdIPPE,
+                IdPersonne: element.IdPersonne,
+                Libelle: element.Libelle,
+                HeureDebut: element.HeureDebut,
+                HeureFin: element.HeureFin,
+                Victime: element.Victime,
+                Frequentation: element.Frequentation,
+            });
+        });
+        res.send(resultatformater);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+});
+
+// Retourner la personne
+app.get('/returnpersonne/:IdPersonne', async (req, res) => {
+    try {
+        const IdPersonne = req.params.IdPersonne;
+        const resultat = await request.ReturnPersonne(IdPersonne);
+        const resultatformater = [];
+        resultat.forEach((element) => {
+            resultatformater.push({
+                Id: element.IdPersonne,
+                Adresse1: element.Adresse1,
+            });
+        });
+        res.send(resultatformater);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+});
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);
