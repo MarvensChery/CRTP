@@ -46,7 +46,7 @@ test('Réponse ***RECHERCHÉ***', async () => {
                 "finSentence":"2022-03-01T00:00:00.000Z",
                 "vuDerniereFois":null,
                 "idNatureCrime": undefined,
-                "dossierEnquête": undefined,
+                "dossierEnquete": null,
                 "conditions":[
                     {
                         "idCondition":13,
@@ -58,7 +58,7 @@ test('Réponse ***RECHERCHÉ***', async () => {
                     },
                     {
                         "idCondition":14,
-                        "libelle":"Aucune consommation d'alcool ou de drogue non prescrite\n",
+                        "libelle":"Aucune consommation d'alcool ou de drogue non prescrite",
                         "frequentation": null,
                         "heureDebut": null,
                         "heureFin": null,
