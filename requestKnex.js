@@ -19,12 +19,20 @@ function connexion(identifiant, motDePasse){
 		.andWhere('MotDePasse', motDePasse);
 }
 
+//retourne toutes les valeurs
 function getData(typedb){
 	return knex(typedb);
 }
 
+//retourne les donnees avec le mm id
 function getDataById(typedb, id){
 	return knex(typedb).where(`Id${typedb}`,id);
+	
+}
+
+//retourne les donnees avec le mm numero d'evenement 
+function getDataByNoEvent(typedb, id){
+	return knex(typedb).where('NoEvenement',id);
 }
 
 async function getIPPE(nom,ddn, prenomUn, prenomDeux, sexe){
@@ -250,25 +258,24 @@ function formatterFPS(dataFPS){
 }
 
 
+//ajoute la donnee a la base
 async function addData(bd,data) {
 	return await knex(bd)
 		.insert(data);
 }
 
-async function updateData(bd,data) {
-	return await knex(bd)
+//update la donnee avec le mm id
+async function updateData(typedb, data, id) {
+	return await knex(typedb)
 		.update(data)
-		.where('NoSerie','=',data.NoSerie);
+		.where(`Id${typedb}`,id);
 }
 
+//delete la donnee avec le mm id
 async function deleteData(typedb, id) {
 	return await knex(typedb)
 		.where(`Id${typedb}`,id)
 		.del();
-}
-
-async function getListData(bd) {
-	return knex(bd);
 }
 
 
@@ -280,6 +287,6 @@ module.exports = {
 	addData,
 	updateData,
 	deleteData,
-	getListData
-
+	getDataById,
+	getDataByNoEvent
 };
