@@ -61,7 +61,7 @@ app.get('/ippeInfo', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
-
+//Retourne les elements des personnes pour la banque de personne
 app.get('/banquepersonne', async (req, res) => {
     try {
         let resultat = await request.getPersonnes();
@@ -271,6 +271,22 @@ app.get('/returnpersonne/:IdPersonne', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
+});
+
+// Update une condition avec des heures
+app.put('/updateheure/:IdCondition/:HeureDebut/:HeureFin', async (req, res) => {
+    try {
+        const IdCondition = req.params.IdCondition;
+        const HeureDebut = req.params.HeureDebut;
+        const HeureFin = req.params.HeureFin;
+        await request.UpdateHeure(IdCondition, HeureDebut, HeureFin);
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json({
+        succes: true,
+    });
 });
 
 app.listen(PORT, () => {
