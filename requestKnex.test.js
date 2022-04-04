@@ -3,13 +3,13 @@ const reqKnex = require('./requestKnex.js');
 test('RequêteKnex FPS', async () => {
 	// Arrange les resultat qui sortirons avant d'etre trier
 	const resultat = [{
-		Id: 2,
-		IdPersonne: 43,
+		IdFPS: 4,
+		IdPersonne: 7,
 		NoFPS: '438761F',
-		DateMesure: new Date('2020-02-25'),
-		CD: 'W08,W03,W08,W08,W07,W07,W01,W06,W03,U08',
-		Antecedents: 'Tentative de meurtre',
-		Violent: true,
+		DateMesure: new Date('2020-01-01'),
+		CD: 'W01',
+		Antecedents: 'Voie de fait',
+		Violent: null,
 		Echappe: null,
 		Suicidaire: null,
 		Desequilibre: null,
@@ -30,22 +30,44 @@ test('RequêteKnex FPS', async () => {
     
 });
 
-test('RequêteKnex, verification connection coconcluante', async () => {
+test('RequêteKnex, verification connection prof coconcluante', async () => {
 	// Arrange les infos fournis par le client
 	let loginInfo = {
-		'username': 1234,
-		'password': 'etud'
+		'username': 'e1231880',
+		'password': 'bonjour'
 	};
 	//reultat retourner temporaire jusqu'aux temps d'instoration du token
 	let resultat = [{
-		Id: 1,
-		Identifiant: '1234',
-		MotDePasse: 'etud',
-		Etudiant: true,
-		NomFamille: 'etudiant'
+		IdUtilisateur: 6,
+		Identifiant: 'e1231880',
+		MotDePasse: 'bonjour',
+		Etudiant: false,
+		NomFamille: 'Vaillancourt'
 	}];
 
-	const conn = await reqKnex.connexion(loginInfo);
+	const conn = await reqKnex.connexion(loginInfo.username, loginInfo.password);
+
+	// Assert
+	expect(conn).toEqual(resultat);
+    
+});
+
+test('RequêteKnex, verification connection coconcluante', async () => {
+	// Arrange les infos fournis par le client
+	let loginInfo = {
+		'username': 'e1233772',
+		'password': 'bonjour'
+	};
+	//reultat retourner temporaire jusqu'aux temps d'instoration du token
+	let resultat = [{
+		IdUtilisateur: 1,
+		Identifiant: 'e1233772',
+		MotDePasse: 'bonjour',
+		Etudiant: true,
+		NomFamille: 'Aganier'
+	}];
+
+	const conn = await reqKnex.connexion(loginInfo.username, loginInfo.password);
 
 	// Assert
 	expect(conn).toEqual(resultat);
@@ -55,13 +77,13 @@ test('RequêteKnex, verification connection coconcluante', async () => {
 test('RequêteKnex, verification connection sans mot de passe valide', async () => {
 	// Arrange les infos fournis par le client
 	let loginErrorPwd = {
-		'username': 1234,
+		'username': 'e1233772',
 		'password': null
 	};
 
 	let resultatError = [];
 
-	const connErrorPwd = await reqKnex.connexion(loginErrorPwd);
+	const connErrorPwd = await reqKnex.connexion(loginErrorPwd.username, loginErrorPwd.password);
 
 	// Assert
 	expect(connErrorPwd).toEqual(resultatError);
@@ -77,7 +99,7 @@ test('RequêteKnex, verification connection sans User et Password valide', async
 
 	let resultatError = [];
 
-	const connEmpty = await reqKnex.connexion(loginEmpty); 
+	const connEmpty = await reqKnex.connexion(loginEmpty.username, loginEmpty.password); 
 
 	// Assert
 	expect(connEmpty).toEqual(resultatError);
@@ -88,12 +110,12 @@ test('RequêteKnex, verification connection sans utilisateur valide', async () =
 	// Arrange les infos fournis par le client
 	let loginErrorUser = {
 		'username': null,
-		'password': 'etud'
+		'password': 'bonjour'
 	};
 
 	let resultatError = [];
 
-	const connErrorUser = await reqKnex.connexion(loginErrorUser);
+	const connErrorUser = await reqKnex.connexion(loginErrorUser.username, loginErrorUser.password);
 
 	// Assert
 	expect(connErrorUser).toEqual(resultatError);
@@ -107,17 +129,17 @@ test('Réponse ***RECHERCHÉ*** avec la fonction affichage', async () => {
 		mandat: 'Arrestation',
 		cour: 'Municipale de Longueuil',
 		numMandat: 'CM-LGL-A-26840',
-		natureCrime: 'Agression armée',
+		natureCrime: 'Agression armée ou infliction de lésions corporelles',
 		noEvenement: '108-220208-0031'
 	}];
 	//requete non filtrer pour test de la fonction
 	const requeteInfo = [{
-		Id: [ 39, 37, null ],
+		IdPersonne: 3,
 		NomFamille: 'Ducharme',
 		Prenom1: 'Benoit',
 		Prenom2: null,
 		Masculin: true,
-		DateNaissance: 19750831,
+		DateNaissance: '1975-08-31',
 		Telephone: null,
 		NoPermis: null,
 		Adresse1: null,
@@ -139,24 +161,23 @@ test('Réponse ***RECHERCHÉ*** avec la fonction affichage', async () => {
 		Gilet: null,
 		Pantalon: null,
 		AutreVetement: null,
-		IdPersonne: 39,
 		NoEvenement: '108-220208-0031',
 		TypeEvenement: 'Recherché',
 		Raison: 'Arrestation',
 		DossierEnquete: null,
 		Cour: 'Municipale de Longueuil',
 		NoCour: 'CM-LGL-A-26840',
-		NatureCrime: 'Agression armée',
+		NatureCrime: 'Agression armée ou infliction de lésions corporelles',
 		LieuDetention: null,
 		FinSentence: null,
 		VuDerniereFois: null,
 		Agent: null,
 		Poste: null,
-		IdIPPE: null,
+		IdIPPE: 8,
 		Libelle: null
 	}];
 
-	const recherche = await reqKnex.IPPEDisp(requeteInfo);
+	const recherche = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 	//Assert
 	expect(recherche).toEqual(resultat);
 
@@ -166,12 +187,12 @@ test('Réponse ***Sous observation*** avec la fonction affichage', async () => {
 	//requete non filtrer pour test de la fonction 
 	let requeteInfo = [
 		{
-			Id: [ 40, 38, null ],
+			IdPersonne: 4,
 			NomFamille: 'Sirois',
 			Prenom1: 'Danielle',
 			Prenom2: null,
 			Masculin: false,
-			DateNaissance: 19800214,
+			DateNaissance: '1980-02-14',
 			Telephone: null,
 			NoPermis: null,
 			Adresse1: null,
@@ -193,20 +214,20 @@ test('Réponse ***Sous observation*** avec la fonction affichage', async () => {
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 40,
+			
 			NoEvenement: '302-220131-0056',
 			TypeEvenement: 'Sous observation',
 			Raison: 'Fréquentation criminelle',
 			DossierEnquete: 'LVL-RENS-468259',
 			Cour: null,
 			NoCour: null,
-			NatureCrime: 'Fraude et prêts usuraires',
+			NatureCrime: 'Vol d’identité',
 			LieuDetention: null,
 			FinSentence: null,
 			VuDerniereFois: null,
 			Agent: null,
 			Poste: null,
-			IdIPPE: null,
+			IdIPPE: 11,
 			Libelle: null
 		}
 	];
@@ -216,13 +237,13 @@ test('Réponse ***Sous observation*** avec la fonction affichage', async () => {
 			titre: 'Sous Observation',
 			motif: 'Fréquentation criminelle',
 			cour: null,
-			natureCrime: 'Fraude et prêts usuraires',
+			natureCrime: 'Vol d’identité',
 			noEvenement: '302-220131-0056',
 			dossierEnq: 'LVL-RENS-468259'
 		}
 	];
 
-	const sousObs = await reqKnex.IPPEDisp(requeteInfo);
+	const sousObs = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(sousObs).toEqual(resultat);
 
@@ -235,22 +256,26 @@ test('Réponse ***Accusé*** avec la fonction affichage', async () => {
 			titre: 'Accusé',
 			cour: 'Municipale de Montréal',
 			numCause: 'CM- MTL-57931-852',
-			natureCrime: 'Voies de fait',
+			natureCrime: 'Voie de fait grave',
 			noEvenement: '123-220115-0014',
+			frequentation: null,
+			adresse: '705 rue Notre-Dame\n Repentigny Qc J6A 2X1',
 			condition: [
-				'Ne pas entrer en contact avec Julie Lapierre.'
+				'Avoir comme adresse le\n ',
+				'Ne pas entrer en contact avec  Julie Lapierre',
+				'Doit garder la paix et avoir bonne conduite'
 			]
 		}
 	];
 	//requete non filtrer pour test de la fonction
 	let requeteInfo =[
 		{
-			Id: [ 41, 39, 1 ],
+			IdPersonne: 5,
 			NomFamille: 'Bélanger',
 			Prenom1: 'Claude',
 			Prenom2: null,
 			Masculin: true,
-			DateNaissance: 19760712,
+			DateNaissance: '1976-07-12',
 			Telephone: null,
 			NoPermis: null,
 			Adresse1: null,
@@ -272,25 +297,28 @@ test('Réponse ***Accusé*** avec la fonction affichage', async () => {
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 41,
 			NoEvenement: '123-220115-0014',
 			TypeEvenement: 'Accusé',
 			Raison: null,
 			DossierEnquete: null,
 			Cour: 'Municipale de Montréal',
 			NoCour: 'CM- MTL-57931-852',
-			NatureCrime: 'Voies de fait',
+			NatureCrime: 'Voie de fait grave',
 			LieuDetention: null,
 			FinSentence: null,
 			VuDerniereFois: null,
 			Agent: null,
 			Poste: null,
-			IdIPPE: 39,
-			Libelle: 'Ne pas entrer en contact avec Julie Lapierre.'
+			IdIPPE: 12,
+			Libelle: [
+				'Avoir comme adresse le\n ',
+				'Ne pas entrer en contact avec ',
+				'Doit garder la paix et avoir bonne conduite'
+			]
 		}
 	];
 
-	const accuse = await reqKnex.IPPEDisp(requeteInfo);
+	const accuse = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(accuse).toEqual(resultat);
 
@@ -302,29 +330,33 @@ test('Réponse ***Probation*** avec la fonction affichage', async () => {
 		{
 			titre: 'Probation',
 			cour: 'Municipale de Montréal',
-			numCause: 'CM- MTL-58246-829',
-			natureCrime: 'Intimidation',
+			numCause: 'CM-MTL-58246-829',
+			natureCrime: 'Intimidation générale',
 			noEvenement: '123-200303-0026',
-			finSentence: '2022-03-01T00:00:00.000Z',
+			finSentence: new Date('2022-03-01'),
+			adresse: '3800 rue Sherbrooke Est Montréal Qc H1X 2A2',
 			condition: [
-				'Ne pas entrer en contact avec Alain Coutu',
-				'Aucune consommation d alcool ou de drogue non prescrite'
+				'Avoir comme adresse le',
+				'Ne pas entrer en contact avec  Alain Coutu',
+				'Aucune consommation d\'alcool ou de drogue non prescrite\n',
+				'Doit garder la paix et avoir bonne conduite'
 			],
-			agent: 'David Chapdelaine',
+			frequentation: null,
+			agent: 'David Chapdelaine\n',
 			telephone: '5142547131',
-			poste: '222'
+			poste: '222\n'
 		}
 	];
 
 	//requete non filtrer pour test de la fonction
 	let requeteInfo =[
 		{
-			Id: [ 42, 40, 2 ],
+			IdPersonne: 6,
 			NomFamille: 'Levasseur',
 			Prenom1: 'Marc',
 			Prenom2: null,
 			Masculin: true,
-			DateNaissance: '1971-11-07T00:00:00.000Z',
+			DateNaissance: '1971-11-07',
 			Telephone: '5142547131',
 			NoPermis: null,
 			Adresse1: null,
@@ -346,7 +378,6 @@ test('Réponse ***Probation*** avec la fonction affichage', async () => {
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 42,
 			NoEvenement: '123-200303-0026',
 			TypeEvenement: 'Probation',
 			Raison: null,
@@ -359,16 +390,21 @@ test('Réponse ***Probation*** avec la fonction affichage', async () => {
 			VuDerniereFois: null,
 			Agent: 'David Chapdelaine',
 			Poste: '222',
-			IdIPPE: 40,
-			Libelle: 'Ne pas entrer en contact avec Alain Coutu'
+			IdIPPE: 18,
+			Libelle: [
+				'Avoir comme adresse le',
+				'Ne pas entrer en contact avec ',
+				'Aucune consommation d\'alcool ou de drogue non prescrite\n',
+				'Doit garder la paix et avoir bonne conduite'
+			]
 		},
 		{
-			Id: [ 42, 40, 3 ],
+			IdPersonne: 6,
 			NomFamille: 'Levasseur',
 			Prenom1: 'Marc',
 			Prenom2: null,
 			Masculin: true,
-			DateNaissance: '1971-11-07T00:00:00.000Z',
+			DateNaissance: '1971-11-07',
 			Telephone: '5142547131',
 			NoPermis: null,
 			Adresse1: null,
@@ -390,7 +426,6 @@ test('Réponse ***Probation*** avec la fonction affichage', async () => {
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 42,
 			NoEvenement: '123-200303-0026',
 			TypeEvenement: 'Probation',
 			Raison: null,
@@ -403,12 +438,17 @@ test('Réponse ***Probation*** avec la fonction affichage', async () => {
 			VuDerniereFois: null,
 			Agent: 'David Chapdelaine',
 			Poste: '222',
-			IdIPPE: 40,
-			Libelle: 'Aucune consommation d alcool ou de drogue non prescrite'
+			IdIPPE: 18,
+			Libelle: [
+				'Avoir comme adresse le',
+				'Ne pas entrer en contact avec ',
+				'Aucune consommation d\'alcool ou de drogue non prescrite\n',
+				'Doit garder la paix et avoir bonne conduite'
+			]
 		}
 	];
 
-	const probation = await reqKnex.IPPEDisp(requeteInfo);
+	const probation = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(probation).toEqual(resultat);
 
@@ -419,35 +459,36 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 	const resultat = [
 		{
 			titre: 'Libération Conditionnelle',
-			cour: 'Cours du Québec',
+			cour: 'Cour du Québec - Chambre criminelle et pénale',
 			numCause: '500-01-310-35719-654',
 			natureCrime: 'Tentative de meurtre',
 			noEvenement: '108-110525-0003',
 			fps: '438761F',
 			lieuDetention: 'Prison de Port-Cartier',
-			finSentence: '2022-09-19T00:00:00.000Z',
+			finSentence: new Date('2022-09-19'),
+			adresse: '150 Pl. Charles-Le Moyne Longueuil Qc J4K 0A8',
+			frequentation: null,
 			condition: [
-				'Ne pas fréquenter des gens ayant des dossiers criminels',
-				'Aucune consommation d alcool ou de drogue non prescrite'
+				'Avoir comme adresse le ',
+				'Ne pas fréquenter  des gens ayant des dossiers criminels\n',
+				'Aucune consommation d\'alcool ou de drogue non prescrite\n',
+				'Doit garder la paix et avoir bonne conduite'
 			],
 			agent: 'Benoit Ducharme',
-			telephone: '5142745131',
+			telephone: '5142547131',
 			poste: null
-		}
-	];
-	//requete Fps non filtrer pour test de la fonction 
-	let fpsInfo = [
+		},
 		{
-			Id: 2,
-			IdPersonne: 43,
+			titre:'FPS',
 			NoFPS: '438761F',
-			DateMesure: '2020-02-25T00:00:00.000Z',
-			CD: 'W08,W03,W08,W08,W07,W07,W01,W06,W03,U08',
-			Antecedents: 'Tentative de meurtre',
-			Violent: true,
+			DateMesure: new Date('2020-01-01'),
+			CD: 'W01',
+			Antecedents: 'Voie de fait',
+			Violent: null,
 			Echappe: null,
 			Suicidaire: null,
 			Desequilibre: null,
+			Desorganise: null,
 			Contagieux: null,
 			Race: null,
 			Taille: null,
@@ -456,19 +497,18 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 			Cheveux: null,
 			Marques: null,
 			Toxicomanie: null,
-			Desorganise: null,
 			Depressif: null
 		}
 	];
 	//requete non filtrer pour test de la fonction
 	let requeteInfo = [
 		{
-			Id: [ 43, 41, 4 ],
+			IdPersonne: 7,
 			NomFamille: 'Hébert',
 			Prenom1: 'Francis',
 			Prenom2: null,
 			Masculin: true,
-			DateNaissance: '1992-10-19T00:00:00.000Z',
+			DateNaissance: '1992-10-19',
 			Telephone: '5142745131',
 			NoPermis: null,
 			Adresse1: null,
@@ -490,7 +530,6 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 43,
 			NoEvenement: '108-110525-0003',
 			TypeEvenement: 'Libération Conditionnelle',
 			Raison: null,
@@ -503,11 +542,16 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 			VuDerniereFois: null,
 			Agent: 'Benoit Ducharme',
 			Poste: null,
-			IdIPPE: 41,
-			Libelle: 'Ne pas fréquenter des gens ayant des dossiers criminels'
+			IdIPPE: 19,
+			Libelle: [
+				'Ne pas fréquenter ',
+				'Aucune consommation d alcool ou de drogue non prescrite',
+				'Avoir comme adresse le ',
+				'Doit garder la paix et avoir bonne conduite'
+			]
 		},
 		{
-			Id: [ 43, 41, 5 ],
+			IdPersonne: 7,
 			NomFamille: 'Hébert',
 			Prenom1: 'Francis',
 			Prenom2: null,
@@ -534,7 +578,6 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 43,
 			NoEvenement: '108-110525-0003',
 			TypeEvenement: 'Libération Conditionnelle',
 			Raison: null,
@@ -547,12 +590,17 @@ test('Réponse ***Libération Conditionnelle*** avec la fonction affichage', asy
 			VuDerniereFois: null,
 			Agent: 'Benoit Ducharme',
 			Poste: null,
-			IdIPPE: 41,
-			Libelle: 'Aucune consommation d alcool ou de drogue non prescrite'
+			IdIPPE: 19,
+			Libelle: [
+				'Ne pas fréquenter des gens ayant des dossiers criminels',
+				'Aucune consommation d alcool ou de drogue non prescrite',
+				'Avoir comme adresse le ',
+				'Doit garder la paix et avoir bonne conduite'
+			]
 		}
 	];
 
-	const LibCond = await reqKnex.IPPEDisp(requeteInfo, fpsInfo);
+	const LibCond = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(LibCond).toEqual(resultat);
 
@@ -563,12 +611,12 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 	let requeteInfo =
 	[
 		{
-			Id: [ 44, 42, null ],
+			IdPersonne: 8,
 			NomFamille: 'Amoussougbo',
 			Prenom1: 'Yaken',
 			Prenom2: null,
 			Masculin: true,
-			DateNaissance: '2000-01-14T00:00:00.000Z',
+			DateNaissance: '2000-03-04',
 			Telephone: null,
 			NoPermis: null,
 			Adresse1: null,
@@ -590,7 +638,6 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 			Gilet: 'T-shit vert',
 			Pantalon: 'Jeans bleu',
 			AutreVetement: 'Espadrille fluo',
-			IdPersonne: 44,
 			NoEvenement: '302-220208-0016',
 			TypeEvenement: 'Disparu',
 			Raison: 'Disparition',
@@ -603,7 +650,7 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 			VuDerniereFois: '3546 boul. De la Concorde Est, Laval',
 			Agent: null,
 			Poste: null,
-			IdIPPE: null,
+			IdIPPE: 20,
 			Libelle: null
 		}
 	];
@@ -613,9 +660,9 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 		{
 			titre: 'Disparu',
 			noEvenement: '302-220208-0016',
-			motif: 'Disparition',
+			nature: 'Disparition',
 			derniereVu: '3546 boul. De la Concorde Est, Laval',
-			descrPhys: {
+			descrPhysique: {
 				race: 'Noir',
 				taille: 175,
 				poids: 75,
@@ -623,12 +670,12 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 				cheveux: 'Noir',
 				marques: null
 			},
-			descrVest: {
-				gilet: 'T-shit vert',
+			descrVestimentaire: {
+				gilet: 'T-shirt vert',
 				pantalon: 'Jeans bleu',
 				autreVetements: 'Espadrille fluo'
 			},
-			problemeSante: {
+			problemesSante: {
 				toxicomanie: null,
 				desorganise: null,
 				depressif: true,
@@ -637,7 +684,7 @@ test('Réponse ***Disparu*** avec la fonction affichage', async () => {
 			}
 		}
 	];
-	const disp = await reqKnex.IPPEDisp(requeteInfo);
+	const disp = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(disp).toEqual(resultat);
 
@@ -647,12 +694,12 @@ test('Réponse ***Interdit*** avec la fonction affichage', async () => {
 	//requete non filtrer pour test de la fonction
 	const requeteInfo = [
 		{
-			Id: [ 45, 43, null ],
+			IdPersonne: 9,
 			NomFamille: 'Lemire',
 			Prenom1: 'Jessy',
 			Prenom2: null,
 			Masculin: false,
-			DateNaissance: '1985-10-28T00:00:00.000Z',
+			DateNaissance: '1985-10-28',
 			Telephone: null,
 			NoPermis: null,
 			Adresse1: null,
@@ -674,7 +721,6 @@ test('Réponse ***Interdit*** avec la fonction affichage', async () => {
 			Gilet: null,
 			Pantalon: null,
 			AutreVetement: null,
-			IdPersonne: 45,
 			NoEvenement: '123-201225-0016',
 			TypeEvenement: 'Interdit',
 			Raison: 'Conduite de véhicule',
@@ -687,7 +733,7 @@ test('Réponse ***Interdit*** avec la fonction affichage', async () => {
 			VuDerniereFois: null,
 			Agent: null,
 			Poste: null,
-			IdIPPE: null,
+			IdIPPE: 22,
 			Libelle: null
 		}
 	];
@@ -700,66 +746,11 @@ test('Réponse ***Interdit*** avec la fonction affichage', async () => {
 			numCour: 'CM-MTL-16794-356',
 			natureCrime: 'Capacité de conduire affaiblie',
 			noEvenement: '123-201225-0016',
-			expiration: '2022-10-29T00:00:00.000Z'
+			expiration: new Date('2022-10-29')
 		}
 	];
-	const interdit = await reqKnex.IPPEDisp(requeteInfo);
+	const interdit = await reqKnex.getIPPE(requeteInfo[0].NomFamille, requeteInfo[0].DateNaissance, requeteInfo[0].Prenom1, requeteInfo[0].Prenom2, requeteInfo[0].Masculin);
 
 	expect(interdit).toEqual(resultat);
-
-});
-
-
-test('Réponse ***FPS*** avec la fonction affichage', async () => {
-	//requete non filtrer pour test de la fonction
-	let requeteInfo = [
-		{
-			Id: 2,
-			IdPersonne: 43,
-			NoFPS: '438761F',
-			DateMesure: '2020-02-25T00:00:00.000Z',
-			CD: 'W08,W03,W08,W08,W07,W07,W01,W06,W03,U08',
-			Antecedents: 'Tentative de meurtre',
-			Violent: true,
-			Echappe: null,
-			Suicidaire: null,
-			Desequilibre: null,
-			Contagieux: null,
-			Race: null,
-			Taille: null,
-			Poids: null,
-			Yeux: null,
-			Cheveux: null,
-			Marques: null,
-			Toxicomanie: null,
-			Desorganise: null,
-			Depressif: null
-		}
-	];
-	////resultat filtrer pour etre envoyer au client
-	const resultat = [{
-		titre: 'FPS',
-		NoFPS: '438761F',
-		DateMesure: '2020-02-25T00:00:00.000Z',
-		CD: 'W08,W03,W08,W08,W07,W07,W01,W06,W03,U08',
-		Antecedents: 'Tentative de meurtre',
-		Violent: true,
-		Echappe: null,
-		Suicidaire: null,
-		Desequilibre: null,
-		Contagieux: null,
-		Race: null,
-		Taille: null,
-		Poids: null,
-		Yeux: null,
-		Cheveux: null,
-		Marques: null,
-		Toxicomanie: null,
-		Desorganise: null,
-		Depressif: null
-	}];
-	const FPS = reqKnex.FPSDisp(requeteInfo);
-
-	expect(FPS).toEqual(resultat);
 
 });
