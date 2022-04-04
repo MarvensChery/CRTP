@@ -12,9 +12,7 @@ Cette application servira comme outil de formation au étudiants en technique po
 -Utilisé un outil de recherche de base de données 
 
 ## Colaboration
-Ce projet est réalisé par: David Déchaine, Ryma Merrouchi, Charles-Étienne Doucet et Dan Bagalwa
-***Le PO : Marc Levasseur
-***Le Srum Master : David Déchaine
+Ce projet est réalisé par: Nathan Lamy, Salah Eddine Ouamalich, Kassem Kandil, Tran Nguyen Johnny Huy
 
 ## Tests
 Afin de completer les tests unitaires il faut lancer la commande : npm test
