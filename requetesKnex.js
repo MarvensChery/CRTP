@@ -23,8 +23,34 @@ function formatterIPPE(IPPEs) {
     const resultat = [];
     const libelleList = [];
 
+    if (resultat[0] === undefined) {
+        resultat.push(
+            {
+                idIPPE: IPPEs[0].IdIPPE[0],
+                noEvenement: IPPEs[0].NoEvenement,
+                typeEvenement: IPPEs[0].TypeEvenement,
+                mandat: IPPEs[0].Mandat,
+                motif: IPPEs[0].Motif,
+                nature: IPPEs[0].Nature,
+                dossierEnquete: IPPEs[0].DossierEnquete,
+                cour: IPPEs[0].Cour,
+                noMandat: IPPEs[0].NoMandat,
+                noCause: IPPEs[0].NoCause,
+                idNatureCrime: IPPEs[0].idNatureCrime,
+                lieuDetention: IPPEs[0].LieuDetention,
+                finSentence: IPPEs[0].FinSentence,
+                vuDerniereFois: IPPEs[0].VuDerniereFois,
+                conditions: libelleList,
+                agentProbation: IPPEs[0].AgentProbation,
+                agentLiberation: IPPEs[0].AgentLiberation,
+                telephone: IPPEs[0].Telephone,
+                poste: IPPEs[0].Poste,
+                conditions: [], // eslint-disable-line
+            },
+        );
+    }
+
     IPPEs.forEach((ippe) => {
-        console.log(ippe)
         // Verifie si l'information IPPE se trouve deja dans les datas a envoyer
         if (!resultat.some((element) => element.idIPPE === ippe.IdIPPE[0])) {
             // Nouvel événement IPPE, on ajoute un objet IPPE au résultat
@@ -49,11 +75,10 @@ function formatterIPPE(IPPEs) {
                     agentLiberation: ippe.AgentLiberation,
                     telephone: ippe.Telephone,
                     poste: ippe.Poste,
-                    conditions: [],
+                    conditions: [], // eslint-disable-line
                 },
             );
         } else {
-            
             resultat[resultat.length - 1].conditions.push(
                 {
                     idCondition: ippe.IdCondition,
@@ -69,9 +94,7 @@ function formatterIPPE(IPPEs) {
     return resultat;
 }
 
-
 async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
-    //"NomFamille":"Levasseur","Prenom1":"Marc","Prenom2":null,"Masculin":true,"DateNaissance":"1971-11-07T00:00:00.000Z"
     const resultat = await knex('Personnes')
         .where({
             NomFamille: nomFamille,
@@ -98,9 +121,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 
     // La personne a des événements IPPE associés: on les formate
     resultat[0].IPPE = formatterIPPE(resultat[0].IPPE);
-    
-    resultat[0].DateNaissance = resultat[0].DateNaissance
-    
+
     return resultat;
 }
 
@@ -129,21 +150,28 @@ function AjouterCondition(Idippe, Condition, Idpersonne) {
 function AjouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne, 
+            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne,
         });
 }
 // Requete knex qui insert la nouvelle condition avec une frequentation
 function AjouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne, 
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            Frequentation: frequentation,
+            IdPersonne: Idpersonne,
         });
 }
 // Requete knex qui insert la nouvelle condition avec une frequentation
 function AjouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne, 
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            HeureDebut: heuredebut,
+            HeureFin: heurefin,
+            IdPersonne: Idpersonne,
         });
 }
 // Requete knex qui update une condition avec une adresse
@@ -181,7 +209,6 @@ function DeleteCondition(IdCondition) {
         .where({ IdCondition })
         .del();
 }
-
 
 module.exports = {
     connexion,
