@@ -1,10 +1,11 @@
+/* eslint-disable no-return-await */
 const knex = require('knex')({
     client: 'mssql',
     connection: {
         host: 'sv55.cmaisonneuve.qc.ca',
-        user: 'AppCRTPDev',
-        password: 'Cours4D1',
-        database: 'CRTPDev',
+        user: '4D1Equipe05',
+        password: 'njt862',
+        database: '4D1Equipe05',
         options: {
             enableArithAbort: false,
         },
@@ -17,6 +18,21 @@ function connexion(identifiant, motDePasse) {
     return knex('Utilisateurs')
         .where('Identifiant', identifiant)
         .andWhere('MotDePasse', motDePasse);
+}
+
+// retourne toutes les valeurs
+function getData(typedb) {
+    return knex(typedb);
+}
+
+// retourne les donnees avec le mm id
+function getDataById(typedb, id) {
+    return knex(typedb).where(`Id${typedb}`, id);
+}
+
+// retourne les donnees avec le mm numero d'evenement
+function getDataByNoEvent(typedb, id) {
+    return knex(typedb).where('NoEvenement', id);
 }
 
 // Fonction qui manie l'affichage de la reponse IPPE
@@ -100,7 +116,33 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     return resultat;
 }
 
+// ajoute la donnee a la base
+async function addData(bd, data) {
+    return await knex(bd)
+        .insert(data);
+}
+
+// update la donnee avec le mm id
+async function updateData(typedb, data, id) {
+    return await knex(typedb)
+        .update(data)
+        .where(`Id${typedb}`, id);
+}
+
+// delete la donnee avec le mm id
+async function deleteData(typedb, id) {
+    return await knex(typedb)
+        .where(`Id${typedb}`, id)
+        .del();
+}
+
 module.exports = {
     connexion,
     getIPPE,
+    getData,
+    addData,
+    updateData,
+    deleteData,
+    getDataById,
+    getDataByNoEvent,
 };
