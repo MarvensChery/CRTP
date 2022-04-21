@@ -1,17 +1,8 @@
 /* eslint-disable no-return-await */
-const knex = require('knex')({
-    client: 'mssql',
-    connection: {
-        host: 'sv55.cmaisonneuve.qc.ca',
-        user: '4D1Equipe05',
-        password: 'njt862',
-        database: '4D1Equipe05',
-        options: {
-            enableArithAbort: false,
-        },
-    },
-    pool: { min: 0, max: 7 },
-});
+const knexModule = require('knex');
+const constantes = require('../constantes');
+
+const knex = knexModule(constantes);
 
 // Requete knex qui retourne les informations de connexion
 function connexion(identifiant, motDePasse) {

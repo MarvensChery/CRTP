@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 const express = require('express');
 
-const request = require('../requetesKnex');
+const request = require('../database/requetesKnex');
 
 const router = express.Router();
 
