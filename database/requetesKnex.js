@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 /* eslint-disable no-return-await */
 const knexModule = require('knex');
 const constantes = require('../constantes');
 
 const knex = knexModule(constantes);
+=======
+const knexModule = require('knex');
+const constantes = require('../constantes');
+
+const knex = knexModule(constantes.chaineConnexion);
+>>>>>>> dev
 
 // Requete knex qui retourne les informations de connexion
 function connexion(identifiant, motDePasse) {
@@ -11,6 +18,7 @@ function connexion(identifiant, motDePasse) {
         .andWhere('MotDePasse', motDePasse);
 }
 
+<<<<<<< HEAD
 // retourne toutes les valeurs
 function getData(typedb) {
     return knex(typedb);
@@ -30,6 +38,11 @@ function getDataByNoEvent(typedb, id) {
 function formatterIPPE(IPPEs) {
     const resultat = [];
     const libelleList = [];
+=======
+// Fonction qui manie l'affichage de la reponse IPPE
+function formatterIPPE(IPPEs) {
+    const resultat = [];
+>>>>>>> dev
 
     IPPEs.forEach((ippe) => {
         // Verifie si l'information IPPE se trouve deja dans les datas a envoyer
@@ -51,11 +64,18 @@ function formatterIPPE(IPPEs) {
                     lieuDetention: ippe.LieuDetention,
                     finSentence: ippe.FinSentence,
                     vuDerniereFois: ippe.VuDerniereFois,
+<<<<<<< HEAD
                     conditions: libelleList,
+=======
+>>>>>>> dev
                     agentProbation: ippe.AgentProbation,
                     agentLiberation: ippe.AgentLiberation,
                     telephone: ippe.Telephone,
                     poste: ippe.Poste,
+<<<<<<< HEAD
+=======
+                    conditions: [],
+>>>>>>> dev
                 },
             );
         } else {
@@ -107,6 +127,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     return resultat;
 }
 
+<<<<<<< HEAD
 // ajoute la donnee a la base
 async function addData(bd, data) {
     return await knex(bd)
@@ -136,4 +157,9 @@ module.exports = {
     deleteData,
     getDataById,
     getDataByNoEvent,
+=======
+module.exports = {
+    connexion,
+    getIPPE,
+>>>>>>> dev
 };
