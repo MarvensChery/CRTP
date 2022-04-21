@@ -1,15 +1,12 @@
-<<<<<<< HEAD
+/* eslint-disable linebreak-style */
 /* eslint-disable no-tabs */
 /* eslint-disable max-len */
-=======
->>>>>>> dev
 const express = require('express');
 
 const request = require('../database/requetesKnex');
 
 const router = express.Router();
 
-<<<<<<< HEAD
 router.get('/:idArme', async (req, res) => {
     try {
         let data;
@@ -110,10 +107,6 @@ router.delete('/:idArme', async (req, res) => {
     } catch (error) {
         return res.status(500).json(error.message);
     }
-=======
-router.get('/:idArme', (req, res) => {
-    res.send(`Réponse à la route GET /armes/${req.params.idArme}`);
->>>>>>> dev
 });
 
 module.exports = router;
