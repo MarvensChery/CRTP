@@ -3,11 +3,12 @@
 /* eslint-disable max-len */
 const express = require('express');
 
-const request = require('../database/requetesKnex');
+const request = require('../database/armes');
 
 const router = express.Router();
 
 router.get('/:idArme', async (req, res) => {
+<<<<<<< HEAD
     try {
         let data;
         if (req.params.idArme !== undefined) data = await request.getDataById('IBAF', req.params.idArme);
@@ -107,6 +108,22 @@ router.delete('/:idArme', async (req, res) => {
     } catch (error) {
         return res.status(500).json(error.message);
     }
+=======
+    res.send(`Réponse à la route GET /armes/${req.params.idArme}`);
+>>>>>>> dev
+});
+
+router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    let resultat;
+    try {
+        resultat = await request.getArmesAll();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json(resultat);
 });
 
 module.exports = router;

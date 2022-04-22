@@ -1,17 +1,20 @@
 /* eslint-disable linebreak-style */
 /* eslint-disable no-return-await */
 const knexModule = require('knex');
-const constantes = require('../constantes');
+const chaineConnexion = require('../constantes');
 
+<<<<<<< HEAD:database/requetesKnex.js
 const knex = knexModule(constantes);
+=======
+const knex = knexModule(chaineConnexion);
+>>>>>>> dev:database/ippes.js
 
-// Requete knex qui retourne les informations de connexion
-function connexion(identifiant, motDePasse) {
-    return knex('Utilisateurs')
-        .where('Identifiant', identifiant)
-        .andWhere('MotDePasse', motDePasse);
+// Requete de test
+function getIppesAll() {
+    return knex('IPPE');
 }
 
+<<<<<<< HEAD:database/requetesKnex.js
 // retourne toutes les valeurs
 function getData(typedb) {
     return knex(typedb);
@@ -27,6 +30,9 @@ function getDataByNoEvent(typedb, id) {
     return knex(typedb).where('NoEvenement', id);
 }
 
+=======
+// Requete knex qui retourne les informations de connexion
+>>>>>>> dev:database/ippes.js
 // Fonction qui manie l'affichage de la reponse IPPE
 function formatterIPPE(IPPEs) {
     const resultat = [];
@@ -44,7 +50,7 @@ function formatterIPPE(IPPEs) {
                     mandat: ippe.Mandat,
                     motif: ippe.Motif,
                     nature: ippe.Nature,
-                    dossierEnquête: ippe.dossierEnquete,
+                    dossierEnquete: ippe.dossierEnquete,
                     cour: ippe.Cour,
                     noMandat: ippe.NoMandat,
                     noCause: ippe.NoCause,
@@ -129,7 +135,7 @@ async function deleteData(typedb, id) {
 }
 
 module.exports = {
-    connexion,
+    getIppesAll,
     getIPPE,
     getData,
     addData,

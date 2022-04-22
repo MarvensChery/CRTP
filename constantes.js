@@ -26,5 +26,9 @@ const chaineConnexion = {
 =======
 
 // eslint-disable-next-line import/prefer-default-export
+<<<<<<< HEAD
 export { chaineConnexion };
+>>>>>>> dev
+=======
+module.exports = chaineConnexion;
 >>>>>>> dev

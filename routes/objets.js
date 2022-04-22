@@ -4,11 +4,12 @@
 /* eslint-disable no-tabs */
 const express = require('express');
 
-const request = require('../database/requetesKnex');
+const request = require('../database/objets');
 
 const router = express.Router();
 
 router.get('/:idObjet', async (req, res) => {
+<<<<<<< HEAD
     try {
         let data;
         if (req.params.idObjet !== undefined) data = await request.getDataById('IBOB', req.params.idObjet);
@@ -108,6 +109,22 @@ router.delete('/:idObjet', async (req, res) => {
     } catch (error) {
         return res.status(500).json(error.message);
     }
+=======
+    res.send(`Réponse à la route GET /objets/${req.params.idObjet}`);
+>>>>>>> dev
+});
+
+router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    let resultat;
+    try {
+        resultat = await request.getObjetsAll();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json(resultat);
 });
 
 module.exports = router;

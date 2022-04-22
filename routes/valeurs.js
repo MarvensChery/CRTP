@@ -2,11 +2,12 @@
 /* eslint-disable max-len */
 const express = require('express');
 
-const request = require('../database/requetesKnex');
+const request = require('../database/valeurs');
 
 const router = express.Router();
 
 router.get('/:idValeur', async (req, res) => {
+<<<<<<< HEAD
     try {
         let data;
         if (req.params.idValeur !== undefined) data = await request.getDataById('IBVA', req.params.idValeur);
@@ -107,6 +108,22 @@ router.delete('/:idValeur', async (req, res) => {
     } catch (error) {
         return res.status(500).json(error.message);
     }
+=======
+    res.send(`Réponse à la route GET /valeurs/${req.params.idValeur}`);
+>>>>>>> dev
+});
+
+router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    let resultat;
+    try {
+        resultat = await request.getValeursAll();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json(resultat);
 });
 
 module.exports = router;
