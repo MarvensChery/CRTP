@@ -1,38 +1,15 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-return-await */
 const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
 
-<<<<<<< HEAD:database/requetesKnex.js
-const knex = knexModule(constantes);
-=======
 const knex = knexModule(chaineConnexion);
->>>>>>> dev:database/ippes.js
 
 // Requete de test
 function getIppesAll() {
     return knex('IPPE');
 }
 
-<<<<<<< HEAD:database/requetesKnex.js
-// retourne toutes les valeurs
-function getData(typedb) {
-    return knex(typedb);
-}
-
-// retourne les donnees avec le mm id
-function getDataById(typedb, id) {
-    return knex(typedb).where(`Id${typedb}`, id);
-}
-
-// retourne les donnees avec le mm numero d'evenement
-function getDataByNoEvent(typedb, id) {
-    return knex(typedb).where('NoEvenement', id);
-}
-
-=======
 // Requete knex qui retourne les informations de connexion
->>>>>>> dev:database/ippes.js
 // Fonction qui manie l'affichage de la reponse IPPE
 function formatterIPPE(IPPEs) {
     const resultat = [];
@@ -114,33 +91,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     return resultat;
 }
 
-// ajoute la donnee a la base
-async function addData(bd, data) {
-    return await knex(bd)
-        .insert(data);
-}
-
-// update la donnee avec le mm id
-async function updateData(typedb, data, id) {
-    return await knex(typedb)
-        .update(data)
-        .where(`Id${typedb}`, id);
-}
-
-// delete la donnee avec le mm id
-async function deleteData(typedb, id) {
-    return await knex(typedb)
-        .where(`Id${typedb}`, id)
-        .del();
-}
-
 module.exports = {
     getIppesAll,
     getIPPE,
-    getData,
-    addData,
-    updateData,
-    deleteData,
-    getDataById,
-    getDataByNoEvent,
 };

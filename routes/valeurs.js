@@ -7,11 +7,10 @@ const request = require('../database/valeurs');
 const router = express.Router();
 
 router.get('/:idValeur', async (req, res) => {
-<<<<<<< HEAD
     try {
         let data;
-        if (req.params.idValeur !== undefined) data = await request.getDataById('IBVA', req.params.idValeur);
-        else data = await request.getData('IBVA');
+        if (req.params.idValeur !== undefined) data = await request.getDataById(req.params.idValeur);
+        else return res.status(400).json('paramètre manquant');
         if (data.length === 0) {
             // retourne la valeur negative
             return res.status(404).json({ message: 'aucune donnée trouvé' });
@@ -25,7 +24,7 @@ router.get('/:idValeur', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const data = await request.getData('IBVA');
+        const data = await request.getValeursAll();
         if (data.length === 0) {
             // retourne la valeur negative
             return res.status(404).json({ message: 'aucune donnée trouvé' });
@@ -44,7 +43,7 @@ router.post('/', async (req, res) => {
             || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json('paramètre manquant');
 
         // verifie si l'entite a ajouter existe deja dans la base de donnees
-        const DataAdd = await request.getDataByNoEvent('IBVA', req.body.NoEvenement);
+        const DataAdd = await request.getDataByNoEvenement(req.body.NoEvenement);
         // si oui renvoyer une errer
         if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée' });
 
@@ -56,9 +55,9 @@ router.post('/', async (req, res) => {
             NoEvenement: req.body.NoEvenement,
         };
             // ajout de données
-        await request.addData('IBVA', DataToSend);
+        await request.postValeur(DataToSend);
         // avoir le id de la nouvelle entité
-        const Data = await request.getDataByNoEvent('IBVA', req.body.NoEvenement);
+        const Data = await request.getDataByNoEvenement(req.body.NoEvenement);
         if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé' });
         return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdIBVA}` });
     } catch (error) {
@@ -73,7 +72,7 @@ router.put('/:idValeur', async (req, res) => {
             || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json('paramètre manquant');
 
         // verifier si l'entite est deja dans la base de donnees
-        const DataAdd = await request.getDataById('IBVA', req.params.idValeur);
+        const DataAdd = await request.getDataById(req.params.idValeur);
         // si non renvoye une errer
         if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée' });
 
@@ -85,7 +84,7 @@ router.put('/:idValeur', async (req, res) => {
             NoEvenement: req.body.NoEvenement,
         };
         // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
-        await request.updateData('IBVA', DataToSend, req.params.idValeur);
+        await request.updateValeur(DataToSend, req.params.idValeur);
         return res.status(200).json({ message: 'L’entité a été modifié avec succès' });
     } catch (error) {
         return res.status(500).json(error.message);
@@ -96,34 +95,18 @@ router.put('/:idValeur', async (req, res) => {
 router.delete('/:idValeur', async (req, res) => {
     let data;
     try {
-        data = await request.getDataById('IBVA', req.params.idValeur);
+        data = await request.getDataById(req.params.idValeur);
         if (data.length === 0) {
             // retourne message d'errer
             return res.status(404).json({ message: 'aucune donnée trouvé' });
         }
 
-        await request.deleteData('IBVA', req.params.idValeur);
+        await request.deleteData(req.params.idValeur);
         // retourne une confirmation
         return res.status(200).json({ message: 'l\'objet a bien été supprimé' });
     } catch (error) {
         return res.status(500).json(error.message);
     }
-=======
-    res.send(`Réponse à la route GET /valeurs/${req.params.idValeur}`);
->>>>>>> dev
-});
-
-router.get('/', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-
-    let resultat;
-    try {
-        resultat = await request.getValeursAll();
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    return res.status(200).json(resultat);
 });
 
 module.exports = router;
