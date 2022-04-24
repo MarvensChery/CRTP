@@ -1,4 +1,3 @@
-# Projet_CRPQ_Equipe4
 ## Projet API
 
 Projet de consultation de base de données pour les étudiants de Technique policière.
