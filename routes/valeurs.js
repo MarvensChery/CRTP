@@ -67,7 +67,6 @@ router.post('/', async (req, res) => {
 // route pour modifier les donnees dans la base
 router.put('/:idValeur', async (req, res) => {
     try {
-        console.log(req.params.idValeur);
         if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
             || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
