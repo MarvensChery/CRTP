@@ -13,9 +13,8 @@ router.post('/ajoutercondition/:Idpersonne/:Idippe/:Conditions', async (req, res
         IdPersonne = req.params.Idpersonne;
         await request.AjouterCondition(IdIPPE, Condition, IdPersonne);
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
-
     if (IdPersonne === 0) {
         return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
     }
