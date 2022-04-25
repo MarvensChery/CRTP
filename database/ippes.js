@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
 

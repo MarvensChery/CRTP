@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const chaineConnexion = {
     client: 'mssql',
     connection: {
