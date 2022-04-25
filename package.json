@@ -5,11 +5,10 @@
   "main": "app.js",
   "keywords": [],
   "author": "Étudiants du cours 420-4D1, CM9",
-
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "knex": "^1.0.3",
+    "knex": "^1.0.7",
     "mssql": "^8.0.2"
   },
   "devDependencies": {
@@ -27,4 +26,3 @@
     "serve": "nodemon app.js "
   }
 }
-
