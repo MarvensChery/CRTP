@@ -55,6 +55,9 @@ node app.js
 ```
 ## Lint
 
-Afin d'utiliser le linter sur tout les fichiers et corriger les erreurs la commande a taper est : ***npm run fix
+Afin d'utiliser le linter sur tout les fichiers et corriger les erreurs la commande a taper est : 
+```
+npm run lint
+```
 
 
