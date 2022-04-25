@@ -28,11 +28,15 @@ Ce projet est réalisé par: Ramy Naffati, Lucas Montion, Samy Issiakhem et Alex
 ```
 npm install
 ```
-### 5- Tapez ceci dans le terminal pour lancer le projet:
+### 5- Tapez ceci dans le terminal pour corriger toutes les erreurs de lint:
+```
+npm run fix
+```
+### 6- Tapez ceci dans le terminal pour lancer le projet:
 ```
 npm run serve
 ```
-### 6- Cliquez sur le lien localhost qui apparaitra dans le terminal
+### 7- Cliquez sur le lien localhost qui apparaitra dans le terminal
 
 
 
