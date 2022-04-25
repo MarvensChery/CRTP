@@ -1,4 +1,4 @@
-# Projet_CRPQ_Equipe4
+# Projet_CRPQ_Equipe5
 ## Projet API
 
 Projet de consultation de base de données pour les étudiants de Technique policière.
@@ -11,15 +11,50 @@ Cette application servira comme outil de formation au étudiants en technique po
 -Se familiarisé avec les informations récoltés lors d'une altercation
 -Utilisé un outil de recherche de base de données
 
-## Colaboration
-Ce projet est réalisé par: David Déchaine, Ryma Merrouchi, Charles-Étienne Doucet et Dan Bagalwa
+## Collaboration
+Ce projet est réalisé par: Ramy Naffati, Lucas Montion, Samy Issiakhem et Alexandre Ben Daia
 ***Le PO : Marc Levasseur
-***Le Srum Master : David Déchaine
 
-## Tests
-Afin de completer les tests unitaires il faut lancer la commande : npm test
-Le port utiliser pour lancer le serveur est le 3000 et la commande script est : ***npm run serve
-Afin d'utiliser le linter sur tout les fichiers la commande a taper est : ***npm run lint
+## Comment éxécuter le FRONTEND? 
+
+
+### 1- Faites un git clone HTTP de frontend_vue dans le terminal
+
+### 2- Placez vous dans la branche frontend_vue
+
+### 3- Placez vous dans le répertoire appweb:
+
+### 4- Tapez ceci dans le terminal pour installer les dépendance
+```
+npm install
+```
+### 5- Tapez ceci dans le terminal pour lancer le projet:
+```
+npm run serve
+```
+### 6- Cliquez sur le lien localhost qui apparaitra dans le terminal
+
+
+
+## Comment éxécuter le BACKEND? 
+
+
+### 1- Faite un git clone HTTP de backend_vue dans le terminal
+
+### 2- Placer vous dans la branche backend_vue
+
+### 3- Placer vous dans le répertoire backend:
+
+### 4- Taper ceci dans le terminal pour installer les dépendance
+```
+npm install
+```
+### 5- Tapez ceci dans le terminal pour lancer le serveur:
+```
+node app.js
+```
+## Lint
+
 Afin d'utiliser le linter sur tout les fichiers et corriger les erreurs la commande a taper est : ***npm run fix
-Afin d'utiliser l'API Veuillez installer toutes les dependances avec la commande : ***npm i
+
 
