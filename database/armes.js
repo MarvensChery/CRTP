@@ -3,43 +3,43 @@ const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
 
-// Requete de test
+// Requete pour avoir les armes.
 function getArmesAll() {
     return knex('IBAF');
 }
 
-// ajoute la donnee a la base
+// Insert notre donnee dans la database.
 async function postArme(data) {
     return knex('IBAF')
         .insert(data);
 }
 
-// update la donnee avec le mm id
+// Update et retourne les donees qui ont le meme ID.
 async function updateArme(data, id) {
     return knex('IBAF')
         .update(data)
         .where('IdIBAF', id);
 }
 
-// delete la donnee avec le mm id
+// Delete les donnees qui ont le meme ID.
 async function deleteData(id) {
     return knex('IBAF')
         .where('IdIBAF', id)
         .del();
 }
 
-// retourne les donnees avec le mm id
+// Return les donnees avec le meme ID.
 function getDataById(id) {
     return knex('IBAF')
         .where('IdIBAF', id);
 }
 
-// retourne les donnees avec le mm NoEvenement
+// Return les donnees avec le meme NoEvenement.
 function getDataByNoEvenement(id) {
     return knex('IBAF')
         .where('NoEvenement', id);
 }
-
+// Exporte les fonctions.
 module.exports = {
     getArmesAll,
     postArme,

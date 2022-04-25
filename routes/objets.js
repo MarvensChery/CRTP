@@ -6,7 +6,7 @@ const express = require('express');
 const request = require('../database/objets');
 
 const router = express.Router();
-
+// Requete pour obtenir idObjet et retourne valeurs.
 router.get('/:idObjet', async (req, res) => {
     try {
         let data;
@@ -22,7 +22,6 @@ router.get('/:idObjet', async (req, res) => {
         return res.status(500).json({ message: error.message, success: false });
     }
 });
-
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
@@ -45,7 +44,7 @@ router.post('/', async (req, res) => {
 			|| req.body.typeOb === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
         // verifie si l'entite a ajouter existe deja dans la base de donnees
         const DataAdd = await request.getDataByNoEvenement(req.body.NoEvenement);
-        // si oui renvoyer une errer
+        // si oui renvoyer une erreur
         if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée', success: false });
 
         const DataToSend = {
@@ -75,7 +74,7 @@ router.put('/:idObjet', async (req, res) => {
 
         // verifier si l'entite est deja dans la base de donnees
         const DataAdd = await request.getDataById(req.params.idObjet);
-        // si non renvoye une errer
+        // si non renvoye une erreur
         if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée', success: false });
 
         const DataToSend = {
@@ -99,7 +98,7 @@ router.delete('/:idObjet', async (req, res) => {
     try {
         data = await request.getDataById(req.params.idObjet);
         if (data.length === 0) {
-            // retourne message d'errer
+            // retourne message d'erreur
             return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
         }
 

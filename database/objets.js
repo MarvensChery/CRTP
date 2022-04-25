@@ -3,43 +3,43 @@ const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
 
-// Requete de test
+// Requete pour get les objets.
 function getObjetsAll() {
     return knex('IBOB');
 }
 
-// ajoute la donnee a la base
+// Ajoute les donnees dans la database.
 async function postObjet(data) {
     return knex('IBOB')
         .insert(data);
 }
 
-// update la donnee avec le mm id
+// Update les donnees avec le meme Dd.
 async function updateObjet(data, id) {
     return knex('IBOB')
         .update(data)
         .where('IdBOB', id);
 }
 
-// delete la donnee avec le mm id
+// Delete les donnees avec le meme Id.
 async function deleteData(id) {
     return knex('IBOB')
         .where('IdBOB', id)
         .del();
 }
 
-// retourne les donnees avec le mm id
+// Return les donnees avec le meme Id.
 function getDataById(id) {
     return knex('IBOB')
         .where('IdBOB', id);
 }
 
-// retourne les donnees avec le mm NoEvenement
+// Return les donnees avec le meme NoEvenement.
 function getDataByNoEvenement(id) {
     return knex('IBOB')
         .where('NoEvenement', id);
 }
-
+// Exporte les fonctions.
 module.exports = {
     getObjetsAll,
     postObjet,

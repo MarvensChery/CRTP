@@ -3,43 +3,43 @@ const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
 
-// Requete de test
+// Requete pour get les valeurs.
 function getValeursAll() {
     return knex('IBVA');
 }
 
-// ajoute la donnee a la base
+// Ajoute la donnee a la base.
 async function postValeur(data) {
     return knex('IBVA')
         .insert(data);
 }
 
-// update la donnee avec le mm id
+// Update la donnee avec le meme id.
 async function updateValeur(data, id) {
     return knex('IBVA')
         .update(data)
         .where('IdIBVA', id);
 }
 
-// delete la donnee avec le mm id
+// Delete la donnee avec le meme id.
 async function deleteData(id) {
     return knex('IBVA')
         .where('IdIBVA', id)
         .del();
 }
 
-// retourne les donnees avec le mm id
+// Retourne les donnees avec le meme id.
 function getDataById(id) {
     return knex('IBVA')
         .where('IdIBVA', id);
 }
 
-// retourne les donnees avec le mm NoEvenement
+// Retourne les donnees avec le meme NoEvenement.
 function getDataByNoEvenement(id) {
     return knex('IBVA')
         .where('NoEvenement', id);
 }
-
+// Exporte les fonctions.
 module.exports = {
     getValeursAll,
     postValeur,
