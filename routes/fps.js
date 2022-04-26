@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
         res.status(500).json(error.message);
     }
 
-    // return res.status(200).json({ message: "L'ajout du FPS est réussi !" });
+    return res.status(200).json({ message: "L'ajout du FPS est réussi !" });
 });
 
 router.put('/:idFps', async (req, res) => {
@@ -56,15 +56,19 @@ router.put('/:idFps', async (req, res) => {
             Contagieux, Violence, Fraude,
             ConduiteVehicule, IntroEffraction, Sexe, ArmeOffensive, Vol,
             Drogue, Mefait, Incendie, AutreInfraction);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-    try {
+
         await request.updateDescription(IdPersonne, Race, Taille, Poids,
             Yeux, Marques);
     } catch (error) {
         res.status(500).json(error.message);
     }
+    /*
+    try {
+        await request.updateDescription(IdPersonne, Race, Taille, Poids,
+            Yeux, Marques);
+    } catch (error) {
+        res.status(500).json(error.message);
+    } */
     return res.status(200).json({ message: "La modification du FPS est réussi !" });
 });
 
