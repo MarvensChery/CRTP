@@ -3,6 +3,27 @@ const express = require('express');
 const request = require('../database/personnes');
 
 const router = express.Router();
+
+router.post('/:idPersonne/ippe', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    let resultat;
+    const { idPersonne } = req.params;
+    const {
+        type, mandat, Cour, noMandat, natCrime, noEvent,
+    } = req.body;
+    try {
+        resultat = await addIppe({
+            type, mandat, Cour, noMandat, natCrime, noEvent, idPersonne,
+        });
+        if (resultat) {
+            return res.status(500).json(resultat);
+        }
+        return res.status(200).json(resultat);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+});
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens
