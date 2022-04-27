@@ -54,7 +54,7 @@ Pour installer les dépendances, suivez les étapes suivantes:
 
 1. Ouvrez un nouveau terminal.
 
-2. Assurez-vous d'être bien dans le repertoire **4d1-equipe-1** avec la commande ```cd .\4d1-equipe-1\```.
+2. Assurez-vous d'être bien dans le repertoire **backend** avec la commande ```cd .\backend\```.
 
 3. Entrez ```node .\app.js ```
 
