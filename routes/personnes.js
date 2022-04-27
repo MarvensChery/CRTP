@@ -4,18 +4,52 @@ const request = require('../database/personnes');
 
 const router = express.Router();
 
+const { addIppe } = require('../database/ippes');
+
 router.post('/:idPersonne/ippe', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
 
     let resultat;
     const { idPersonne } = req.params;
     const {
-        type, mandat, Cour, noMandat, natCrime, noEvent,
+        NoEvenement,
+        TypeEvenement,
+        Mandat,
+        Motif,
+        Nature,
+        DossierEnquete,
+        Cour,
+        NoMandat,
+        NoCause,
+        IdNatureCrime,
+        LieuDetention,
+        FinSentence,
+        VuDerniereFois,
+        AgentProbation,
+        AgentLiberation,
+        Telephone,
+        Poste,
     } = req.body;
     try {
         resultat = await addIppe({
-            type, mandat, Cour, noMandat, natCrime, noEvent, idPersonne,
-        });
+            NoEvenement,
+            TypeEvenement,
+            Mandat,
+            Motif,
+            Nature,
+            DossierEnquete,
+            Cour,
+            NoMandat,
+            NoCause,
+            IdNatureCrime,
+            LieuDetention,
+            FinSentence,
+            VuDerniereFois,
+            AgentProbation,
+            AgentLiberation,
+            Telephone,
+            Poste,
+        }, idPersonne);
         if (resultat) {
             return res.status(500).json(resultat);
         }

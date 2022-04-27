@@ -1,5 +1,6 @@
 const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
+
 const knex = knexModule(chaineConnexion);
 
 // Requete de test
@@ -8,7 +9,6 @@ function getIppesAll() {
 }
 // update IPPE
 async function updateIppe({
-    IdIPPE,
     NoEvenement,
     TypeEvenement,
     Mandat,
@@ -25,14 +25,12 @@ async function updateIppe({
     AgentProbation,
     AgentLiberation,
     Telephone,
-    Poste
+    Poste,
 }) {
     try {
         await knex('IPPE')
-            .where('NoEvenement', noEvent)
+            .where(NoEvenement)
             .update({
-                IdIPPE,
-                NoEvenement,
                 TypeEvenement,
                 Mandat,
                 Motif,
@@ -48,7 +46,7 @@ async function updateIppe({
                 AgentProbation,
                 AgentLiberation,
                 Telephone,
-                Poste
+                Poste,
             });
         return null;
     } catch (err) {
@@ -57,8 +55,7 @@ async function updateIppe({
     }
 }
 // add IPPE
-async function addIppe(    {
-    IdIPPE,
+async function addIppe({
     NoEvenement,
     TypeEvenement,
     Mandat,
@@ -75,9 +72,10 @@ async function addIppe(    {
     AgentProbation,
     AgentLiberation,
     Telephone,
-    Poste
-},) {
+    Poste,
+}, idPersonne) {
     try {
+        const IdIPPE = (await knex('IPPE').max('IdIPPE'))[0].IdIPPE + 1;
         await knex('IPPE')
             .insert({
                 IdIPPE,
@@ -97,11 +95,11 @@ async function addIppe(    {
                 AgentProbation,
                 AgentLiberation,
                 Telephone,
-                Poste
+                Poste,
             });
         await knex('PersonnesIPPE')
             .insert({
-                IdIPPE: noEvent,
+                IdIPPE,
                 IdPersonne: idPersonne,
             });
 
