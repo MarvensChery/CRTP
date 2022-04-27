@@ -15,18 +15,6 @@ function getFps(IdFPS, IdPersonne) {
         .where({ 'FPS.IdFPS': IdFPS })
 }
 
-/*function getFps(IdFPS, IdPersonne) {
-    return knex("FPS")
-        .select('Personnes.IdPersonne', 'FPS.IdFPS', 'FPS.NoFPS', 'Personnes.Race',
-            'Personnes.Taille', 'Personnes.Poids', 'Personnes.Yeux', 'Personnes.Marques',
-            'FPS.Violent', 'FPS.Echappe', 'FPS.Suicidaire', 'FPS.Desequilibre',
-            'FPS.Contagieux', 'FPS.Violence', 'FPS.Fraude', 'FPS.Vol',
-            'FPS.ConduiteVehicule', 'FPS.IntroEffraction', 'FPS.Sexe', 'FPS.ArmeOffensive',
-            'FPS.Drogue', 'FPS.Mefait', 'FPS.Incendie', 'FPS.AutreInfraction')
-        .fullOuterJoin("Personnes", "Personnes.IdPersonne", '=', "FPS.IdPersonne")
-        .where({ 'FPS.IdPersonne': IdPersonne, 'FPS.IdFPS': IdFPS })
-} */
-
 function addFps(IdPersonne, NoFPS, Violent, CD,
     Echappe, Suicidaire, Desequilibre,
     Contagieux, Violence, Fraude,

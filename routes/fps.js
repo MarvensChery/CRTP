@@ -62,13 +62,7 @@ router.put('/:idFps', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-    /*
-    try {
-        await request.updateDescription(IdPersonne, Race, Taille, Poids,
-            Yeux, Marques);
-    } catch (error) {
-        res.status(500).json(error.message);
-    } */
+    
     return res.status(200).json({ message: "La modification du FPS est réussi !" });
 });
 
