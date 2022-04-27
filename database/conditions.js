@@ -29,14 +29,21 @@ function AjouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
 function AjouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne,
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            Frequentation: frequentation,
+            IdPersonne: Idpersonne,
         });
 }
 // Requete knex qui insert la nouvelle condition avec une frequentation
 function AjouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne,
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            HeureDebut: heuredebut,
+            HeureFin: heurefin,
+            IdPersonne: Idpersonne,
         });
 }
 // Requete knex qui update une condition avec une adresse
@@ -86,5 +93,5 @@ module.exports = {
     AjouterConditionAvecHeure,
     ReturnCondition,
     UpdateHeure,
-    ReturnPersonne
+    ReturnPersonne,
 };
