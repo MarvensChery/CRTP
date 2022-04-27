@@ -1,6 +1,5 @@
 const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
-
 const knex = knexModule(chaineConnexion);
 
 // Requete de test
@@ -9,17 +8,47 @@ function getIppesAll() {
 }
 // update IPPE
 async function updateIppe({
-    type, mandat, Cour, noMandat, natCrime, noEvent,
+    IdIPPE,
+    NoEvenement,
+    TypeEvenement,
+    Mandat,
+    Motif,
+    Nature,
+    DossierEnquete,
+    Cour,
+    NoMandat,
+    NoCause,
+    IdNatureCrime,
+    LieuDetention,
+    FinSentence,
+    VuDerniereFois,
+    AgentProbation,
+    AgentLiberation,
+    Telephone,
+    Poste
 }) {
     try {
         await knex('IPPE')
             .where('NoEvenement', noEvent)
             .update({
-                TypeEvenement: type,
-                Mandat: mandat,
+                IdIPPE,
+                NoEvenement,
+                TypeEvenement,
+                Mandat,
+                Motif,
+                Nature,
+                DossierEnquete,
                 Cour,
-                NoMandat: noMandat,
-                Nature: natCrime,
+                NoMandat,
+                NoCause,
+                IdNatureCrime,
+                LieuDetention,
+                FinSentence,
+                VuDerniereFois,
+                AgentProbation,
+                AgentLiberation,
+                Telephone,
+                Poste
             });
         return null;
     } catch (err) {
@@ -28,18 +57,47 @@ async function updateIppe({
     }
 }
 // add IPPE
-async function addIppe({
-    type, mandat, Cour, noMandat, natCrime, noEvent, idPersonne,
-}) {
+async function addIppe(    {
+    IdIPPE,
+    NoEvenement,
+    TypeEvenement,
+    Mandat,
+    Motif,
+    Nature,
+    DossierEnquete,
+    Cour,
+    NoMandat,
+    NoCause,
+    IdNatureCrime,
+    LieuDetention,
+    FinSentence,
+    VuDerniereFois,
+    AgentProbation,
+    AgentLiberation,
+    Telephone,
+    Poste
+},) {
     try {
         await knex('IPPE')
             .insert({
-                TypeEvenement: type,
-                Mandat: mandat,
+                IdIPPE,
+                NoEvenement,
+                TypeEvenement,
+                Mandat,
+                Motif,
+                Nature,
+                DossierEnquete,
                 Cour,
-                NoMandat: noMandat,
-                Nature: natCrime,
-                NoEvenement: noEvent,
+                NoMandat,
+                NoCause,
+                IdNatureCrime,
+                LieuDetention,
+                FinSentence,
+                VuDerniereFois,
+                AgentProbation,
+                AgentLiberation,
+                Telephone,
+                Poste
             });
         await knex('PersonnesIPPE')
             .insert({
@@ -158,11 +216,11 @@ module.exports = {
     deleteIPPE,
     getIppesAll,
     getIPPE,
-    chercherPersonne,
-    chercherEvent,
-    chercherConditions,
-    getTypeEvenement,
-    formatterTypeEvenement,
+    // chercherPersonne,
+    // chercherEvent,
+    // chercherConditions,
+    // getTypeEvenement,
+    // formatterTypeEvenement,
     updateIppe,
     addIppe,
 };
