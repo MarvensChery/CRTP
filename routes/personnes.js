@@ -166,9 +166,10 @@ router.put('/:idPersonne', async (req, res) => {
         AutreVetement,
     } = req.body;
 
-    if (!TypePersonne || !NomFamille || !Prenom1 || Masculin === null || !DateNaissance) {
-        return res.status(400).json('Le type de personne, prenom1, nom, sex et la DDN ne peuvent etre vide');
-    }
+    // if (!TypePersonne || !NomFamille || !Prenom1 || Masculin === null || !DateNaissance) {
+    //     return res.status(400).json('Le type de personne,
+    // prenom1, nom, sex et la DDN ne peuvent etre vide');
+    // }
 
     if (Number.isNaN(idPersonne)) {
         return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
@@ -209,7 +210,7 @@ router.put('/:idPersonne', async (req, res) => {
         );
         return res.status(200).json('Personne modifiée');
     } catch (error) {
-        return res.status(500).json('Valeurs transmises invalides (veuillez vérifier la date)');
+        return res.status(500).json(error);
     }
     /* {
         "TypePersonne": "Enseignant",

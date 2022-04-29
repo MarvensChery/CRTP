@@ -75,10 +75,8 @@ async function addIppe({
     Poste,
 }, idPersonne) {
     try {
-        const IdIPPE = (await knex('IPPE').max('IdIPPE'))[0].IdIPPE + 1;
         await knex('IPPE')
             .insert({
-                IdIPPE,
                 NoEvenement,
                 TypeEvenement,
                 Mandat,
@@ -97,6 +95,7 @@ async function addIppe({
                 Telephone,
                 Poste,
             });
+        const { IdIPPE } = (await knex('IPPE').where('NoEvenement', NoEvenement).select('IdIPPE'))[0];
         await knex('PersonnesIPPE')
             .insert({
                 IdIPPE,

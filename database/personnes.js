@@ -68,7 +68,6 @@ async function putPersonne(
     await knex('Personnes')
         .where('IdPersonne', IdPersonne)
         .update({
-            IdPersonne,
             TypePersonne,
             NomFamille,
             Prenom1,
