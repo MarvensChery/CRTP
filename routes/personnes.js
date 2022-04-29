@@ -135,12 +135,36 @@ router.put('/:idPersonne', async (req, res) => {
     } */
 
     const { idPersonne } = req.params;
-    const { TypePersonne } = req.body;
-    const { NomFamille } = req.body;
-    const { Prenom1 } = req.body;
-    const { Prenom2 } = req.body;
-    const { Masculin } = req.body;
-    const { DateNaissance } = req.body;
+    const {
+        IdPersonne,
+        TypePersonne,
+        NomFamille,
+        Prenom1,
+        Prenom2,
+        Masculin,
+        DateNaissance,
+        Telephone,
+        NoPermis,
+        Adresse1,
+        Adresse2,
+        Ville,
+        Province,
+        CodePostal,
+        Race,
+        Taille,
+        Poids,
+        Yeux,
+        Cheveux,
+        Marques,
+        Toxicomanie,
+        Desorganise,
+        Depressif,
+        Suicidaire,
+        Violent,
+        Gilet,
+        Pantalon,
+        AutreVetement,
+    } = req.body;
 
     if (!TypePersonne || !NomFamille || !Prenom1 || Masculin === null || !DateNaissance) {
         return res.status(400).json('Le type de personne, prenom1, nom, sex et la DDN ne peuvent etre vide');
@@ -152,13 +176,36 @@ router.put('/:idPersonne', async (req, res) => {
 
     try {
         await request.putPersonne(
-            idPersonne,
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
+            {
+                IdPersonne,
+                TypePersonne,
+                NomFamille,
+                Prenom1,
+                Prenom2,
+                Masculin,
+                DateNaissance,
+                Telephone,
+                NoPermis,
+                Adresse1,
+                Adresse2,
+                Ville,
+                Province,
+                CodePostal,
+                Race,
+                Taille,
+                Poids,
+                Yeux,
+                Cheveux,
+                Marques,
+                Toxicomanie,
+                Desorganise,
+                Depressif,
+                Suicidaire,
+                Violent,
+                Gilet,
+                Pantalon,
+                AutreVetement,
+            },
         );
         return res.status(200).json('Personne modifiée');
     } catch (error) {
