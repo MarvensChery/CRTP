@@ -150,14 +150,9 @@ function deleteFps(IdFPS) {
     return knex('FPS').where({ IdFPS }).del();
 }
 
-function getFPSAll() {
-    return knex('FPS');
-}
-
 module.exports = {
     getFps,
     addFps,
-    getFPSAll,
     updateDescription,
     updateFps,
     deleteFps,
