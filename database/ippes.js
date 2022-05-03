@@ -26,11 +26,12 @@ async function updateIppe({
     AgentLiberation,
     Telephone,
     Poste,
-}) {
+}, idIPPE) {
     try {
         await knex('IPPE')
-            .where(NoEvenement)
+            .where(idIPPE)
             .update({
+                NoEvenement,
                 TypeEvenement,
                 Mandat,
                 Motif,

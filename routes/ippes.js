@@ -89,14 +89,46 @@ router.get('/event', async (req, res) => {
 router.put('/:idIppe', async (req, res) => {
     try {
         const {
-            type, mandat, Cour, noMandat, natCrime, noEvent,
+            NoEvenement,
+            TypeEvenement,
+            Mandat,
+            Motif,
+            Nature,
+            DossierEnquete,
+            Cour,
+            NoMandat,
+            NoCause,
+            IdNatureCrime,
+            LieuDetention,
+            FinSentence,
+            VuDerniereFois,
+            AgentProbation,
+            AgentLiberation,
+            Telephone,
+            Poste,
         } = req.body;
 
-        const resultat = await request.updateIppe({
-            type, mandat, Cour, noMandat, natCrime, noEvent,
-        });
-        if (resultat) {
-            return res.status(404).json(resultat);
+        const erreur = await request.updateIppe({
+            NoEvenement,
+            TypeEvenement,
+            Mandat,
+            Motif,
+            Nature,
+            DossierEnquete,
+            Cour,
+            NoMandat,
+            NoCause,
+            IdNatureCrime,
+            LieuDetention,
+            FinSentence,
+            VuDerniereFois,
+            AgentProbation,
+            AgentLiberation,
+            Telephone,
+            Poste,
+        }, req.params.idIppe);
+        if (erreur) {
+            return res.status(404).json(erreur);
         }
         return res.status(200).json('updated');
     } catch (error) {
