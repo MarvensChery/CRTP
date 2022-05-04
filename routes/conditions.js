@@ -52,6 +52,10 @@ router.post('/', async (req, res) => {
         Champs3,
         IdPersonne,
         Option,
+        Adresse2,
+        Ville,
+        Province,
+        CodePostal
     } = req.body;
 
     if (Option === '3' || Option === '4') {
@@ -68,7 +72,7 @@ router.post('/', async (req, res) => {
             res.status(500).json({ message: error.message });
         }
         try {
-            await request.updateAdresse(IdPersonne, Champs1);
+            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
