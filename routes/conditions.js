@@ -4,192 +4,110 @@ const request = require('../database/conditions');
 
 const router = express.Router();
 
-// Ajouter une condition sans paramètre
-router.post('/ajoutercondition/:Idpersonne/:Idippe/:Conditions', async (req, res) => {
-    let IdPersonne;
-    try {
-        const IdIPPE = req.params.Idippe;
-        const Condition = req.params.Conditions;
-        IdPersonne = req.params.Idpersonne;
-        await request.ajouterCondition(IdIPPE, Condition, IdPersonne);
-    } catch (error) {
-        return res.status(500).json(error.message);
+router.put('/:IdCondition', async (req, res) => {
+    const IdCondition = req.params.IdCondition;
+    const { Libelle, Champs1, Champs2, IdPersonne } = req.body;
+    if (Libelle === 'Ne pas entrer en contact avec') {
+        try {
+            await request.updateVictime(IdCondition, Champs1);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
+    } else if (Libelle === 'Ne pas fréquenter') {
+        try {
+            await request.updateFrequentation(IdCondition, Champs1);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
     }
-    if (IdPersonne === 0) {
-        return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
+    // Update une condition avec une adresse
+     else if (Libelle === 'Avoir comme adresse le') {
+        try {
+            await request.updateAdresse(IdPersonne, Champs1);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
+    } else if (Libelle === 'Doit demeurer à cet endroit entre') {
+        try {
+            await request.updateHeure(IdCondition, Champs1, Champs2);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
     }
-
-    return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    return res.status(401).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !"});
 });
 
-// Ajouter une condition avec une victime
-router.post('/ajouterconditionvictime/:Idpersonne/:Idippe/:Conditions/:Victime', async (req, res) => {
-    let IdPersonne;
-    try {
-        const IdIPPE = req.params.Idippe;
-        const Condition = req.params.Conditions;
-        const { Victime } = req.params;
-        IdPersonne = req.params.Idpersonne;
-        await request.ajouterConditionAvecVictime(IdIPPE, Condition, Victime, IdPersonne);
-    } catch (error) {
-        res.status(500).json(error.message);
+router.post('/', async (req, res) => {
+    const {
+        IdIppe,
+        Libelle,
+        Champs1,
+        Champs2,
+        Champs3,
+        IdPersonne,
+        Option,
+    } = req.body;
+
+    if (Option === '3' || Option === '4') {
+        try {
+            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
+        } catch (error) {
+            return res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
+    } else if (Option === '2') {
+        try {
+            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        try {
+            await request.updateAdresse(IdPersonne, Champs1);
+        } catch (error) {
+            res.status(500).json({ message: error.message});
+        }
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
+    } else if (Option === '5') {
+        try {
+            await request.ajouterConditionAvecVictime(IdIppe, Libelle, Champs1, IdPersonne);
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
+    } else if (Option === '6') {
+        try {
+            await request.ajouterConditionAvecFrequentation(
+                IdIppe,
+                Libelle,
+                Champs1,
+                IdPersonne,
+            );
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
+    } else if (Option === '7') {
+        try {
+            await request.ajouterConditionAvecHeure(
+                IdIppe,
+                Libelle,
+                Champs2,
+                Champs3,
+                IdPersonne,
+            );
+        } catch (error) {
+            res.status(500).json(error.message);
+        }
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
     }
-
-    if (IdPersonne === 0) {
-        return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-});
-
-// Ajouter une condition avec une frequentation
-router.post('/ajouterconditionfrequentation/:Idpersonne/:Idippe/:Conditions/:Frequentation', async (req, res) => {
-    let IdPersonne;
-    try {
-        const IdIPPE = req.params.Idippe;
-        const Condition = req.params.Conditions;
-        const { Frequentation } = req.params;
-        IdPersonne = req.params.Idpersonne;
-        await request.ajouterConditionAvecFrequentation(
-            IdIPPE,
-            Condition,
-            Frequentation,
-            IdPersonne,
-        );
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdPersonne === 0) {
-        return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    return res.status(400).json({ message: "Veuillez choisir une condition !"});
 });
 
 // Ajouter une condition avec des heures
-router.post('/ajouterconditionheure/:Idpersonne/:Idippe/:Conditions/:HeureDebut/:HeureFin', async (req, res) => {
-    let IdPersonne;
-    try {
-        const IdIPPE = req.params.Idippe;
-        const Condition = req.params.Conditions;
-        const { HeureDebut } = req.params;
-        const { HeureFin } = req.params;
-        IdPersonne = req.params.Idpersonne;
-        await request.ajouterConditionAvecHeure(
-            IdIPPE,
-            Condition,
-            HeureDebut,
-            HeureFin,
-            IdPersonne,
-        );
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdPersonne === 0) {
-        return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-});
-
-// Ajouter une condition avec une adresse
-router.post('/ajouterconditionadresse/:Idippe/:Conditions/:Idpersonne/:adresse', async (req, res) => {
-    const IdPersonne = req.params.Idpersonne;
-    try {
-        const IdIPPE = req.params.Idippe;
-        const Condition = req.params.Conditions;
-        await request.ajouterCondition(IdIPPE, Condition, IdPersonne);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-    try {
-        const Adresse1 = req.params.adresse;
-        await request.updateAdresse(IdPersonne, Adresse1);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdPersonne === 0) {
-        return res.status(404).json({ message: "L'ajout de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-});
-
-// Update une condition avec une adresse
-router.put('/updateadresse/:Idpersonne/:Adresse1', async (req, res) => {
-    let Idpersonne;
-    try {
-        Idpersonne = req.params.Idpersonne;
-        const { Adresse1 } = req.params;
-        await request.updateAdresse(Idpersonne, Adresse1);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (Idpersonne === 0) {
-        return res.status(404).json({ message: "La modification de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-});
-
-// Update une condition avec une victime
-router.put('/updatevictime/:IdCondition/:Victime', async (req, res) => {
-    let IdCondition;
-    try {
-        IdCondition = req.params.IdCondition;
-        const { Victime } = req.params;
-        await request.updateVictime(IdCondition, Victime);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdCondition === 0) {
-        return res.status(404).json({ message: "La modification de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-});
-
-// Update une condition avec des heures
-router.put('/updateheure/:IdCondition/:HeureDebut/:HeureFin', async (req, res) => {
-    let IdCondition;
-    try {
-        IdCondition = req.params.IdCondition;
-        const { HeureDebut } = req.params;
-        const { HeureFin } = req.params;
-        await request.updateHeure(IdCondition, HeureDebut, HeureFin);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdCondition === 0) {
-        return res.status(404).json({ message: "La modification de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-});
-
-// Update une condition avec une frequentation
-router.put('/updatefrequentation/:IdCondition/:Frequentation', async (req, res) => {
-    let IdCondition;
-    try {
-        IdCondition = req.params.IdCondition;
-        const { Frequentation } = req.params;
-        await request.updateFrequentation(IdCondition, Frequentation);
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    if (IdCondition === 0) {
-        return res.status(404).json({ message: "La modification de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
-    }
-
-    return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-});
 
 // Supprimer une condition
 router.delete('/:IdCondition', async (req, res) => {
@@ -209,32 +127,16 @@ router.delete('/:IdCondition', async (req, res) => {
 });
 
 // Retourner la condition
-router.get('/returncondition/:IdCondition', async (req, res) => {
+router.get('/:IdCondition', async (req, res) => {
     let IdCondition;
-    const resultatformater = [];
+    let resultat;
     try {
         IdCondition = req.params.IdCondition;
-        const resultat = await request.returnCondition(IdCondition);
-        resultat.forEach((element) => {
-            resultatformater.push({
-                Id: element.IdCondition,
-                IdIPPE: element.IdIPPE,
-                IdPersonne: element.IdPersonne,
-                Libelle: element.Libelle,
-                HeureDebut: element.HeureDebut,
-                HeureFin: element.HeureFin,
-                Victime: element.Victime,
-                Frequentation: element.Frequentation,
-            });
-        });
+        resultat = await request.returnCondition(IdCondition);
     } catch (error) {
         res.status(500).json(error.message);
     }
-
-    if (resultatformater.length === 0) {
-        return res.status(404).json({ message: "La condition n'existe pas dans la base de donnée !" });
-    }
-    return res.status(200).send(resultatformater);
+    return res.status(200).send(resultat);
 });
 
 module.exports = router;
