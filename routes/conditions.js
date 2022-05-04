@@ -5,40 +5,42 @@ const request = require('../database/conditions');
 const router = express.Router();
 
 router.put('/:IdCondition', async (req, res) => {
-    const IdCondition = req.params.IdCondition;
-    const { Libelle, Champs1, Champs2, IdPersonne } = req.body;
+    const { IdCondition } = req.params;
+    const {
+        Libelle, Champs1, Champs2, IdPersonne,
+    } = req.body;
     if (Libelle === 'Ne pas entrer en contact avec') {
         try {
             await request.updateVictime(IdCondition, Champs1);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
-    } else if (Libelle === 'Ne pas fréquenter') {
+        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
+    } if (Libelle === 'Ne pas fréquenter') {
         try {
             await request.updateFrequentation(IdCondition, Champs1);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
+        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
     }
     // Update une condition avec une adresse
-     else if (Libelle === 'Avoir comme adresse le') {
+    if (Libelle === 'Avoir comme adresse le') {
         try {
             await request.updateAdresse(IdPersonne, Champs1);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
-    } else if (Libelle === 'Doit demeurer à cet endroit entre') {
+        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
+    } if (Libelle === 'Doit demeurer à cet endroit entre') {
         try {
             await request.updateHeure(IdCondition, Champs1, Champs2);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !'});
+        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
     }
-    return res.status(401).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !"});
+    return res.status(401).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
 router.post('/', async (req, res) => {
@@ -56,29 +58,29 @@ router.post('/', async (req, res) => {
         try {
             await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
         } catch (error) {
-            return res.status(500).json({ message: error.message});
+            return res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
-    } else if (Option === '2') {
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    } if (Option === '2') {
         try {
             await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
         try {
             await request.updateAdresse(IdPersonne, Champs1);
         } catch (error) {
-            res.status(500).json({ message: error.message});
+            res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
-    } else if (Option === '5') {
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    } if (Option === '5') {
         try {
             await request.ajouterConditionAvecVictime(IdIppe, Libelle, Champs1, IdPersonne);
         } catch (error) {
             res.status(500).json(error.message);
         }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
-    } else if (Option === '6') {
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    } if (Option === '6') {
         try {
             await request.ajouterConditionAvecFrequentation(
                 IdIppe,
@@ -89,8 +91,8 @@ router.post('/', async (req, res) => {
         } catch (error) {
             res.status(500).json(error.message);
         }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
-    } else if (Option === '7') {
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+    } if (Option === '7') {
         try {
             await request.ajouterConditionAvecHeure(
                 IdIppe,
@@ -102,9 +104,9 @@ router.post('/', async (req, res) => {
         } catch (error) {
             res.status(500).json(error.message);
         }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !"});
+        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
     }
-    return res.status(400).json({ message: "Veuillez choisir une condition !"});
+    return res.status(400).json({ message: 'Veuillez choisir une condition !' });
 });
 
 // Ajouter une condition avec des heures

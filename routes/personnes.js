@@ -3,6 +3,12 @@ const express = require('express');
 const request = require('../database/personnes');
 
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+    const resultat = await request.getPersonnes();
+    res.send(resultat);
+});
+
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens
