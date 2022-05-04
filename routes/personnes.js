@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
         return res.status(500).json(error);
     }
     if (resultat.length === 0) {
-        return res.status(404).json({ message: 'Aucune personne est enregistré dans la base de doonnée!' });
+        return res.status(404).json({ message: 'Aucune personne est enregistrée dans la base de doonnée!' });
     }
     return res.status(200).send(resultat);
 });
