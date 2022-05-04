@@ -5,8 +5,16 @@ const request = require('../database/personnes');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const resultat = await request.getPersonnes();
-    res.send(resultat);
+    let resultat;
+    try {
+        resultat = await request.getPersonnes();
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+    if (resultat.length === 0) {
+        return res.status(404).json({ message: 'Aucune personne est enregistré dans la base de doonnée!' });
+    }
+    return res.status(200).send(resultat);
 });
 
 // eslint-disable consistent-return
