@@ -7,7 +7,7 @@ const router = express.Router();
 router.put('/:IdCondition', async (req, res) => {
     const { IdCondition } = req.params;
     const {
-        Libelle, Champs1, Champs2, IdPersonne,
+        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal
     } = req.body;
     if (Libelle === 'Ne pas entrer en contact avec') {
         try {
@@ -27,7 +27,7 @@ router.put('/:IdCondition', async (req, res) => {
     // Update une condition avec une adresse
     if (Libelle === 'Avoir comme adresse le') {
         try {
-            await request.updateAdresse(IdPersonne, Champs1);
+            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

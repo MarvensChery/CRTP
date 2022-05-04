@@ -46,12 +46,6 @@ function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpe
             IdPersonne: Idpersonne,
         });
 }
-// Requete knex qui update une condition avec une adresse
-function updateAdresse(Idpersonne, Adresse1) {
-    return knex('Personnes')
-        .where({ Idpersonne })
-        .update({ Adresse1 });
-}
 
 // Requete knex qui update une condition avec une victime
 function updateVictime(IdCondition, Victime) {
@@ -75,6 +69,13 @@ function updateHeure(IdCondition, HeureDebut, HeureFin) {
         .update({ HeureFin });
 }
 
+// Requete knex qui update une condition avec une adresse
+async function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
+    return knex('Personnes')
+        .where({ Idpersonne })
+        .update({ Adresse1, Adresse2, Ville, Province, CodePostal });
+}
+
 // Requete knex qui delete une conditions
 function deleteCondition(IdCondition) {
     return knex('Conditions')
@@ -84,7 +85,6 @@ function deleteCondition(IdCondition) {
 
 module.exports = {
     ajouterCondition,
-    updateAdresse,
     updateVictime,
     deleteCondition,
     updateFrequentation,
@@ -94,4 +94,5 @@ module.exports = {
     returnCondition,
     updateHeure,
     returnPersonne,
+    updateAdresse,
 };
