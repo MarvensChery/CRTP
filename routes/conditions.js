@@ -9,6 +9,9 @@ router.put('/:IdCondition', async (req, res) => {
     const {
         Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal
     } = req.body;
+    if ( Number.isNaN(IdCondition) ) {
+        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+    }
     if (Libelle === 'Ne pas entrer en contact avec') {
         try {
             await request.updateVictime(IdCondition, Champs1);
@@ -40,7 +43,7 @@ router.put('/:IdCondition', async (req, res) => {
         }
         return res.status(200).json({ message: 'La modification de la condition est réussi !' });
     }
-    return res.status(401).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
+    return res.status(500).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
 router.post('/', async (req, res) => {
@@ -110,7 +113,7 @@ router.post('/', async (req, res) => {
         }
         return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
     }
-    return res.status(400).json({ message: 'Veuillez choisir une condition !' });
+    return res.status(500).json({ message: 'Veuillez choisir une condition !' });
 });
 
 // Ajouter une condition avec des heures
@@ -125,8 +128,8 @@ router.delete('/:IdCondition', async (req, res) => {
         res.status(500).json(error.message);
     }
 
-    if (IdCondition === 0) {
-        return res.status(404).json({ message: "La suppression de la condition a échoué ! La personne n'existe pas dans la base de donnée !" });
+    if (!IdCondition) {
+        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
     }
 
     return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
@@ -134,13 +137,18 @@ router.delete('/:IdCondition', async (req, res) => {
 
 // Retourner la condition
 router.get('/:IdCondition', async (req, res) => {
-    let IdCondition;
-    let resultat;
+    const IdCondition = req.params.IdCondition;
+    let resultat = [];
+    if (Number.isNaN(IdCondition)) {
+        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+    }
     try {
-        IdCondition = req.params.IdCondition;
         resultat = await request.returnCondition(IdCondition);
+        if (resultat.length === 0) {
+            return res.status(404).json({message: "La condition que vous recherchez n'existe pas !"});
+        }
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
     return res.status(200).send(resultat);
 });
