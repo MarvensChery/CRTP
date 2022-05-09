@@ -1,6 +1,6 @@
 const express = require('express');
 
-const request = require('../database/conditions.js');
+const request = require('../database/conditions');
 
 const router = express.Router();
 
