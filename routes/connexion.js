@@ -24,8 +24,8 @@ router.post('/', async (req, res) => {
 
     let resultat;
     try {
-        const { identifiant, motDePasse } = req.body;
-        resultat = await request.connexion(identifiant, motDePasse);
+        const { identifiant, motDePasse, studentOrProf } = req.body;
+        resultat = await request.connexion(identifiant, motDePasse, studentOrProf);
     } catch (error) {
         res.status(500).json(error);
     }
