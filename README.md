@@ -1,32 +1,86 @@
-﻿
-# M9Search
+﻿# Projet CRPQ
+## API
 
   
 
-M9Search est une application web qui permet d'imiter les ordinateurs des policiers pour effectuer des recherches sur une personne en particulier.
+Dans le cadre du cours de Projet 2 - 4D1, le projet consiste à réaliser à développer une application capable de simuler l'outil d'interrogation de base de données à la disposition d'un agent de l'ordre lors de ses interventions.
 
-  
+## Cadre d'utilisation
+Cette application servira comme outil de formation auz étudiants en Technique policière. Il permettra à l'étudiant de:
+- Utiliser un outil de recherche de base de données
+- Se familiariser avec les informations récoltées lors d'une interpellation
 
-## Colaboration
-**Ce projet est réalisé par:** David Déchaine, Ryma Merrouchi, Charles-Étienne Doucet et Dan Bagalwa.
+## Collaborateurs
+**Ce projet est développé par:**
+* Dan Bagalwa
+* David Déchaine
+* Charles-Étienne Doucet
+* Ryma Merrouchi
+* Yvener Pierre-Louis V.
+* Amine Mohamed Benaddi
+* Seydou N'Golo Koné
+* Imran Sahy
 
-**Le PO :** Marc Levasseur.
+**PO :** Marc Levasseur.
 
-**Le Srum Master :** David Déchaine.
-
-## Tests
-Afin de completer les tests unitaires il faut lancer la commande : 
-    `npm test`
-    
-Le port utiliser pour lancer le serveur est le 3000 et la commande script est : 
-    `npm run serve`
-
-Afin d'utiliser le linter sur tout les fichiers la commande a taper est : 
-    `npm run lint`
-
-Afin d'utiliser le linter sur tout les fichiers et corriger les erreurs la commande a taper est : 
-    `npm run fix`
-    
-Afin d'utiliser l'API Veuillez installer toutes les dependances avec la commande : 
+## Utilisation
+Installation de toutes les dependances:
     `npm i`
 
+Exécution des tests unitaires:
+    `npm test`
+
+Détection des erreurs de lint:
+    `npm run lint`
+
+Correction des erreurs de lint:
+    `npm run fix`
+
+Lancement du serveur:
+    `npm run serve`
+
+Le serveur s'exécute sur le port 3000.
+
+
+
+## Appel d'API
+
+Ajout/Modification/suppresion dune personne
+
+
+    Appel API{
+        
+
+        GET /personnes/{idPersonne}
+
+        POST /personnes
+
+        PUT /personnes/{idPersonne}
+
+        DELETE /personnes/{idPersonne}
+
+    }
+
+
+Ajout/Modification d’une adresse de personne
+
+
+    Appel API{
+
+
+        GET /personnes/{idPersonne}
+
+        PUT /personnes/{idPersonne}
+
+        }
+
+Ajout/Modification d’une description de personne
+
+
+    Appel API{
+
+
+        GET /personnes/{idPersonne}
+
+        PUT /personnes/{idPersonne}
+    }
