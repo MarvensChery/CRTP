@@ -12,7 +12,7 @@ Cette application servira comme outil de formation au étudiants en technique po
 -Utilisé un outil de recherche de base de données
 
 ## Collaboration
-Ce projet est réalisé par: Ramy Naffati, Lucas Montion, Samy Issiakhem et Alexandre Ben Daia
+Ce projet est réalisé par: Alexandre Ben Daia, Lucas Montion, Ramy Naffati et Samy Issiakhem
 ***Le PO : Marc Levasseur
 ## Comment éxécuter le BACKEND? 
 
