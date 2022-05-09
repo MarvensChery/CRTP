@@ -14,6 +14,7 @@ const armesRouter = require('./routes/armes');
 const valeursRouter = require('./routes/valeurs');
 
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use('/personnes', personnesRouter);

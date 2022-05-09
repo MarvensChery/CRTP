@@ -92,4 +92,5 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 module.exports = {
     getIppesAll,
     getIPPE,
+
 };
