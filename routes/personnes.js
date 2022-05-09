@@ -47,7 +47,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const id = await request.postPersonne(
+        const id = await request.insertPersonne(
             TypePersonne,
             NomFamille,
             Prenom1,
@@ -96,7 +96,7 @@ router.put('/:idPersonne', async (req, res) => {
     }
 
     try {
-        await request.putPersonne(
+        await request.updatePersonne(
             idPersonne,
             TypePersonne,
             NomFamille,
@@ -170,7 +170,7 @@ router.put('/:idPersonne/description', async (req, res) => {
     }
 
     try {
-        await request.putDescription(
+        await request.updateDescription(
             idPersonne,
             Telephone,
             NoPermis,

@@ -2,9 +2,9 @@ const chaineConnexion = {
     client: 'mssql',
     connection: {
         host: 'sv55.cmaisonneuve.qc.ca',
-        user: 'votreuser',
-        password: 'votremotdepasse',
-        database: '',
+        user: '4D1EQUIPE04',
+        password: 'otn984',
+        database: '4D1EQUIPE04',
         options: {
             enableArithAbort: false,
         },
