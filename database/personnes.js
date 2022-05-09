@@ -142,6 +142,11 @@ async function putDescription(
             Depressif: depressif,
         });
 }
+
+function getPersonnesAll() {
+    return knex('Personnes');
+}
+
 module.exports = {
     postPersonne,
     getPersonne,
@@ -149,4 +154,5 @@ module.exports = {
     deletePersonne,
     getIppePersonne,
     putDescription,
+    getPersonnesAll,
 };
