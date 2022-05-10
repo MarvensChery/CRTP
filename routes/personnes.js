@@ -3,6 +3,20 @@ const express = require('express');
 const request = require('../database/personnes');
 
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
+    let resultat;
+    try {
+        resultat = await request.getPersonnesAll();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+
+    return res.status(200).json(resultat);
+});
+
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens
@@ -134,8 +148,9 @@ router.delete('/:idPersonne', async (req, res) => {
     }
     try {
         // Supprime les conditions, les IPPE et la personne de la BD
-        await request.deletePersonne(idPersonne);
-        return res.status(200).send({ deleted: true });
+        const response = await request.deletePersonne(idPersonne);
+        if (response.length > 0) return res.status(200).send({ message: 'Une personne a été supprimé' });
+        return res.status(404).send({ message: "Personne n'a été supprimé" });
     } catch (error) {
         return res.status(500).json(error.message);
     }
