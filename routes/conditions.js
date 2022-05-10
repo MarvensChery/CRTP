@@ -26,7 +26,7 @@ router.get('/:IdCondition', async (req, res) => {
 router.put('/:IdCondition', async (req, res) => {
     const { IdCondition } = req.params;
     const {
-        Libelle, input1, input2, input3, IdPersonne
+        Libelle, input1, Adresse1, input2, input3, IdPersonne, Adresse2, Ville, Province, CodePostal
     } = req.body;
     if ( Number.isNaN(IdCondition) ) {
         return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
@@ -49,9 +49,8 @@ router.put('/:IdCondition', async (req, res) => {
     // Update une condition avec une adresse
     if (Libelle.replace(/\s/g,'') === 'Avoircommeadressele') {
         try {
-            await request.updateAdresse(IdPersonne, input1);
+            await request.updateAdresse(IdPersonne, Adresse1, Adresse2, Ville, Province, CodePostal);
         } catch (error) {
-            res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: 'La modification de la condition est réussi !' });
     } if (Libelle.replace(/\s/g,'') === 'Doitdemeureràcetendroitentre') {

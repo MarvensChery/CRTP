@@ -19,10 +19,10 @@ function returnIdippe(Idpersonne) {
 }
 
 // Requete knex qui update une condition avec une adresse
-function updateAdresse(Idpersonne, Adresse1) {
+function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
     return knex('Personnes')
         .where({ Idpersonne })
-        .update({ Adresse1 });
+        .update({ Adresse1, Adresse2, Ville, Province, CodePostal });
 }
 
 // Requete knex qui update une condition avec une victime
