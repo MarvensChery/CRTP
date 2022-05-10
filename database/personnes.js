@@ -10,7 +10,7 @@ function getPersonne(IdPersonne) {
         .select('*');
 }
 // Permet d'ajouter une personne à la base de donnée
-function postPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
+function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
     return knex('Personnes')
         .insert({
             TypePersonne,
@@ -33,7 +33,7 @@ async function getIppePersonne(IdPersonne) {
     return resultat;
 }
 // Permet de modifer une personne
-async function putPersonne(
+async function updatePersonne(
     IdPersonne,
     TypePersonne,
     NomFamille,
@@ -59,38 +59,28 @@ async function deletePersonne(IdPersonne) {
     const reponseIPPE = await knex('PersonnesIPPE')
         .where('IdPersonne', IdPersonne)
         .select('IdIPPE');
-
-    if (reponseIPPE.length !== 0) {
-        reponseIPPE.forEach(async (element) => {
-            await knex('PersonnesIPPE')
-                .where('IdIPPE', element.IdIPPE)
-                .del();
-            await knex('Conditions')
-                .where('IdIPPE', element.IdIPPE)
-                .del();
-            await knex('IPPE')
-                .where('IdIPPE', element.IdIPPE)
-                .del();
-        });
-        await knex('FPS')
-            .where('IdPersonne', IdPersonne)
+    reponseIPPE.forEach(async (element) => {
+        await knex('PersonnesIPPE')
+            .where('IdIPPE', element.IdIPPE)
             .del();
-        return await knex('Personnes')
-            .where('IdPersonne', IdPersonne)
-            .del()
-            .returning('*');
-    }
+        await knex('Conditions')
+            .where('IdIPPE', element.IdIPPE)
+            .del();
+        await knex('IPPE')
+            .where('IdIPPE', element.IdIPPE)
+            .del();
+    });
     await knex('FPS')
         .where('IdPersonne', IdPersonne)
         .del();
-    return await knex('Personnes')
+    return knex('Personnes')
         .where('IdPersonne', IdPersonne)
         .del()
         .returning('*');
 }
 
 // Permet de modifer les description d'une personne
-async function putDescription(
+async function updateDescription(
     IdPersonne,
     telephone,
     noPermis,
@@ -146,11 +136,11 @@ function getPersonnesAll() {
 }
 
 module.exports = {
-    postPersonne,
+    insertPersonne,
     getPersonne,
-    putPersonne,
+    updatePersonne,
     deletePersonne,
     getIppePersonne,
-    putDescription,
+    updateDescription,
     getPersonnesAll,
 };
