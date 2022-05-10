@@ -6,17 +6,27 @@ Projet de consultation de base de données pour les étudiants de Technique poli
 
 Dans le cadre du cours de Projet 2 - 4D1, le projet consiste à réaliser à développer une application capable de simuler l'outil d'interrogation de base de données à la disposition d'un agent de l'ordre lors de ses interventions.
 
+
+
+
 ## Cadre d'utilisation
 Cette application servira comme outil de formation auz étudiants en Technique policière. Il permettra à l'étudiant de:
 - Utiliser un outil de recherche de base de données
 - Se familiariser avec les informations récoltées lors d'une interpellation
 
+* Salah Eddine Ouamalich
 ## Collaborateurs
 **Ce projet est développé par:**
 * Dan Bagalwa
 * David Déchaine
 * Charles-Étienne Doucet
 * Ryma Merrouchi
+
+* Amzert, Karim - E2069838
+* Cambray, Bastien - E1920614
+* Khendaf, Bilal - E1730934
+* Phung, Truong Sang Mario - E2066576
+
 * Kassem Kandil
 * Nathan Lamy
 * Salah Eddine Ouamalich
