@@ -22,20 +22,20 @@ async function updateArme(data, id) {
 }
 
 // Delete les donnees qui ont le meme ID.
-async function deleteData(id) {
+async function deleteArme(id) {
     return knex('IBAF')
         .where('IdIBAF', id)
         .del();
 }
 
 // Return les donnees avec le meme ID.
-function getDataById(id) {
+function getArmeById(id) {
     return knex('IBAF')
         .where('IdIBAF', id);
 }
 
 // Return les donnees avec le meme NoEvenement.
-function getDataByNoEvenement(id) {
+function getArmeByNoEvenement(id) {
     return knex('IBAF')
         .where('NoEvenement', id);
 }
@@ -44,7 +44,7 @@ module.exports = {
     getArmesAll,
     postArme,
     updateArme,
-    deleteData,
-    getDataById,
-    getDataByNoEvenement,
+    deleteArme,
+    getArmeById,
+    getArmeByNoEvenement,
 };

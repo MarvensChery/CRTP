@@ -22,20 +22,20 @@ async function updateObjet(data, id) {
 }
 
 // Delete les donnees avec le meme Id.
-async function deleteData(id) {
+async function deleteObjet(id) {
     return knex('IBOB')
         .where('IdBOB', id)
         .del();
 }
 
 // Return les donnees avec le meme Id.
-function getDataById(id) {
+function getObjetById(id) {
     return knex('IBOB')
         .where('IdBOB', id);
 }
 
 // Return les donnees avec le meme NoEvenement.
-function getDataByNoEvenement(id) {
+function getObjetByNoEvenement(id) {
     return knex('IBOB')
         .where('NoEvenement', id);
 }
@@ -44,7 +44,7 @@ module.exports = {
     getObjetsAll,
     postObjet,
     updateObjet,
-    deleteData,
-    getDataById,
-    getDataByNoEvenement,
+    deleteObjet,
+    getObjetById,
+    getObjetByNoEvenement,
 };

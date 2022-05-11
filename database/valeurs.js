@@ -22,20 +22,20 @@ async function updateValeur(data, id) {
 }
 
 // Delete la donnee avec le meme id.
-async function deleteData(id) {
+async function deleteValeur(id) {
     return knex('IBVA')
         .where('IdIBVA', id)
         .del();
 }
 
 // Retourne les donnees avec le meme id.
-function getDataById(id) {
+function getValeurById(id) {
     return knex('IBVA')
         .where('IdIBVA', id);
 }
 
 // Retourne les donnees avec le meme NoEvenement.
-function getDataByNoEvenement(id) {
+function getValeurByNoEvenement(id) {
     return knex('IBVA')
         .where('NoEvenement', id);
 }
@@ -44,7 +44,7 @@ module.exports = {
     getValeursAll,
     postValeur,
     updateValeur,
-    deleteData,
-    getDataById,
-    getDataByNoEvenement,
+    deleteValeur,
+    getValeurById,
+    getValeurByNoEvenement,
 };
