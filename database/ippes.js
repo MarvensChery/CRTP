@@ -13,8 +13,6 @@ function getIppesAll() {
 function formatterIPPE(IPPEs) {
     const resultat = [];
     const libelleList = [];
-<<<<<<< HEAD
-=======
 
     if (resultat[0] === undefined) {
         resultat.push(
@@ -42,7 +40,6 @@ function formatterIPPE(IPPEs) {
             },
         );
     }
->>>>>>> dev
 
     IPPEs.forEach((ippe) => {
         // Verifie si l'information IPPE se trouve deja dans les datas a envoyer
@@ -69,10 +66,7 @@ function formatterIPPE(IPPEs) {
                     agentLiberation: ippe.AgentLiberation,
                     telephone: ippe.Telephone,
                     poste: ippe.Poste,
-<<<<<<< HEAD
-=======
                     conditions: [], // eslint-disable-line
->>>>>>> dev
                 },
             );
         } else {
