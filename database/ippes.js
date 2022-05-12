@@ -12,6 +12,34 @@ function getIppesAll() {
 // Fonction qui manie l'affichage de la reponse IPPE
 function formatterIPPE(IPPEs) {
     const resultat = [];
+    const libelleList = [];
+
+    if (resultat[0] === undefined) {
+        resultat.push(
+            {
+                idIPPE: IPPEs[0].IdIPPE[0],
+                noEvenement: IPPEs[0].NoEvenement,
+                typeEvenement: IPPEs[0].TypeEvenement,
+                mandat: IPPEs[0].Mandat,
+                motif: IPPEs[0].Motif,
+                nature: IPPEs[0].Nature,
+                dossierEnquete: IPPEs[0].DossierEnquete,
+                cour: IPPEs[0].Cour,
+                noMandat: IPPEs[0].NoMandat,
+                noCause: IPPEs[0].NoCause,
+                idNatureCrime: IPPEs[0].idNatureCrime,
+                lieuDetention: IPPEs[0].LieuDetention,
+                finSentence: IPPEs[0].FinSentence,
+                vuDerniereFois: IPPEs[0].VuDerniereFois,
+                conditions: libelleList,
+                agentProbation: IPPEs[0].AgentProbation,
+                agentLiberation: IPPEs[0].AgentLiberation,
+                telephone: IPPEs[0].Telephone,
+                poste: IPPEs[0].Poste,
+                conditions: [], // eslint-disable-line
+            },
+        );
+    }
 
     IPPEs.forEach((ippe) => {
         // Verifie si l'information IPPE se trouve deja dans les datas a envoyer
@@ -25,7 +53,7 @@ function formatterIPPE(IPPEs) {
                     mandat: ippe.Mandat,
                     motif: ippe.Motif,
                     nature: ippe.Nature,
-                    dossierEnquete: ippe.dossierEnquete,
+                    dossierEnquete: ippe.DossierEnquete,
                     cour: ippe.Cour,
                     noMandat: ippe.NoMandat,
                     noCause: ippe.NoCause,
@@ -33,11 +61,12 @@ function formatterIPPE(IPPEs) {
                     lieuDetention: ippe.LieuDetention,
                     finSentence: ippe.FinSentence,
                     vuDerniereFois: ippe.VuDerniereFois,
+                    conditions: libelleList,
                     agentProbation: ippe.AgentProbation,
                     agentLiberation: ippe.AgentLiberation,
                     telephone: ippe.Telephone,
                     poste: ippe.Poste,
-                    conditions: [],
+                    conditions: [], // eslint-disable-line
                 },
             );
         } else {
@@ -53,7 +82,6 @@ function formatterIPPE(IPPEs) {
             );
         }
     });
-
     return resultat;
 }
 
@@ -92,4 +120,5 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 module.exports = {
     getIppesAll,
     getIPPE,
+
 };
