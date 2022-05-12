@@ -3,6 +3,20 @@ const express = require('express');
 const request = require('../database/personnes');
 
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+    let resultat;
+    try {
+        resultat = await request.getPersonnes();
+    } catch (error) {
+        return res.status(500).json(error);
+    }
+    if (resultat.length === 0) {
+        return res.status(404).json({ message: 'Aucune personne est enregistrée dans la base de doonnée!' });
+    }
+    return res.status(200).send(resultat);
+});
+
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens

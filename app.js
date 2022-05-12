@@ -12,6 +12,7 @@ const conditionsRouter = require('./routes/conditions');
 const objetsRouter = require('./routes/objets');
 const armesRouter = require('./routes/armes');
 const valeursRouter = require('./routes/valeurs');
+const fpsRouter = require('./routes/fps');
 
 app.use(cors());
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use('/conditions', conditionsRouter);
 app.use('/objets', objetsRouter);
 app.use('/armes', armesRouter);
 app.use('/valeurs', valeursRouter);
+app.use('/fps', fpsRouter);
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);

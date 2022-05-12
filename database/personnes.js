@@ -4,6 +4,10 @@ const chaineConnexion = require('../constantes');
 const knex = knexModule(chaineConnexion);
 
 // Permet d'aller chercher une personne dans personne ainsi que son ippe pour l'afficher
+function getPersonnes() {
+    return knex('Personnes');
+}
+
 function getPersonne(IdPersonne) {
     return knex('Personnes')
         .where('Personnes.IdPersonne', IdPersonne)
@@ -147,4 +151,5 @@ module.exports = {
     deletePersonne,
     getIppePersonne,
     putDescription,
+    getPersonnes,
 };
