@@ -5,16 +5,16 @@ const request = require('../database/personnes');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+
     let resultat;
     try {
-        resultat = await request.getPersonnes();
+        resultat = await request.getPersonnesAll();
     } catch (error) {
-        return res.status(500).json(error);
+        res.status(500).json(error.message);
     }
-    if (resultat.length === 0) {
-        return res.status(404).json({ message: 'Aucune personne est enregistrée dans la base de doonnée!' });
-    }
-    return res.status(200).send(resultat);
+
+    return res.status(200).json(resultat);
 });
 
 // eslint-disable consistent-return
@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
     }
 
     try {
-        const id = await request.postPersonne(
+        const id = await request.insertPersonne(
             TypePersonne,
             NomFamille,
             Prenom1,
@@ -110,7 +110,7 @@ router.put('/:idPersonne', async (req, res) => {
     }
 
     try {
-        await request.putPersonne(
+        await request.updatePersonne(
             idPersonne,
             TypePersonne,
             NomFamille,
@@ -184,7 +184,7 @@ router.put('/:idPersonne/description', async (req, res) => {
     }
 
     try {
-        await request.putDescription(
+        await request.updateDescription(
             idPersonne,
             Telephone,
             NoPermis,

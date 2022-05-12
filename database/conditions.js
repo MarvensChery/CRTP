@@ -3,48 +3,26 @@ const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
 
-function returnPersonne(Idpersonne) {
-    return knex('Personnes')
-        .where('IdPersonne', Idpersonne);
-}
+// Requete de test
+
 
 // Requete knex qui retourne les informations de la condition
 function returnCondition(idcondition) {
     return knex('Conditions')
         .where('IdCondition', idcondition);
 }
-// Requete knex qui insert la nouvelle condition
-function ajouterCondition(Idippe, Condition, Idpersonne) {
-    return knex('Conditions')
-        .insert({ IdIPPE: Idippe, Libelle: Condition, IdPersonne: Idpersonne });
+
+// Requete knex qui retourne les informations de la condition
+function returnIdippe(Idpersonne) {
+    return knex('PersonnesIPPE')
+        .where('IdPersonne', Idpersonne);
 }
-// Requete knex qui insert la nouvelle condition avec une victime
-function ajouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne,
-        });
-}
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe,
-            Libelle: Condition,
-            Frequentation: frequentation,
-            IdPersonne: Idpersonne,
-        });
-}
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe,
-            Libelle: Condition,
-            HeureDebut: heuredebut,
-            HeureFin: heurefin,
-            IdPersonne: Idpersonne,
-        });
+
+// Requete knex qui update une condition avec une adresse
+function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
+    return knex('Personnes')
+        .where({ Idpersonne })
+        .update({ Adresse1, Adresse2, Ville, Province, CodePostal });
 }
 
 // Requete knex qui update une condition avec une victime
@@ -69,11 +47,34 @@ function updateHeure(IdCondition, HeureDebut, HeureFin) {
         .update({ HeureFin });
 }
 
-// Requete knex qui update une condition avec une adresse
-async function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
-    return knex('Personnes')
-        .where({ Idpersonne })
-        .update({ Adresse1, Adresse2, Ville, Province, CodePostal });
+// Requete knex qui insert la nouvelle condition
+function ajouterCondition(Idippe, Condition, Idpersonne) {
+    return knex('Conditions')
+        .insert({ IdIPPE: Idippe, Libelle: Condition, IdPersonne: Idpersonne });
+}
+
+// Requete knex qui insert la nouvelle condition avec une victime
+function ajouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne,
+        });
+}
+
+// Requete knex qui insert la nouvelle condition avec une frequentation
+function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne,
+        });
+}
+
+// Requete knex qui insert la nouvelle condition avec une frequentation
+function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
+    return knex('Conditions')
+        .insert({
+            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne,
+        });
 }
 
 // Requete knex qui delete une conditions
@@ -83,16 +84,17 @@ function deleteCondition(IdCondition) {
         .del();
 }
 
+
 module.exports = {
-    ajouterCondition,
+    returnCondition,
+    updateAdresse,
     updateVictime,
-    deleteCondition,
     updateFrequentation,
+    updateHeure,
+    ajouterCondition,
+    returnIdippe,
     ajouterConditionAvecVictime,
     ajouterConditionAvecFrequentation,
     ajouterConditionAvecHeure,
-    returnCondition,
-    updateHeure,
-    returnPersonne,
-    updateAdresse,
+    deleteCondition,
 };

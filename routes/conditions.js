@@ -4,40 +4,58 @@ const request = require('../database/conditions');
 
 const router = express.Router();
 
+// Retourner la condition
+router.get('/:IdCondition', async (req, res) => {
+    const { IdCondition } = req.params;
+    let resultat = [];
+    if (Number.isNaN(IdCondition)) {
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
+    }
+    try {
+        resultat = await request.returnCondition(IdCondition);
+        if (resultat.length === 0) {
+            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" });
+        }
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+    return res.status(200).send(resultat);
+});
+
+// Update une condition
 router.put('/:IdCondition', async (req, res) => {
     const { IdCondition } = req.params;
     const {
-        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal
+        Libelle, input1, Adresse1, input2, input3, IdPersonne, Adresse2, Ville, Province, CodePostal,
     } = req.body;
-    if ( Number.isNaN(IdCondition) ) {
-        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+    if (Number.isNaN(IdCondition)) {
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
     }
-    if (Libelle === 'Ne pas entrer en contact avec') {
+    if (Libelle.replace(/\s/g, '') === 'Nepasentrerencontactavec') {
         try {
-            await request.updateVictime(IdCondition, Champs1);
+            await request.updateVictime(IdCondition, input1);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Ne pas fréquenter') {
+    } if (Libelle.replace(/\s/g, '') === 'Nepasfréquenter') {
         try {
-            await request.updateFrequentation(IdCondition, Champs1);
+            await request.updateFrequentation(IdCondition, input1);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: 'La modification de la condition est réussi !' });
     }
     // Update une condition avec une adresse
-    if (Libelle === 'Avoir comme adresse le') {
+    if (Libelle.replace(/\s/g, '') === 'Avoircommeadressele') {
         try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
+            await request.updateAdresse(IdPersonne, Adresse1, Adresse2, Ville, Province, CodePostal);
         } catch (error) {
-            res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Doit demeurer à cet endroit entre') {
+    } if (Libelle.replace(/\s/g, '') === 'Doitdemeureràcetendroitentre') {
         try {
-            await request.updateHeure(IdCondition, Champs1, Champs2);
+            await request.updateHeure(IdCondition, input2, input3);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -46,66 +64,63 @@ router.put('/:IdCondition', async (req, res) => {
     return res.status(500).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
+// Ajouter une condition sans paramètre
 router.post('/', async (req, res) => {
     const {
         IdIppe,
         Libelle,
-        Champs1,
-        Champs2,
-        Champs3,
+        input1,
+        input2,
+        input3,
         IdPersonne,
         Option,
-        Adresse2,
-        Ville,
-        Province,
-        CodePostal
     } = req.body;
 
-    if (Option === '3' || Option === '4') {
+    if (Option.replace(/\s/g, '') === 'Doitgarderlapaixetavoirbonneconduite' || Option.replace(/\s/g, '') === "Aucuneconsommationd'alcooloudedroguenonprescrite") {
         try {
             await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '2') {
+    } if (Option.replace(/\s/g, '') === 'Avoircommeadressele') {
         try {
             await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
         try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
+            await request.updateAdresse(IdPersonne, input1);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
         return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '5') {
+    } if (Option.replace(/\s/g, '') === 'Nepasentrerencontactavec') {
         try {
-            await request.ajouterConditionAvecVictime(IdIppe, Libelle, Champs1, IdPersonne);
+            await request.ajouterConditionAvecVictime(IdIppe, Libelle, input1, IdPersonne);
         } catch (error) {
             res.status(500).json(error.message);
         }
         return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '6') {
+    } if (Option.replace(/\s/g, '') === 'Nepasfréquenter') {
         try {
             await request.ajouterConditionAvecFrequentation(
                 IdIppe,
                 Libelle,
-                Champs1,
+                input1,
                 IdPersonne,
             );
         } catch (error) {
             res.status(500).json(error.message);
         }
         return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '7') {
+    } if (Option.replace(/\s/g, '') === 'Doitdemeureràcetendroitentre') {
         try {
             await request.ajouterConditionAvecHeure(
                 IdIppe,
                 Libelle,
-                Champs2,
-                Champs3,
+                input2,
+                input3,
                 IdPersonne,
             );
         } catch (error) {
@@ -116,8 +131,6 @@ router.post('/', async (req, res) => {
     return res.status(500).json({ message: 'Veuillez choisir une condition !' });
 });
 
-// Ajouter une condition avec des heures
-
 // Supprimer une condition
 router.delete('/:IdCondition', async (req, res) => {
     let IdCondition;
@@ -127,9 +140,8 @@ router.delete('/:IdCondition', async (req, res) => {
     } catch (error) {
         res.status(500).json(error.message);
     }
-
     if (!IdCondition) {
-        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
     }
 
     return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
