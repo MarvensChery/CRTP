@@ -7,6 +7,127 @@ const knex = knexModule(chaineConnexion);
 function getIppesAll() {
     return knex('IPPE');
 }
+// update IPPE
+async function updateIppe({
+    NoEvenement,
+    TypeEvenement,
+    Mandat,
+    Motif,
+    Nature,
+    DossierEnquete,
+    Cour,
+    NoMandat,
+    NoCause,
+    IdNatureCrime,
+    LieuDetention,
+    FinSentence,
+    VuDerniereFois,
+    AgentProbation,
+    AgentLiberation,
+    Telephone,
+    Poste,
+}, idIPPE) {
+    try {
+        await knex('IPPE')
+            .where(idIPPE)
+            .update({
+                NoEvenement,
+                TypeEvenement,
+                Mandat,
+                Motif,
+                Nature,
+                DossierEnquete,
+                Cour,
+                NoMandat,
+                NoCause,
+                IdNatureCrime,
+                LieuDetention,
+                FinSentence,
+                VuDerniereFois,
+                AgentProbation,
+                AgentLiberation,
+                Telephone,
+                Poste,
+            });
+        return null;
+    } catch (err) {
+        console.log(err);
+        return { err };
+    }
+}
+// add IPPE
+async function addIppe({
+    NoEvenement,
+    TypeEvenement,
+    Mandat,
+    Motif,
+    Nature,
+    DossierEnquete,
+    Cour,
+    NoMandat,
+    NoCause,
+    IdNatureCrime,
+    LieuDetention,
+    FinSentence,
+    VuDerniereFois,
+    AgentProbation,
+    AgentLiberation,
+    Telephone,
+    Poste,
+}, idPersonne) {
+    try {
+        await knex('IPPE')
+            .insert({
+                NoEvenement,
+                TypeEvenement,
+                Mandat,
+                Motif,
+                Nature,
+                DossierEnquete,
+                Cour,
+                NoMandat,
+                NoCause,
+                IdNatureCrime,
+                LieuDetention,
+                FinSentence,
+                VuDerniereFois,
+                AgentProbation,
+                AgentLiberation,
+                Telephone,
+                Poste,
+            });
+        const { IdIPPE } = (await knex('IPPE').where('NoEvenement', NoEvenement).select('IdIPPE'))[0];
+        await knex('PersonnesIPPE')
+            .insert({
+                IdIPPE,
+                IdPersonne: idPersonne,
+            });
+
+        return null;
+    } catch (err) {
+        console.log(err);
+        return { err };
+    }
+}
+// delete IPPE
+async function deleteIPPE(IdIPPE) {
+    try {
+        await knex('PersonnesIPPE')
+            .where('IdIPPE', IdIPPE)
+            .del();
+        await knex('Conditions')
+            .where('IdIPPE', IdIPPE)
+            .del();
+        await knex('IPPE')
+            .where('IdIPPE', IdIPPE)
+            .del();
+
+        return null;
+    } catch (error) {
+        console.log(error);
+        return { err: error };
+    }
+}
 
 // Requete knex qui retourne les informations de connexion
 // Fonction qui manie l'affichage de la reponse IPPE
@@ -118,7 +239,14 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 }
 
 module.exports = {
+    deleteIPPE,
     getIppesAll,
     getIPPE,
-
+    // chercherPersonne,
+    // chercherEvent,
+    // chercherConditions,
+    // getTypeEvenement,
+    // formatterTypeEvenement,
+    updateIppe,
+    addIppe,
 };
