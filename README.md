@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-# Projet_CRPQ_Equipe5
-## Projet API
-=======
-# Projet CRPQ
+﻿# Projet CRPQ
 ## API
 
-## Projet API
-Projet de consultation de base de données pour les étudiants de Technique policière.
+  
 
 Dans le cadre du cours de Projet 2 - 4D1, le projet consiste à réaliser à développer une application capable de simuler l'outil d'interrogation de base de données à la disposition d'un agent de l'ordre lors de ses interventions.
 
@@ -90,6 +85,10 @@ Phung, Truong Sang Mario - E2066576
 * David Déchaine
 * Charles-Étienne Doucet
 * Ryma Merrouchi
+* Yvener Pierre-Louis V.
+* Amine Mohamed Benaddi
+* Seydou N'Golo Koné
+* Imran Sahy
 
 * Amzert, Karim - E2069838
 * Cambray, Bastien - E1920614
