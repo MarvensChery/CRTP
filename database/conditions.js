@@ -5,7 +5,6 @@ const knex = knexModule(chaineConnexion);
 
 // Requete de test
 
-
 // Requete knex qui retourne les informations de la condition
 function returnCondition(idcondition) {
     return knex('Conditions')
@@ -22,7 +21,9 @@ function returnIdippe(Idpersonne) {
 function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
     return knex('Personnes')
         .where({ Idpersonne })
-        .update({ Adresse1, Adresse2, Ville, Province, CodePostal });
+        .update({
+            Adresse1, Adresse2, Ville, Province, CodePostal,
+        });
 }
 
 // Requete knex qui update une condition avec une victime
@@ -83,7 +84,6 @@ function deleteCondition(IdCondition) {
         .where({ IdCondition })
         .del();
 }
-
 
 module.exports = {
     returnCondition,
