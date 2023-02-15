@@ -7,10 +7,10 @@ const router = express.Router();
 router.put('/:IdCondition', async (req, res) => {
     const { IdCondition } = req.params;
     const {
-        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal
+        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal,
     } = req.body;
-    if ( Number.isNaN(IdCondition) ) {
-        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+    if (Number.isNaN(IdCondition)) {
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
     }
     if (Libelle === 'Ne pas entrer en contact avec') {
         try {
@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
         Adresse2,
         Ville,
         Province,
-        CodePostal
+        CodePostal,
     } = req.body;
 
     if (Option === '3' || Option === '4') {
@@ -129,7 +129,7 @@ router.delete('/:IdCondition', async (req, res) => {
     }
 
     if (!IdCondition) {
-        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
     }
 
     return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
@@ -137,15 +137,15 @@ router.delete('/:IdCondition', async (req, res) => {
 
 // Retourner la condition
 router.get('/:IdCondition', async (req, res) => {
-    const IdCondition = req.params.IdCondition;
+    const { IdCondition } = req.params;
     let resultat = [];
     if (Number.isNaN(IdCondition)) {
-        return res.status(400).json({message: "L'Id de condition ne peut jamais être null"});
+        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
     }
     try {
         resultat = await request.returnCondition(IdCondition);
         if (resultat.length === 0) {
-            return res.status(404).json({message: "La condition que vous recherchez n'existe pas !"});
+            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" });
         }
     } catch (error) {
         return res.status(500).json(error.message);
