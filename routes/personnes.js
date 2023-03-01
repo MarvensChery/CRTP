@@ -17,6 +17,16 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
+router.get('/:idPersonne/infoIPPE', async (req, res) => {
+    const data = await request.InfoPersonneIppebyId(req.params.idPersonne);
+    if (data) {
+        res.status(200).json(data);
+    } else {
+        res.status(400).json({ status: 'not found' });
+    }
+    return null;
+});
+
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens

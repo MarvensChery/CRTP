@@ -13,6 +13,17 @@ function getPersonne(IdPersonne) {
         .where('Personnes.IdPersonne', IdPersonne)
         .select('*');
 }
+
+async function InfoPersonneIppebyId(IdPersonne) {
+    const data = await knex('Personnes').first()
+        .where('IdPersonne', IdPersonne);
+
+    const dataTosend = {
+        data,
+    };
+    return dataTosend;
+}
+
 // Permet d'ajouter une personne à la base de donnée
 function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
     return knex('Personnes')
@@ -147,4 +158,6 @@ module.exports = {
     getIppePersonne,
     updateDescription,
     getPersonnesAll,
+    getPersonnes,
+    InfoPersonneIppebyId,
 };
