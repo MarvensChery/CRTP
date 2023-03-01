@@ -17,60 +17,16 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
-const { addIppe } = require('../database/ippes');
-
-router.post('/:idPersonne/ippe', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-
-    let resultat;
-    const { idPersonne } = req.params;
-    const {
-        NoEvenement,
-        TypeEvenement,
-        Mandat,
-        Motif,
-        Nature,
-        DossierEnquete,
-        Cour,
-        NoMandat,
-        NoCause,
-        IdNatureCrime,
-        LieuDetention,
-        FinSentence,
-        VuDerniereFois,
-        AgentProbation,
-        AgentLiberation,
-        Telephone,
-        Poste,
-    } = req.body;
-    try {
-        resultat = await addIppe({
-            NoEvenement,
-            TypeEvenement,
-            Mandat,
-            Motif,
-            Nature,
-            DossierEnquete,
-            Cour,
-            NoMandat,
-            NoCause,
-            IdNatureCrime,
-            LieuDetention,
-            FinSentence,
-            VuDerniereFois,
-            AgentProbation,
-            AgentLiberation,
-            Telephone,
-            Poste,
-        }, idPersonne);
-        if (resultat) {
-            return res.status(500).json(resultat);
-        }
-        return res.status(200).json(resultat);
-    } catch (error) {
-        return res.status(500).json(error.message);
+router.get('/:idPersonne/infoIPPE', async (req, res) => {
+    const data = await request.InfoPersonneIppebyId(req.params.idPersonne);
+    if (data) {
+        res.status(200).json(data);
+    } else {
+        res.status(400).json({ status: 'not found' });
     }
+    return null;
 });
+
 // eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
     // Pour quand on uilisera les tokens
