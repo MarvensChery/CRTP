@@ -181,3 +181,81 @@ test('modificationIBOB dans database', async () => {
     await reqKnexObjet.suppresionIBOById(idIBOB);
     expect(expectedResult).toEqual(result);
 });
+
+test('get Armeid', async () => {
+    const expectedResult = {
+        Calibre: '357       ',
+        IdIBAF: 1,
+        Marque: 'SMITH & WESSON',
+        NoEvenement: '108-220304-0006',
+        NoSerie: '1597538',
+        TypeArme: 'Révolver',
+    };
+    const result = await reqKnexArme.getArmeById(1);
+
+    expect(expectedResult).toEqual(result[0]);
+});
+
+test('get Armeid avec erreur', async () => {
+    const result = await reqKnexArme.getArmeById(88);
+
+    expect(result).toEqual([]);
+    expect(result[0]).toBeUndefined();
+});
+
+test('get Armeall', async () => {
+    const expectedResult = [
+        {
+            IdIBAF: 1,
+            NoSerie: '1597538',
+            Marque: 'SMITH & WESSON',
+            Calibre: '357       ',
+            TypeArme: 'Révolver',
+            NoEvenement: '108-220304-0006',
+        },
+        {
+            IdIBAF: 2,
+            NoSerie: '1397139',
+            Marque: 'BERETTA',
+            Calibre: '9         ',
+            TypeArme: 'Pistolet',
+            NoEvenement: '302-220306-0009',
+        },
+        {
+            IdIBAF: 3,
+            NoSerie: '3572586',
+            Marque: 'WINCHESTER',
+            Calibre: '223       ',
+            TypeArme: 'Carabine',
+            NoEvenement: '123-220308-0023',
+        },
+        {
+            IdIBAF: 4,
+            NoSerie: '5462885',
+            Marque: 'REMINGTON',
+            Calibre: '12        ',
+            TypeArme: 'Fusil',
+            NoEvenement: '108-220310-0003',
+        },
+        {
+            IdIBAF: 5,
+            NoSerie: 'test',
+            Marque: 'test',
+            Calibre: '3571      ',
+            TypeArme: 'test',
+            NoEvenement: '108-220304-0002',
+        },
+        {
+            IdIBAF: 6,
+            NoSerie: 'Test',
+            Marque: 'Test',
+            Calibre: '9999999999',
+            TypeArme: 'Test',
+            NoEvenement: '123456789123456',
+        },
+    ];
+    const result = await reqKnexArme.getArmesAll();
+    console.log(result);
+    expect(expectedResult).toEqual(result);
+});
+
