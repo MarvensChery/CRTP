@@ -37,9 +37,6 @@ router.get('/', async (req, res) => {
 // Requête pour insérer une arme
 router.post('/', async (req, res) => {
     try {
-        if (!req.params.idArme) {
-            return res.status(400).json({ message: 'Le paramètre "idArme" est manquant', success: false });
-        }
         if (!req.body.NoSerie || !req.body.Marque || !req.body.Calibre
             || !req.body.TypeArme || !req.body.NoEvenement) {
             return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants', success: false });
