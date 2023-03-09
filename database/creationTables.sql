@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CategoriesCrime](
 	[IdCategorieCrime] [int] IDENTITY(1,1) NOT NULL,
-	[Categorie] [nchar](75) NOT NULL,
+	[Categorie] [nvarchar](75) NOT NULL,
  CONSTRAINT [PK_CategoriesCrime] PRIMARY KEY CLUSTERED 
 (
 	[IdCategorieCrime] ASC
@@ -96,7 +96,7 @@ CREATE TABLE [dbo].[IBAF](
 	[IdIBAF] [int] IDENTITY(1,1) NOT NULL,
 	[NoSerie] [nvarchar](15) NOT NULL,
 	[Marque] [nvarchar](50) NOT NULL,
-	[Calibre] [nchar](10) NULL,
+	[Calibre] [nvarchar](10) NULL,
 	[TypeArme] [nvarchar](15) NOT NULL,
 	[NoEvenement] [nchar](15) NULL,
  CONSTRAINT [PK_IBAB] PRIMARY KEY CLUSTERED 
