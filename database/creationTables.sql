@@ -581,13 +581,13 @@ SET IDENTITY_INSERT [dbo].[FPS] OFF
 GO
 SET IDENTITY_INSERT [dbo].[IBAF] ON
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (1, N'1597538', N'SMITH & WESSON', N'357       ', N'Révolver', N'108-220304-0006')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (1, N'1597538', N'SMITH & WESSON', N'357', N'Révolver', N'108-220304-0006')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (2, N'1397139', N'BERETTA', N'9         ', N'Pistolet', N'302-220306-0009')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (2, N'1397139', N'BERETTA', N'9', N'Pistolet', N'302-220306-0009')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (3, N'3572586', N'WINCHESTER', N'223       ', N'Carabine', N'123-220308-0023')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (3, N'3572586', N'WINCHESTER', N'223', N'Carabine', N'123-220308-0023')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (4, N'5462885', N'REMINGTON', N'12        ', N'Fusil', N'108-220310-0003')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (4, N'5462885', N'REMINGTON', N'12', N'Fusil', N'108-220310-0003')
 GO
 SET IDENTITY_INSERT [dbo].[IBAF] OFF
 GO

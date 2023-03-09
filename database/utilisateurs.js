@@ -9,8 +9,10 @@ function getUtilisateursAll() {
 }
 
 function getUtilisateurById(id) {
-    return knex('Utilisateurs')
+    const rep = knex('Utilisateurs')
         .where('idUtilisateur', '=', id);
+    console.log(rep);
+    return rep;
 }
 
 // Requete knex qui retourne les informations de connexion

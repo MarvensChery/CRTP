@@ -184,19 +184,97 @@ test('modificationIBOB dans database', async () => {
 });
 
 test('GET /utilisateurs', async () => {
+    const expected = [
+        {
+            IdUtilisateur: 1,
+            Identifiant: 'e1234567',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'EtudiantAganier',
+        },
+        {
+            IdUtilisateur: 2,
+            Identifiant: '1234',
+            MotDePasse: 'bonjour',
+            Etudiant: false,
+            NomFamille: 'ProfLamarre',
+        },
+        {
+            IdUtilisateur: 4,
+            Identifiant: 'e1236443',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Masse',
+        },
+        {
+            IdUtilisateur: 5,
+            Identifiant: 'e1235341',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Busseau',
+        },
+        {
+            IdUtilisateur: 6,
+            Identifiant: 'e1231880',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Vaillancourt',
+        },
+        {
+            IdUtilisateur: 7,
+            Identifiant: 'e1237247',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Talbot',
+        },
+        {
+            IdUtilisateur: 8,
+            Identifiant: 'e1239547',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Lafleur',
+        },
+        {
+            IdUtilisateur: 9,
+            Identifiant: 'e1233306',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Wilson',
+        },
+        {
+            IdUtilisateur: 10,
+            Identifiant: 'e1234634',
+            MotDePasse: 'bonjour',
+            Etudiant: true,
+            NomFamille: 'Gagnon',
+        },
+    ];
     const rep = await reqUtilisateurs.getUtilisateursAll();
     console.log(rep);
+    expect(rep).toEqual(expected);
     expect(rep.length).toEqual(9);
+    expect(rep).toBeDefined();
 });
 
 test('GET /utilisateurs/{idUtilisateur}', async () => {
     const rep = await reqUtilisateurs.getUtilisateurById(1);
+    const expected = {
+        IdUtilisateur: 1,
+        Identifiant: 'e1234567',
+        MotDePasse: 'bonjour',
+        Etudiant: true,
+        NomFamille: 'EtudiantAganier',
+    };
     console.log(rep);
+    expect(rep[0]).toEqual(expected);
+    expect(rep[0]).toBeDefined();
     expect(rep.length).toEqual(1);
 });
 
+//
 test('GET /utilisateurs/{idUtilisateur} avec erreur', async () => {
     const rep = await reqUtilisateurs.getUtilisateurById(88);
-    console.log(rep);
+    expect(rep).toEqual([]);
+    expect(rep[0]).toBeUndefined();
     expect(rep.length).toEqual(0);
 });
