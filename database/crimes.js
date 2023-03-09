@@ -8,6 +8,12 @@ function getCrimesAll() {
     return knex('Crimes');
 }
 
+function getCrimesById(idCrime) {
+    return knex('Crimes')
+        .where('idCrime', idCrime);
+}
+
 module.exports = {
     getCrimesAll,
+    getCrimesById,
 };

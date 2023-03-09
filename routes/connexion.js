@@ -31,15 +31,14 @@ router.post('/', async (req, res) => {
     }
 
     if (resultat.length === 0) {
-        // envoi du message contenant les information pour le login
-        /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
-
         return res.status(404).json({ succes: false });
     }
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
         expiresIn,
     });
+
+    req.session.token = accessToken;
 
     return res.status(200).json({
         succes: true,
