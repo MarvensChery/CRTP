@@ -8,6 +8,11 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
+function getUtilisateurById(id) {
+    return knex('Utilisateurs')
+        .where('idUtilisateur', '=', id);
+}
+
 // Requete knex qui retourne les informations de connexion
 function connexion(identifiant, motDePasse, studentOrProf) {
     return knex('Utilisateurs')
@@ -18,5 +23,6 @@ function connexion(identifiant, motDePasse, studentOrProf) {
 
 module.exports = {
     getUtilisateursAll,
+    getUtilisateurById,
     connexion,
 };

@@ -1,5 +1,6 @@
 const { TestWatcher } = require('jest');
 const reqKnex = require('./ippes');
+const reqUtilisateurs = require('./utilisateurs');
 const reqKnexArme = require('./armes');
 const reqKnexObjet = require('./objets');
 const reqKnexValeur = require('./valeurs');
@@ -180,4 +181,22 @@ test('modificationIBOB dans database', async () => {
     const result = await reqKnexObjet.getIBOBbyId(idIBOB);
     await reqKnexObjet.suppresionIBOById(idIBOB);
     expect(expectedResult).toEqual(result);
+});
+
+test('GET /utilisateurs', async () => {
+    const rep = await reqUtilisateurs.getUtilisateursAll();
+    console.log(rep);
+    expect(rep.length).toEqual(9);
+});
+
+test('GET /utilisateurs/{idUtilisateur}', async () => {
+    const rep = await reqUtilisateurs.getUtilisateurById(1);
+    console.log(rep);
+    expect(rep.length).toEqual(1);
+});
+
+test('GET /utilisateurs/{idUtilisateur} avec erreur', async () => {
+    const rep = await reqUtilisateurs.getUtilisateurById(88);
+    console.log(rep);
+    expect(rep.length).toEqual(0);
 });
