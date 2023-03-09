@@ -17,6 +17,12 @@ function returnIdippe(Idpersonne) {
         .where('IdPersonne', Idpersonne);
 }
 
+// Requete knex qui retourne les conditions d'un evenement
+function returnConditionsOfEvenement(IdIPPE) {
+    return knex('Conditions')
+        .where('IdIPPE', IdIPPE);
+}
+
 // Requete knex qui update une condition avec une adresse
 function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
     return knex('Personnes')
@@ -88,6 +94,7 @@ function deleteCondition(IdCondition) {
 module.exports = {
     returnCondition,
     updateAdresse,
+    returnConditionsOfEvenement,
     updateVictime,
     updateFrequentation,
     updateHeure,
