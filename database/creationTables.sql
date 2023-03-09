@@ -1,4 +1,4 @@
-USE [4D1Equipe06]
+USE [CRTPEquipe2]
 GO
 ALTER TABLE [dbo].[Personnes] DROP CONSTRAINT [CK_Personnes]
 GO

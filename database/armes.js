@@ -9,7 +9,7 @@ function getArmesAll() {
 }
 
 // Insert notre donnee dans la database.
-async function postArme(data) {
+async function insertArme(data) {
     return knex('IBAF')
         .insert(data);
 }
@@ -42,7 +42,7 @@ function getArmeByNoEvenement(id) {
 // Exporte les fonctions.
 module.exports = {
     getArmesAll,
-    postArme,
+    insertArme,
     updateArme,
     deleteArme,
     getArmeById,
