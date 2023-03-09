@@ -301,9 +301,9 @@ INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [He
 GO
 INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [HeureDebut], [HeureFin], [Victime], [Frequentation]) VALUES (18, 26, NULL, N'Doit garder la paix et avoir bonne conduite', NULL, NULL, NULL, NULL)
 GO
-INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [HeureDebut], [HeureFin], [Victime], [Frequentation]) VALUES (23, 18, 6, N'Aucune consommation d''alcool ou de drogue non prescrite', NULL, NULL, NULL, NULL)
+INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [HeureDebut], [HeureFin], [Victime], [Frequentation]) VALUES (23, 18, NULL, N'Aucune consommation d''alcool ou de drogue non prescrite', NULL, NULL, NULL, NULL)
 GO
-INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [HeureDebut], [HeureFin], [Victime], [Frequentation]) VALUES (24, 26, 10, N'Ne pas fréquenter', NULL, NULL, NULL, N'Vincent Leblanc')
+INSERT [dbo].[Conditions] ([IdCondition], [IdIPPE], [IdPersonne], [Libelle], [HeureDebut], [HeureFin], [Victime], [Frequentation]) VALUES (24, 26, NULL, N'Ne pas fréquenter', NULL, NULL, NULL, N'Vincent Leblanc')
 GO
 SET IDENTITY_INSERT [dbo].[Conditions] OFF
 GO
