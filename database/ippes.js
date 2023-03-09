@@ -7,54 +7,6 @@ const knex = knexModule(chaineConnexion);
 function getIppesAll() {
     return knex('IPPE');
 }
-// update IPPE
-async function updateIppe({
-    NoEvenement,
-    TypeEvenement,
-    Mandat,
-    Motif,
-    Nature,
-    DossierEnquete,
-    Cour,
-    NoMandat,
-    NoCause,
-    IdNatureCrime,
-    LieuDetention,
-    FinSentence,
-    VuDerniereFois,
-    AgentProbation,
-    AgentLiberation,
-    Telephone,
-    Poste,
-}, idIPPE) {
-    try {
-        await knex('IPPE')
-            .where(idIPPE)
-            .update({
-                NoEvenement,
-                TypeEvenement,
-                Mandat,
-                Motif,
-                Nature,
-                DossierEnquete,
-                Cour,
-                NoMandat,
-                NoCause,
-                IdNatureCrime,
-                LieuDetention,
-                FinSentence,
-                VuDerniereFois,
-                AgentProbation,
-                AgentLiberation,
-                Telephone,
-                Poste,
-            });
-        return null;
-    } catch (err) {
-        console.log(err);
-        return { err };
-    }
-}
 // add IPPE
 async function addIppe({
     NoEvenement,
@@ -205,7 +157,7 @@ function formatterIPPE(IPPEs) {
     });
     return resultat;
 }
-
+/*
 async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
     const resultat = await knex('Personnes')
         .where({
@@ -237,7 +189,7 @@ async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
 
     return resultat;
 }
-
+*/
 // Permet d'avoir un évènement d'une personne particulièrement celle qu'on a prévu de modifié
 async function InfoPersonneIppe(IdPersonne, IdIPPE) {
     const data = await knex('personnes').first()
@@ -318,73 +270,52 @@ async function InfoPersonneIppe(IdPersonne, IdIPPE) {
 }
 
 // Requete knex pour ajouter un évènement  IPPE à  personne
-async function AjoutReponse(IdPersonne, data, response) {
-    const verifyPersonne = await knex('Personnes').where('Personnes.IdPersonne', IdPersonne).first();
-    if (!verifyPersonne) {
-        return response.status(404).send('Personne not found');
-    }
-    try {
-        await knex('IPPE').insert(data.tableIPPE);
-    } catch {
-        return response.status(400).json({
-            success: false,
-            message: 'Insertion impossible',
-        });
-    }
+async function insertIppePersonne(IdPersonne, IPPE) {
+    await knex('IPPE').insert(IPPE);
     const lastIdIppe = await knex('IPPE').max('IdIPPE as IdIPPE').first();
-    try {
-        await knex('PersonnesIPPE').insert({ IdPersonne, IdIPPE: lastIdIppe.IdIPPE });
-    } catch {
-        return response.status(400).json({
-            success: false,
-            message: 'Insertion impossible',
-        });
-    }
-    response.status(201).json({ success: true, message: 'Évènement IPPE Ajouté' });
+    await knex('PersonnesIPPE').insert({ IdPersonne, IdIPPE: lastIdIppe.IdIPPE });
+    return lastIdIppe.IdIPPE;
 }
-
 // Requete knex pour modifier la table IPPE
-async function modifiertableIppe(IdIPPE, element) {
-    const resultat = await knex('IPPE')
-        .update(element)
-        .where('IdIPPE', IdIPPE);
-    return resultat;
+async function updateIppe(IdIPPE, IPPE) {
+    try {
+        const resultat = await knex('IPPE')
+            .update(IPPE)
+            .where('IdIPPE', IdIPPE);
+        return resultat;
+    } catch (err) {
+        console.log(err);
+        return { err };
+    }
 }
 
 // Requete knex pour Supprimer les réponses IPPE d'une personne
-async function deleteResponse(IdPersonne, IdIPPE, response) {
-    const verifyPersonne = await knex('Personnes').where('IdPersonne', IdPersonne);
-    if (!verifyPersonne) {
-        return response.status(404).json({ success: false, message: 'Personne not found' });
-    }
-    const verify = await knex('IPPE').where('IdIPPE', IdIPPE);
+async function deleteResponse(IdIPPE) {
+    await knex('Conditions')
+        .where('IdIPPE', IdIPPE)
+        .del();
+    await knex('PersonnesIPPE')
+        .where('IdIPPE', IdIPPE)
+        .del();
+    const delIPPE = await knex('IPPE')
+        .where('IdIPPE', IdIPPE)
+        .del();
+    return delIPPE;
+}
 
-    if (!verify) {
-        return response.status(404).json({ success: false, message: 'IPPE not found' });
-    }
-    const verifyCondition = await knex('Conditions').where('Conditions.IdIPPE', IdIPPE)
-        .andWhere('Conditions.IdPersonne', IdPersonne);
-
-    if (!verifyCondition) {
-        return response.status(404).json({ success: false, message: 'Condition not found ' });
-    }
-    await knex('Conditions').del().where('Conditions.IdIPPE', IdIPPE);
-    await knex('PersonnesIPPE').del().where('PersonnesIPPE.IdIPPE', IdIPPE)
-        .andWhere('PersonnesIPPE.IdPersonne', IdPersonne);
-    const delIPPE = await knex('IPPE').del().where('IdIPPE', IdIPPE);
-
-    if (delIPPE) {
-        return response.status(200).json({ success: true, message: 'Évènement IPPE Supprimé' });
-    }
-    return response.status(500).json({ success: false, message: 'Erreur serveur !!!' });
+//
+async function getIPPE(IdIPPE) {
+    const data = await knex('IPPE')
+        .where('IdIPPE', IdIPPE);
+    return data;
 }
 
 module.exports = {
     deleteIPPE,
     getIppesAll,
     getIPPE,
-    AjoutReponse,
+    insertIppePersonne,
     InfoPersonneIppe,
-    modifiertableIppe,
+    updateIppe,
     deleteResponse,
 };
