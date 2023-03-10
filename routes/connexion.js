@@ -6,6 +6,8 @@ const request = require('../database/utilisateurs');
 
 const router = express.Router();
 
+const bcrypt = require('bcrypt');
+
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
 
@@ -19,6 +21,7 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
+
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
 
@@ -27,13 +30,10 @@ router.post('/', async (req, res) => {
         const { identifiant, motDePasse, studentOrProf } = req.body;
         resultat = await request.connexion(identifiant, motDePasse, studentOrProf);
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error);
     }
 
     if (resultat.length === 0) {
-        // envoi du message contenant les information pour le login
-        /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
-
         return res.status(404).json({ succes: false });
     }
     const expiresIn = 14400;
@@ -50,5 +50,4 @@ router.post('/', async (req, res) => {
         expires_in: expiresIn,
     });
 });
-
 module.exports = router;

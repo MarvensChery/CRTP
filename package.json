@@ -6,6 +6,7 @@
   "keywords": [],
   "author": "Étudiants du cours 420-4D1, CM9",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
