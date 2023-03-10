@@ -3,7 +3,7 @@ const db = require('../database/ippes');
 
 const router = express.Router();
 
-// Route pour GET l'ippe par idPersonne et idIPPE
+// Route pour GET idIPPE
 router.get('/:IdIPPE', async (req, res) => {
     let resultat;
     const { IdIPPE } = req.params;

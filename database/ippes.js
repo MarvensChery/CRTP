@@ -157,39 +157,7 @@ function formatterIPPE(IPPEs) {
     });
     return resultat;
 }
-/*
-async function getIPPE(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
-    const resultat = await knex('Personnes')
-        .where({
-            NomFamille: nomFamille,
-            Prenom1: prenom1,
-            Prenom2: prenom2,
-            Masculin: masculin,
-            DateNaissance: dateNaissance,
-        });
 
-    if (resultat.length === 0) return resultat;
-
-    // La personne existe: on récupère sa signalisation FPS si elle en a une
-    const FPS = await knex('FPS')
-        .where('FPS.IdPersonne', resultat[0].IdPersonne);
-    // eslint-disable-next-line prefer-destructuring
-    resultat[0].FPS = FPS.length === 0 ? null : FPS[0];
-
-    // On récupère les événements IPPE associés si elle en a
-    resultat[0].IPPE = await knex('PersonnesIPPE')
-        .join('IPPE', 'PersonnesIPPE.IdIPPE', 'IPPE.IdIPPE')
-        .leftJoin('Conditions', 'Conditions.IdIPPE', 'IPPE.IdIPPE')
-        .where('PersonnesIPPE.IdPersonne', resultat[0].IdPersonne);
-
-    if (resultat[0].IPPE.length === 0) return resultat;
-
-    // La personne a des événements IPPE associés: on les formate
-    resultat[0].IPPE = formatterIPPE(resultat[0].IPPE);
-
-    return resultat;
-}
-*/
 // Permet d'avoir un évènement d'une personne particulièrement celle qu'on a prévu de modifié
 async function InfoPersonneIppe(IdPersonne, IdIPPE) {
     const data = await knex('personnes').first()
