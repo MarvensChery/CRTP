@@ -29,7 +29,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-
     if (resultat.length === 0) {
         // envoi du message contenant les information pour le login
         /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
