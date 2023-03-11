@@ -19,11 +19,9 @@ function postUtilisateur(data) {
 }
 
 // Requete knex qui retourne les informations de connexion
-function connexion(identifiant, motDePasse, studentOrProf) {
+function connexion(Courriel) {
     return knex('Utilisateurs')
-        .where('Identifiant', identifiant)
-        .andWhere('MotDePasse', motDePasse)
-        .andWhere('Etudiant', studentOrProf);
+        .where('Courriel', Courriel);
 }
 
 module.exports = {

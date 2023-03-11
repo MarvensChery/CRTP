@@ -14,6 +14,7 @@ router.post('/', async (req, res) => {
     try {
         const utilisateur = {
             Identifiant: req.body.Identifiant,
+            Courriel: req.body.Courriel,
             MotDePasse: bcrypt.hashSync(req.body.MotDePasse, 10),
             Etudiant: req.body.Etudiant,
             NomFamille: req.body.NomFamille,
