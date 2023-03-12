@@ -68,7 +68,7 @@ router.post('/:IdPersonne', async (req, res) => {
     const { IdPersonne } = req.params;
     console.log(IdPersonne);
     const data = req.body.element;
-    console.log(data);  
+    console.log(data);
     if (data == null) {
         return res.status(400).json({ success: false, message: 'données manquantes' });
     }
