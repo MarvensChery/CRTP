@@ -31,13 +31,15 @@ async function deleteArme(id) {
 // Return les donnees avec le meme ID.
 function getArmeById(id) {
     return knex('IBAF')
-        .where('IdIBAF', id);
+        .where('IdIBAF', id)
+        .first();
 }
 
 // Return les donnees avec le meme NoEvenement.
 function getArmeByNoEvenement(id) {
     return knex('IBAF')
-        .where('NoEvenement', id);
+        .where('NoEvenement', id)
+        .first();
 }
 // Exporte les fonctions.
 module.exports = {
