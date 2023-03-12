@@ -7,60 +7,7 @@ const knex = knexModule(chaineConnexion);
 function getIppesAll() {
     return knex('IPPE');
 }
-// add IPPE
-async function addIppe({
-    NoEvenement,
-    TypeEvenement,
-    Mandat,
-    Motif,
-    Nature,
-    DossierEnquete,
-    Cour,
-    NoMandat,
-    NoCause,
-    IdNatureCrime,
-    LieuDetention,
-    FinSentence,
-    VuDerniereFois,
-    AgentProbation,
-    AgentLiberation,
-    Telephone,
-    Poste,
-}, idPersonne) {
-    try {
-        await knex('IPPE')
-            .insert({
-                NoEvenement,
-                TypeEvenement,
-                Mandat,
-                Motif,
-                Nature,
-                DossierEnquete,
-                Cour,
-                NoMandat,
-                NoCause,
-                IdNatureCrime,
-                LieuDetention,
-                FinSentence,
-                VuDerniereFois,
-                AgentProbation,
-                AgentLiberation,
-                Telephone,
-                Poste,
-            });
-        const { IdIPPE } = (await knex('IPPE').where('NoEvenement', NoEvenement).select('IdIPPE'))[0];
-        await knex('PersonnesIPPE')
-            .insert({
-                IdIPPE,
-                IdPersonne: idPersonne,
-            });
 
-        return null;
-    } catch (err) {
-        console.log(err);
-        return { err };
-    }
-}
 // delete IPPE
 async function deleteIPPE(IdIPPE) {
     try {
@@ -159,56 +106,8 @@ function formatterIPPE(IPPEs) {
 }
 
 // Permet d'avoir un évènement d'une personne particulièrement celle qu'on a prévu de modifié
-async function InfoPersonneIppe(IdPersonne, IdIPPE) {
+async function getInfoPersonneIppe(IdPersonne, IdIPPE) {
     const data = await knex('personnes').first()
-        .select(
-            'Personnes.IdPersonne',
-            'IPPE.IdIPPE',
-            'NomFamille',
-            'Prenom1',
-            'Prenom2',
-            'Masculin',
-            'DateNaissance',
-            'Personnes.Telephone',
-            'NoPermis',
-            'Adresse1',
-            'Adresse2',
-            'Ville',
-            'Province',
-            'CodePostal',
-            'Race',
-            'Taille',
-            'Yeux',
-            'Cheveux',
-            'Marques',
-            'Poids',
-            'Toxicomanie',
-            'Desorganise',
-            'Depressif',
-            'Suicidaire',
-            'Violent',
-            'Gilet',
-            'Pantalon',
-            'AutreVetement',
-            'NoEvenement',
-            'Mandat',
-            'TypeEvenement',
-            'Motif',
-            'DossierEnquete',
-            'Cour',
-            'NoMandat',
-            'NoCause',
-            'IdNatureCrime',
-            'IPPE.Nature as Nature',
-            'Crimes.Nature as NatureCrime',
-            'LieuDetention',
-            'FinSentence',
-            'VuDernierefois',
-            'AgentProbation',
-            'AgentLiberation',
-            'IPPE.Telephone',
-            'Poste',
-        )
         .fullOuterJoin('PersonnesIPPE', 'PersonnesIPPE.IdPersonne', 'Personnes.IdPersonne')
         .fullOuterJoin('IPPE', 'IPPE.IdIPPE', 'PersonnesIPPE.IdIPPE')
         .leftOuterJoin('Conditions', 'Conditions.IdPersonne', 'PersonnesIPPE.IdPersonne')
@@ -271,7 +170,7 @@ async function deleteResponse(IdIPPE) {
     return delIPPE;
 }
 
-//
+// Requete Knex pour obtenir IPPE
 async function getIPPE(IdIPPE) {
     const data = await knex('IPPE')
         .where('IdIPPE', IdIPPE);
@@ -283,7 +182,8 @@ module.exports = {
     getIppesAll,
     getIPPE,
     insertIppePersonne,
-    InfoPersonneIppe,
+    getInfoPersonneIppe,
     updateIppe,
     deleteResponse,
+    formatterIPPE, // pas utiliser en ce moment!
 };
