@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[CategoriesCrime](
 	[IdCategorieCrime] [int] IDENTITY(1,1) NOT NULL,
-	[Categorie] [nchar](75) NOT NULL,
+	[Categorie] [nvarchar](75) NOT NULL,
  CONSTRAINT [PK_CategoriesCrime] PRIMARY KEY CLUSTERED 
 (
 	[IdCategorieCrime] ASC
@@ -96,7 +96,7 @@ CREATE TABLE [dbo].[IBAF](
 	[IdIBAF] [int] IDENTITY(1,1) NOT NULL,
 	[NoSerie] [nvarchar](15) NOT NULL,
 	[Marque] [nvarchar](50) NOT NULL,
-	[Calibre] [nchar](10) NULL,
+	[Calibre] [nvarchar](10) NULL,
 	[TypeArme] [nvarchar](15) NOT NULL,
 	[NoEvenement] [nchar](15) NULL,
  CONSTRAINT [PK_IBAB] PRIMARY KEY CLUSTERED 
@@ -540,13 +540,13 @@ GO
 SET IDENTITY_INSERT [dbo].[IBAF] ON 
 
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (1, N'1597538', N'SMITH & WESSON', N'357       ', N'Révolver', N'108-220304-0006')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (1, N'1597538', N'SMITH & WESSON', N'357', N'Révolver', N'108-220304-0006')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (2, N'1397139', N'BERETTA', N'9         ', N'Pistolet', N'302-220306-0009')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (2, N'1397139', N'BERETTA', N'9', N'Pistolet', N'302-220306-0009')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (3, N'3572583', N'Winchester', N'223       ', N'Carabine', N'123-220308-0023')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (3, N'3572583', N'Winchester', N'223', N'Carabine', N'123-220308-0023')
 GO
-INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (4, N'5462885', N'REMINGTON', N'12        ', N'Fusil', N'108-220310-0003')
+INSERT [dbo].[IBAF] ([IdIBAF], [NoSerie], [Marque], [Calibre], [TypeArme], [NoEvenement]) VALUES (4, N'5462885', N'REMINGTON', N'12', N'Fusil', N'108-220310-0003')
 GO
 SET IDENTITY_INSERT [dbo].[IBAF] OFF
 GO
