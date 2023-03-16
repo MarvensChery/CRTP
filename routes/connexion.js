@@ -1,9 +1,6 @@
 const express = require('express');
-
 const jwt = require('jsonwebtoken');
-
-const bcrypt = require('bcrypt');
-
+const bcrypt = require('bcryptjs');
 const request = require('../database/utilisateurs');
 
 const router = express.Router();
@@ -35,7 +32,7 @@ router.post('/', async (req, res) => {
         const accessToken = jwt.sign(
             { identifiant: utilisateur.Identifiant },
             process.env.TOKEN_KEY,
-            { expiresIn }
+            { expiresIn },
         );
         return res.status(200).json({
             succes: true,
@@ -46,7 +43,7 @@ router.post('/', async (req, res) => {
             expires_in: expiresIn,
         });
     } catch (error) {
-        return res.status(500).json(error);
+        return res.status(500).json(error.message);
     }
 });
 

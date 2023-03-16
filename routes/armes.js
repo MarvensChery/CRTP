@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
         }
         const id = await db.insertArme(req.body);
-        const armeNouvelle = await db.getArmeById(id);
+        const armeNouvelle = await db.getArmeById(id.IdIBAF);
         return res.status(200).json(armeNouvelle);
     } catch (error) {
         return res.status(500).json({ message: error.message });
