@@ -8,14 +8,22 @@ function getArmesAll() {
     return knex('IBAF');
 }
 
-// Insert notre donnee dans la database.
-async function postArme(data) {
+// Insert une arme dans la database.
+async function postArme(NoSerie, Marque, Calibre, TypeArme, NoEvenement) {
+    const data = {
+        NoSerie,
+        Marque,
+        Calibre,
+        TypeArme,
+        NoEvenement,
+    };
     return knex('IBAF')
         .insert(data);
 }
 
-// Update et retourne les donees qui ont le meme ID.
+// Update et retourne les armes qui ont le meme ID.
 async function updateArme(data, id) {
+    console.log(data, id);
     return knex('IBAF')
         .update(data)
         .where('IdIBAF', id);
