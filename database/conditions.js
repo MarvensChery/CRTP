@@ -17,35 +17,10 @@ function returnConditionsOfEvenement(IdIPPE) {
         .where('IdIPPE', IdIPPE);
 }
 
-// Requete knex qui update une condition avec une adresse
-function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
-    return knex('Personnes')
-        .where({ Idpersonne })
-        .update({
-            Adresse1, Adresse2, Ville, Province, CodePostal,
-        });
-}
-
-// Requete knex qui update une condition avec une victime
-function updateVictime(IdCondition, Victime) {
+function modifierCondition(data, idCondition) {
     return knex('Conditions')
-        .where({ IdCondition })
-        .update({ Victime });
-}
-
-// Requete knex qui update une condition avec une frequentation
-function updateFrequentation(IdCondition, Frequentation) {
-    return knex('Conditions')
-        .where({ IdCondition })
-        .update({ Frequentation });
-}
-
-// Requete knex qui update les heures d'une conditions
-function updateHeure(IdCondition, HeureDebut, HeureFin) {
-    return knex('Conditions')
-        .where({ IdCondition })
-        .update({ HeureDebut })
-        .update({ HeureFin });
+        .update(data)
+        .where('IdCondition', idCondition);
 }
 
 // Requete knex qui insert la nouvelle condition
@@ -63,11 +38,8 @@ function deleteCondition(IdCondition) {
 
 module.exports = {
     returnCondition,
-    updateAdresse,
+    modifierCondition,
     returnConditionsOfEvenement,
-    updateVictime,
-    updateFrequentation,
-    updateHeure,
     ajouterCondition,
     deleteCondition,
 };
