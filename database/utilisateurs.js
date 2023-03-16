@@ -8,6 +8,35 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
+
+function insertUtilisateurs(IdUtilisateur, Identifiant, MotDePasse, Etudiant, NomFamille) {
+    return knex('Utilisateurs')
+        .insert({
+            IdUtilisateur,
+            Identifiant,
+            MotDePasse,
+            Etudiant,
+            NomFamille,
+            
+        }, ['IdUtilisateur'])
+        .returning('IdUtilisateur');
+}
+
+// Update et retourne les donees qui ont le meme ID.
+async function updateUtilisateurs(data, id) {
+    return knex('Utilisateurs')
+        .update(data)
+        .where('IdUtilisateur', id);
+}
+
+// Delete les donnees qui ont le meme ID.
+async function deleteUtilisateurs(id) {
+    return knex('Utilisateurs')
+        .where('IdUtilisateur', id)
+        .del();
+}
+
+
 function getUtilisateurById(id) {
     const rep = knex('Utilisateurs')
         .where('idUtilisateur', '=', id);
@@ -25,6 +54,10 @@ function connexion(identifiant, motDePasse, studentOrProf) {
 
 module.exports = {
     getUtilisateursAll,
+    
+    insertUtilisateurs,
+    updateUtilisateurs,
+    deleteUtilisateurs,
     getUtilisateurById,
     connexion,
 };
