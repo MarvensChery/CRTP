@@ -62,73 +62,24 @@ router.get('/ippes/:idIppe', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const {
-        IdIppe,
-        Libelle,
-        Champs1,
-        Champs2,
-        Champs3,
-        IdPersonne,
-        Option,
-        Adresse2,
-        Ville,
-        Province,
-        CodePostal,
-    } = req.body;
+    try {
+        const nouvelleCondition = {
+            IdIPPE: req.body.IdIPPE,
+            IdPersonne: req.body.IdPersonne,
+            Libelle: req.body.Libelle,
+            HeureDebut: req.body.HeureDebut,
+            HeureFin: req.body.HeureFin,
+            Victime: req.body.Victime,
+            Frequentation: req.body.Frequentation,
+        };
 
-    if (Option === '3' || Option === '4') {
-        try {
-            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
-        } catch (error) {
-            return res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '2') {
-        try {
-            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '5') {
-        try {
-            await request.ajouterConditionAvecVictime(IdIppe, Libelle, Champs1, IdPersonne);
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '6') {
-        try {
-            await request.ajouterConditionAvecFrequentation(
-                IdIppe,
-                Libelle,
-                Champs1,
-                IdPersonne,
-            );
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '7') {
-        try {
-            await request.ajouterConditionAvecHeure(
-                IdIppe,
-                Libelle,
-                Champs2,
-                Champs3,
-                IdPersonne,
-            );
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+        await request.ajouterCondition(nouvelleCondition);
+
+        return res.status(201).json({ message: 'La nouvelle condition a été insérée avec succès.' });
+    } catch (error) {
+        console.error(`Erreur lors de l'insertion de la nouvelle condition: ${error.message}`);
+        return res.status(500).json({ error: 'Erreur lors de l\'insertion de la nouvelle condition.' });
     }
-    return res.status(500).json({ message: 'Veuillez choisir une condition !' });
 });
 
 // Ajouter une condition avec des heures
