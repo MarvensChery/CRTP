@@ -5,70 +5,23 @@ const reqKnexArme = require('./armes');
 const reqKnexObjet = require('./objets');
 const reqKnexValeur = require('./valeurs');
 
-// test('Réponse ***RECHERCHÉ***', async () => {
-//     jest.setTimeout(10000);
-//     const expected = [{
-//         idIPPE: 8,
-//         noEvenement: '108-220208-0031',
-//         typeEvenement: 'Recherché',
-//         mandat: 'Arrestation',
-//         motif: null,
-//         nature: null,
-//         dossierEnquete: undefined,
-//         cour: 'Municipale de Longueuil',
-//         noMandat: 'CM-LGL-A-26840',
-//         noCause: null,
-//         idNatureCrime: undefined,
-//         lieuDetention: null,
-//         finSentence: null,
-//         vuDerniereFois: null,
-//         agentProbation: null,
-//         agentLiberation: null,
-//         telephone: null,
-//         poste: null,
-//         conditions: [],
-//         idPersonne: 3,
-//         nomFamille: 'Ducharme',
-//         prenom1: 'Benoit',
-//         prenom2: null,
-//         masculin: true,
-//         dateNaissance: new Date('1975-08-31T00:00:00.000Z'),
 
-//     }];
-//     const result = await reqKnex.getIPPE(
-//         expected[0].nomFamille,
-//         expected[0].prenom1,
-//         expected[0].prenom2,
-//         expected[0].masculin,
-//         expected[0].dateNaissance,
-//     );
-
-//     expect(result[0].IPPE).toEqual(expected);
-// });
-
-test('get IBOB by id dans database', async () => {
+test('test1', async () => {
+    await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
     const expectedResult = [{
-        Marque: 'LG',
-        Modele: '32LB5600-UZ',
-        NoEvenement: '123-220301-0007',
-        NoSerie: '410MXBPVF637',
-        TypeObjet: 'RA',
+        IdIBAF: 5,
+        NoSerie: "test",
+        Marque: "test",
+        Calibre: '3571      ',
+        TypeArme: "test",
+        NoEvenement: '108-220304-0002',
     }];
-    const result = await reqKnexObjet.getIBOBbyId(1);
+    
+    const result = await reqKnexArme.getArmeById();
+    
     expect(expectedResult).toEqual(result);
 });
 
-test('get IBVA by id dans database', async () => {
-    const expectedResult = [{
-        Identifiant: '628181-4249-96708',
-        Auteur: 'MASTERCARD',
-        TypeValeur: 'Carte de crédit / débit',
-        TypeEvenement: 'Perdu',
-        NoEvenement: '123-220301-0007',
-    }];
-    const result = await reqKnexValeur.getIBVAbyId(5);
-    expect(expectedResult).toEqual(result);
-});
 
 test('get IBAF by id dans database', async () => {
     const expectedResult = [{
