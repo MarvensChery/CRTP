@@ -46,11 +46,10 @@ router.put('/:IdCondition', async (req, res) => {
     return res.status(500).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
-router.get('/ippes/:idIppe/conditions', async (req, res) => {
+router.get('/ippes/:idIppe', async (req, res) => {
     try {
         let data;
-        if (req.params.idIppe !== undefined)data = await request.returnConditionsOfEvenement(req.params.idIppe);
-        else return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (req.params.idIppe !== undefined) { data = await request.returnConditionsOfEvenement(req.params.idIppe); } else return res.status(400).json({ message: 'paramètre manquant', success: false });
         if (data.length === 0) {
             // retourne la valeur negative
             return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
