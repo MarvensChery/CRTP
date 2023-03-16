@@ -1,7 +1,6 @@
 const knexModule = require('knex');
+const bcrypt = require('bcryptjs');
 const chaineConnexion = require('../constantes');
-
-const bcrypt = require('bcrypt');
 
 const knex = knexModule(chaineConnexion);
 
