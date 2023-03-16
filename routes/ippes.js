@@ -32,14 +32,16 @@ router.put('/:IdIPPE', async (req, res) => {
     if (req.body) {
         try {
             const exist = await db.getIPPE(IdIPPE);
-            if (!exist.length) return res.status(404).json({ success: false, message: 'IPPE not found' });
-            await db.updateIppe(IdIPPE, IPPE);
+            if (!exist.length) return res.status(404).json({ message: 'IPPE not found' });
+            const message = await db.updateIppe(IdIPPE, IPPE);
+            if (message !== 1) return res.status(404).json({ message: 'IPPE updated error' });
+            const returnData = await db.getIPPE(IdIPPE);
+            return res.status(200).json(returnData[0]);
         } catch (error) {
-            return res.status(500).json({ success: false, message: 'réponse non modifiée' });
+            return res.status(500).json({ message: error.message });
         }
-        return res.status(200).json({ success: true, message: 'réponse modifiée' });
     }
-    return res.status(400).json({ success: false, message: "manque d'élément à modifier" });
+    return res.status(400).json({ message: "manque d'élément à modifier" });
 });
 
 // Route pour la suppression d'un ippe
@@ -47,16 +49,16 @@ router.delete('/:IdIPPE', async (req, res) => {
     const { IdIPPE } = req.params;
     try {
         if (req.params.IdIPPE == null) {
-            return res.status(400).json({ success: false, message: 'identifiant manquant' });
+            return res.status(400).json({ message: 'identifiant manquant' });
         }
         const exist = await db.getIPPE(IdIPPE);
         if (!exist.length) {
-            return res.status(404).json({ success: false, message: 'IPPE not found' });
+            return res.status(404).json({ message: 'IPPE not found' });
         }
         const deleteReponse = await db.deleteResponse(IdIPPE);
-        return res.status(200).json({ success: true, message: `IPPE effacer. ${deleteReponse} ligne modifier.` });
+        return res.status(200).json({ message: `IPPE effacer. ${deleteReponse} ligne modifier.` });
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        return res.status(500).json({ message: error.message });
     }
 });
 
