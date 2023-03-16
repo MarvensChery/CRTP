@@ -38,8 +38,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // choix des infos a envoyer selon la banque de données choisi
     try {
-        if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
-            || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (req.body.NoSerie === undefined || req.body.Auteur === undefined || req.body.TypeVa === undefined
+            || req.body.ResIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
         // verifie si l'entite a ajouter existe deja dans la base de donnees
         const DataAdd = await request.getValeurByNoEvenement(req.body.NoEvenement);
@@ -48,12 +48,12 @@ router.post('/', async (req, res) => {
 
         const DataToSend = {
             Identifiant: req.body.NoSerie,
-            Auteur: req.body.auteur,
-            TypeValeur: req.body.typeVa,
-            TypeEvenement: req.body.resIBVA,
+            Auteur: req.body.Auteur,
+            TypeValeur: req.body.TypeVa,
+            TypeEvenement: req.body.ResIBVA,
             NoEvenement: req.body.NoEvenement,
         };
-            // ajout de données
+        // ajout de données
         await request.postValeur(DataToSend);
         // avoir le id de la nouvelle entité
         const Data = await request.getValeurByNoEvenement(req.body.NoEvenement);
@@ -67,8 +67,8 @@ router.post('/', async (req, res) => {
 // route pour modifier les donnees dans la base
 router.put('/:idValeur', async (req, res) => {
     try {
-        if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
-            || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (req.body.NoSerie === undefined || req.body.Auteur === undefined || req.body.TypeVa === undefined
+            || req.body.ResIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
         // verifier si l'entite est deja dans la base de donnees
         const DataAdd = await request.getValeurById(req.params.idValeur);
@@ -77,9 +77,9 @@ router.put('/:idValeur', async (req, res) => {
 
         const DataToSend = {
             Identifiant: req.body.NoSerie,
-            Auteur: req.body.auteur,
-            TypeValeur: req.body.typeVa,
-            TypeEvenement: req.body.resIBVA,
+            Auteur: req.body.Auteur,
+            TypeValeur: req.body.TypeVa,
+            TypeEvenement: req.body.ResIBVA,
             NoEvenement: req.body.NoEvenement,
         };
         // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
