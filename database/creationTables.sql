@@ -240,9 +240,9 @@ GO
 CREATE TABLE [dbo].[Utilisateurs](
 	[IdUtilisateur] [int] IDENTITY(1,1) NOT NULL,
 	[Identifiant] [nvarchar](8) NOT NULL,
+	[Courriel] [nvarchar](60) NOT NULL,
 	[MotDePasse] [nvarchar](max) NOT NULL,
 	[Etudiant] [bit] NOT NULL,
-	[IdPersonne] [int] NOT NULL,
  CONSTRAINT [PK_Utilisateurs] PRIMARY KEY CLUSTERED 
 (
 	[IdUtilisateur] ASC

@@ -6,7 +6,7 @@ test('Afficher les informations d\'une condition', async () => {
         {
             "IdCondition": 3,
             "IdIPPE": 12,
-            "IdPersonne": 5,
+            "IdPersonne": null,
             "Libelle": "Ne pas entrer en contact avec ",
             "HeureDebut": null,
             "HeureFin": null,
@@ -23,7 +23,7 @@ test('Afficher les conditions d\'un evenement', async () => {
             "IdCondition": 2,
             "IdIPPE": 12,
             "IdPersonne": 5,
-            "Libelle": "Avoir comme adresse le\n ",
+            "Libelle": "Avoir comme adresse le\r\n ",
             "HeureDebut": null,
             "HeureFin": null,
             "Victime": null,
@@ -32,7 +32,7 @@ test('Afficher les conditions d\'un evenement', async () => {
         {
             "IdCondition": 3,
             "IdIPPE": 12,
-            "IdPersonne": 5,
+            "IdPersonne": null,
             "Libelle": "Ne pas entrer en contact avec ",
             "HeureDebut": null,
             "HeureFin": null,
@@ -42,7 +42,7 @@ test('Afficher les conditions d\'un evenement', async () => {
         {
             "IdCondition": 4,
             "IdIPPE": 12,
-            "IdPersonne": 5,
+            "IdPersonne": null,
             "Libelle": "Doit garder la paix et avoir bonne conduite",
             "HeureDebut": null,
             "HeureFin": null,
