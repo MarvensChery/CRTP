@@ -14,6 +14,7 @@ function getUtilisateurs(IdUtilisateur) {
         .select('*');
 }
 
+// Inscription de un utilisateur
 function insertUtilisateurs(IdUtilisateur, Identifiant, MotDePasse, Etudiant, NomFamille) {
     return knex('Utilisateurs')
         .insert({
@@ -22,7 +23,7 @@ function insertUtilisateurs(IdUtilisateur, Identifiant, MotDePasse, Etudiant, No
             MotDePasse,
             Etudiant,
             NomFamille,
-            
+
         }, ['IdUtilisateur'])
         .returning('IdUtilisateur');
 }
@@ -40,7 +41,6 @@ async function deleteUtilisateurs(id) {
         .where('IdUtilisateur', id)
         .del();
 }
-
 
 function getUtilisateurById(id) {
     const rep = knex('Utilisateurs')

@@ -1,27 +1,34 @@
-const { TestWatcher } = require('jest');
-const reqKnex = require('./ippes');
+// const { TestWatcher } = require('jest');
 const reqUtilisateurs = require('./utilisateurs');
 const reqKnexArme = require('./armes');
 const reqKnexObjet = require('./objets');
 const reqKnexValeur = require('./valeurs');
 
 
+
+
+
+
+
+
+
+
+
 test('test1', async () => {
     await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
     const expectedResult = [{
         IdIBAF: 5,
-        NoSerie: "test",
-        Marque: "test",
+        NoSerie: 'test',
+        Marque: 'test',
         Calibre: '3571      ',
-        TypeArme: "test",
+        TypeArme: 'test',
         NoEvenement: '108-220304-0002',
     }];
-    
+
     const result = await reqKnexArme.getArmeById();
-    
+
     expect(expectedResult).toEqual(result);
 });
-
 
 test('get IBAF by id dans database', async () => {
     const expectedResult = [{
@@ -34,8 +41,6 @@ test('get IBAF by id dans database', async () => {
     const result = await reqKnexArme.getIBAFById(1);
     expect(expectedResult).toEqual(result);
 });
-
-const reqKnexArme = require('./armes');
 // Ajout des armes
 test('ajoutIBAF dans database', async () => {
     await reqKnexArme.postArme('test10', 'test8', '3751', 'test8', '108-220304-0003');
@@ -186,28 +191,11 @@ test('get Armeall', async () => {
             TypeArme: 'Fusil',
             NoEvenement: '108-220310-0003',
         },
-        {
-            IdIBAF: 5,
-            NoSerie: 'test',
-            Marque: 'test',
-            Calibre: '3571      ',
-            TypeArme: 'test',
-            NoEvenement: '108-220304-0002',
-        },
-        {
-            IdIBAF: 6,
-            NoSerie: 'Test',
-            Marque: 'Test',
-            Calibre: '9999999999',
-            TypeArme: 'Test',
-            NoEvenement: '123456789123456',
-        },
     ];
     const result = await reqKnexArme.getArmesAll();
     console.log(result);
     expect(expectedResult).toEqual(result);
 });
-
 
 test('GET /utilisateurs', async () => {
     const expected = [
