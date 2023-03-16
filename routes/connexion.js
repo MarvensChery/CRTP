@@ -1,6 +1,10 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable max-len */
 const express = require('express');
 
 const jwt = require('jsonwebtoken');
+
+const bcrypt = require('bcrypt');
 
 const request = require('../database/utilisateurs');
 
@@ -23,14 +27,19 @@ router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
 
     let resultat;
+    let bool;
     try {
         const { identifiant, motDePasse, studentOrProf } = req.body;
         resultat = await request.connexion(identifiant, motDePasse, studentOrProf);
+        bool = bcrypt.compareSync(req.body.MotDePasse, resultat.MotDePasse);
+        if (bool === false) {
+            res.status(400).send('Mot de Passe est invalide');
+        }
     } catch (error) {
         res.status(500).json(error);
     }
 
-    if (resultat.length === 0) {
+    if (bool === true) {
         // envoi du message contenant les information pour le login
         /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
 
@@ -52,27 +61,26 @@ router.post('/', async (req, res) => {
 });
 
 router.post('/inscription', async (req, res) => {
-    
-    try{
-        let salt = await bcrypt.genSalt();
+    try {
+        const salt = await bcrypt.genSalt();
         const password = await bcrypt.hash(req.body.motDePasse, salt);
-        await request.insertUser(req.body.identifiant,password,req.body.Etudiant,req.body.NomFamille);
+        await request.insertUser(req.body.identifiant,password,req.body.Etudiant, req.body.NomFamille);
         res.status(201).send();
     } catch {
         res.status(401).send();
     }
 });
 
-router.post('/update'){
-    let passwords = await request.getPasswords();
-    for (i=0;i<passwords.length;i++){
-        let unHashedPassword = passwords[i].MotDePasse
-        let salt = await bcrypt.genSalt();
-        let hashedPassword = await bcrypt.hash(unHashedPassword,salt);
+// eslint-disable-next-line no-unused-vars
+router.post('/update', async (req, res) => {
+    const passwords = await request.getPasswords();
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < passwords.length; i++) {
+        const unHashedPassword = passwords[i].MotDePasse;
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(unHashedPassword,salt);
         await request.updatePassword(passwords[i].Identifiant,hashedPassword)
-    };
-};
-
-
+    }
+});
 
 module.exports = router;
