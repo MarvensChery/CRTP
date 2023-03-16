@@ -2,8 +2,11 @@ const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
-
-function getFps(IdFPS) {
+function getFps() {
+    return knex('FPS')
+        .select('*');
+}
+function getFpsId(IdFPS) {
     return knex('FPS')
         .select(
             'Personnes.IdPersonne',
@@ -152,6 +155,7 @@ function deleteFps(IdFPS) {
 
 module.exports = {
     getFps,
+    getFpsId,
     addFps,
     updateDescription,
     updateFps,
