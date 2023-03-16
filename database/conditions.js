@@ -11,12 +11,6 @@ function returnCondition(idcondition) {
         .where('IdCondition', idcondition);
 }
 
-// Requete knex qui retourne les informations de la condition
-function returnIdippe(Idpersonne) {
-    return knex('PersonnesIPPE')
-        .where('IdPersonne', Idpersonne);
-}
-
 // Requete knex qui retourne les conditions d'un evenement
 function returnConditionsOfEvenement(IdIPPE) {
     return knex('Conditions')
@@ -99,7 +93,6 @@ module.exports = {
     updateFrequentation,
     updateHeure,
     ajouterCondition,
-    returnIdippe,
     ajouterConditionAvecVictime,
     ajouterConditionAvecFrequentation,
     ajouterConditionAvecHeure,
