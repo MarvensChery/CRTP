@@ -25,16 +25,17 @@ router.post('/', async (req, res) => {
     let resultat;
     try {
         const { Identifiant } = req.body;
+        if (Identifiant === undefined || req.body.MotDePasse === undefined) return res.status(400).send('Le courriel out le mot de passe ne peut pas être null');
         resultat = await request.getUtilisateurByIdentifiant(Identifiant);
     } catch (error) {
         res.status(500).json(error);
     }
 
     if (resultat.length === 0) {
-        return res.status(404).json({ succes: false });
+        return res.status(404).send('Utilisateur introuvable');
     }
     const verifMDP = bcrypt.compareSync(req.body.MotDePasse, resultat[0].MotDePasse);
-    if (!verifMDP) return res.status(401).send('Informations invalides');
+    if (!verifMDP) return res.status(401).send('Courriel ou mot de passe invalide');
 
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
