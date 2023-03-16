@@ -112,7 +112,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[IBOB](
-	[IdBOB] [int] IDENTITY(1,1) NOT NULL,
+	[IdIBOB] [int] IDENTITY(1,1) NOT NULL,
 	[NoSerie] [nvarchar](15) NOT NULL,
 	[Marque] [nvarchar](50) NOT NULL,
 	[Modele] [nvarchar](50) NULL,
@@ -120,7 +120,7 @@ CREATE TABLE [dbo].[IBOB](
 	[NoEvenement] [nchar](15) NULL,
  CONSTRAINT [PK_IBOB] PRIMARY KEY CLUSTERED 
 (
-	[IdBOB] ASC
+	[IdIBOB] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
@@ -553,23 +553,23 @@ GO
 SET IDENTITY_INSERT [dbo].[IBOB] ON 
 
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (1, N'410MXBPVF637', N'LG', N'32LB5600-UZ', N'RA', N'123-220301-0007')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (1, N'410MXBPVF637', N'LG', N'32LB5600-UZ', N'RA', N'123-220301-0007')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (2, N'168TRDM65298', N'TREK', N'DOMANEAL3', N'BI', N'108-220302-0011')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (2, N'168TRDM65298', N'TREK', N'DOMANEAL3', N'BI', N'108-220302-0011')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (3, N'ZEW1BJAG90009MN', N'SAMSUNG', N'C460PW', N'EB', N'302-220303-0014')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (3, N'ZEW1BJAG90009MN', N'SAMSUNG', N'C460PW', N'EB', N'302-220303-0014')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (4, N'52000790', N'NIKON', N'AW120', N'EP', N'123-220304-0028')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (4, N'52000790', N'NIKON', N'AW120', N'EP', N'123-220304-0028')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (5, N'91324', N'Dewalt', N'Dcd785', N'MO', N'108-220305-0037')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (5, N'91324', N'Dewalt', N'Dcd785', N'MO', N'108-220305-0037')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (6, N'R9-OWPZL', N'IBM', N'THINKPAD10', N'OR', N'302-220306-0046')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (6, N'R9-OWPZL', N'IBM', N'THINKPAD10', N'OR', N'302-220306-0046')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (7, N'DMPJ2LCTDVGH', N'APPLE', N'IPAD', N'TA', N'123-220307-0031')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (7, N'DMPJ2LCTDVGH', N'APPLE', N'IPAD', N'TA', N'123-220307-0031')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (8, N'C8PVH37SJC6K', N'APPLE', N'IPHONE 8', N'TL', N'109-220308-0046')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (8, N'C8PVH37SJC6K', N'APPLE', N'IPHONE 8', N'TL', N'109-220308-0046')
 GO
-INSERT [dbo].[IBOB] ([IdBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (9, N'7PB4702713', N'YAMAHA', N'EF20IST', N'AU', N'302-220309-0001')
+INSERT [dbo].[IBOB] ([IdIBOB], [NoSerie], [Marque], [Modele], [TypeObjet], [NoEvenement]) VALUES (9, N'7PB4702713', N'YAMAHA', N'EF20IST', N'AU', N'302-220309-0001')
 GO
 SET IDENTITY_INSERT [dbo].[IBOB] OFF
 GO
