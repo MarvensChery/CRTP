@@ -1,6 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+
 const bcrypt = require('bcryptjs');
+
 const request = require('../database/utilisateurs');
 
 const router = express.Router();
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
-router.post('/', async (req, res) => {
+router.post('/connexion', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
         const { Identifiant, MotDePasse, studentOrProf } = req.body;
@@ -44,6 +46,31 @@ router.post('/', async (req, res) => {
         });
     } catch (error) {
         return res.status(500).json(error.message);
+    }
+});
+
+router.post('/inscription', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    try {
+        const { Identifiant, MotDePasse, studentOrProf, NomFamille } = req.body;
+        const MdpHash = await bcrypt.hash(MotDePasse, 10);
+        const utilisateur = await request.inscription(Identifiant, MdpHash, studentOrProf, NomFamille);
+        const expiresIn = 14400;
+        const accessToken = jwt.sign(
+            { identifiant: utilisateur.Identifiant },
+            process.env.TOKEN_KEY,
+            { expiresIn },
+        );
+        return res.status(200).json({
+            succes: true,
+            Etudiant: utilisateur.Etudiant,
+            Matricule: utilisateur.Identifiant,
+            Nom: utilisateur.NomFamille,
+            access_token: accessToken,
+            expires_in: expiresIn,
+        });
+    } catch (error) {
+        return res.status(500).json(error);
     }
 });
 
