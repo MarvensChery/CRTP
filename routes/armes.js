@@ -1,22 +1,22 @@
 const express = require('express');
-
 const db = require('../database/armes');
 
 const router = express.Router();
-// Requête pour obtenir une arme avec son id.
-router.get('/:idArme', async (req, res) => {
-    try {
-        if (!req.params.idArme) {
-            return res.status(400).json({ message: 'Le paramètre "idArme" est manquant', success: false });
-        }
-        const arme = await db.getArmeById(req.params.idArme);
 
-        if (!arme.length) {
-            return res.status(404).json({ message: `${req.params.idArme} ne correspond à aucune 'idArme' dans la base de données`, success: false });
+// Requête pour obtenir une arme avec son id.
+router.get('/:IdArme', async (req, res) => {
+    try {
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
+        }
+        const arme = await db.getArmeById(req.params.IdArme);
+
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
         }
         return res.status(200).json(arme);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message });
     }
 });
 
@@ -26,11 +26,11 @@ router.get('/', async (req, res) => {
     try {
         const armes = await db.getArmesAll();
         if (!armes.length) {
-            return res.status(404).json({ message: 'Aucune donnée a été trouvée', success: false });
+            return res.status(404).json({ message: 'Aucune donnée a été trouvée' });
         }
         return res.status(200).json(armes);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message });
     }
 });
 
@@ -39,52 +39,59 @@ router.post('/', async (req, res) => {
     try {
         if (!req.body.NoSerie || !req.body.Marque || !req.body.Calibre
             || !req.body.TypeArme || !req.body.NoEvenement) {
-            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants', success: false });
+            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
         }
-        await db.insertArme(req.body);
-        const armeNouvelle = await db.getArmeByNoEvenement(req.body.NoEvenement);
-        return res.status(200).json({ message: `L'arme a été ajoutée avec succès Id: ${armeNouvelle[0].IdIBAF}`, success: true });
+        const id = await db.insertArme(req.body);
+        const armeNouvelle = await db.getArmeById(id.IdIBAF);
+        return res.status(200).json(armeNouvelle);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message });
     }
 });
 
 // Requête pour modifier une arme
-router.put('/:idArme', async (req, res) => {
+router.put('/:IdArme', async (req, res) => {
     try {
-        if (!req.params.idArme) {
-            return res.status(400).json({ message: 'Le paramètre "idArme" est manquant', success: false });
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
         }
         if (!req.body.NoSerie || !req.body.Marque || !req.body.Calibre
             || !req.body.TypeArme || !req.body.NoEvenement) {
-            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants', success: false });
+            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
         }
 
-        const arme = await db.getArmeById(req.params.idArme);
-        if (!arme.length) {
-            return res.status(404).json({ message: `${req.params.idArme} ne correspond à aucune 'idArme' dans la base de données`, success: false });
+        const arme = await db.getArmeById(req.params.IdArme);
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
         }
-        await db.updateArme(req.body, req.params.idArme);
-        return res.status(200).json({ message: 'L\'arme a été modifié avec succès', success: true });
+        const rows = await db.updateArme(req.body, req.params.IdArme);
+        if (rows !== 1) {
+            return res.status(500).json({ message: 'Il y a une erreur avec le serveur' });
+        }
+        const armeUpdate = await db.getArmeById(req.params.IdArme);
+        return res.status(200).json(armeUpdate);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message });
     }
 });
 
 // Requête pour supprimer une arme
-router.delete('/:idArme', async (req, res) => {
+router.delete('/:IdArme', async (req, res) => {
     try {
-        if (!req.params.idArme) {
-            return res.status(400).json({ message: 'Le paramètre "idArme" est manquant', success: false });
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
         }
-        const arme = await db.getArmeById(req.params.idArme);
-        if (!arme.length) {
-            return res.status(404).json({ message: `${req.params.idArme} ne correspond à aucune 'idArme' dans la base de données`, success: false });
+        const arme = await db.getArmeById(req.params.IdArme);
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
         }
-        await db.deleteArme(req.params.idArme);
-        return res.status(200).json({ message: 'L\'arme a bien été supprimé', success: true });
+        const rows = await db.deleteArme(req.params.IdArme);
+        if (rows !== 1) {
+            return res.status(500).json({ message: 'Il y a une erreur avec le serveur' });
+        }
+        return res.status(200).json({ message: 'L\'arme a bien été supprimée' });
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: error.message });
     }
 });
 
