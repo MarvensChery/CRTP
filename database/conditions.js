@@ -49,33 +49,9 @@ function updateHeure(IdCondition, HeureDebut, HeureFin) {
 }
 
 // Requete knex qui insert la nouvelle condition
-function ajouterCondition(Idippe, Condition, Idpersonne) {
+function ajouterCondition(nouvelleCondition) {
     return knex('Conditions')
-        .insert({ IdIPPE: Idippe, Libelle: Condition, IdPersonne: Idpersonne });
-}
-
-// Requete knex qui insert la nouvelle condition avec une victime
-function ajouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne,
-        });
-}
-
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne,
-        });
-}
-
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne,
-        });
+        .insert(nouvelleCondition);
 }
 
 // Requete knex qui delete une conditions
@@ -93,8 +69,5 @@ module.exports = {
     updateFrequentation,
     updateHeure,
     ajouterCondition,
-    ajouterConditionAvecVictime,
-    ajouterConditionAvecFrequentation,
-    ajouterConditionAvecHeure,
     deleteCondition,
 };
