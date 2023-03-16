@@ -9,17 +9,20 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
-// Requete knex qui retourne les informations de connexion
-
-
-function connexion(identifiant, motDePasse, studentOrProf) {
-    return knex('Utilisateurs')
-        .where('Identifiant', identifiant)
-        .andWhere('MotDePasse', motDePasse)
-        .andWhere('Etudiant', studentOrProf);
+async function getUtilisateurByIdentifiant(identifiant) {
+      const utilisateur = await knex('utilisateurs')
+        .where({ Identifiant: identifiant })
+        .first();
+      return utilisateur;
 }
 
+// Requete knex qui retourne les informations de connexion
 
+function connexion(identifiant, motDePasse) {
+    return knex('Utilisateurs')
+        .where('Identifiant', identifiant)
+        .andWhere('MotDePasse', motDePasse);
+}
 
 function inscription(identifiant, motDePasse, studentOrProf, nomFamille) {
     return knex('Utilisateurs')
@@ -44,6 +47,7 @@ async function hashAllPassword() {
 }
 module.exports = {
     getUtilisateursAll,
+    getUtilisateurByIdentifiant,
     connexion,
     hashAllPassword,
     inscription,

@@ -8,6 +8,7 @@ const authentification = require('./authentification');
 const PORT = process.env.PORT || 3000;
 const personnesRouter = require('./routes/personnes');
 const connexionRouter = require('./routes/connexion');
+const utilisateursRouter = require('./routes/utilisateurs');
 const ippesRouter = require('./routes/ippes');
 const crimesRouter = require('./routes/crimes');
 const conditionsRouter = require('./routes/conditions');
@@ -23,6 +24,7 @@ app.use(express.json());
 
 app.use('/personnes', personnesRouter);
 app.use('/connexion', connexionRouter);
+app.use('/utilisateurs', utilisateursRouter);
 app.use('/ippes', ippesRouter);
 app.use('/crimes', crimesRouter);
 app.use('/conditions', conditionsRouter);
