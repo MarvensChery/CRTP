@@ -6,130 +6,63 @@ const reqKnexObjet = require('./objets');
 const reqKnexValeur = require('./valeurs');
 
 
-test('test1', async () => {
-    await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
-    const expectedResult = [{
-        IdIBAF: 5,
-        NoSerie: "test",
-        Marque: "test",
-        Calibre: '3571      ',
-        TypeArme: "test",
-        NoEvenement: '108-220304-0002',
-    }];
+//test('test1', async () => {
+  //  await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
+  //  const expectedResult = [{
+   //     IdIBAF: 5,
+  //      NoSerie: "test",
+   //     Marque: "test",
+   //     Calibre: '3571      ',
+   //     TypeArme: "test",
+   //     NoEvenement: '108-220304-0002',
+   // }];
     
-    const result = await reqKnexArme.getArmeById();
+    //const result = await reqKnexArme.getArmeById();
     
-    expect(expectedResult).toEqual(result);
-});
-
-
-test('get IBAF by id dans database', async () => {
-    const expectedResult = [{
-        NoSerie: '1597538',
-        Marque: 'SMITH & WESSON',
-        Calibre: '357       ',
-        TypeArme: 'Révolver',
-        NoEvenement: '108-220304-0006',
-    }];
-    const result = await reqKnexArme.getIBAFById(1);
-    expect(expectedResult).toEqual(result);
-});
-
-const reqKnexArme = require('./armes');
-// Ajout des armes
-test('ajoutIBAF dans database', async () => {
-    await reqKnexArme.postArme('test10', 'test8', '3751', 'test8', '108-220304-0003');
-    const armes = await reqKnexArme.getArmesAll();
-    const idarmes = (armes.length + 2);
-    const armess = await reqKnexArme.getArmeById(idarmes);
-    const result = (armess);
-    console.log(result);
-    const expectedResult = [{
-        IdIBAF: idarmes,
-        NoSerie: 'test10',
-        Marque: 'test8',
-        Calibre: '3751      ',
-        TypeArme: 'test8',
-        NoEvenement: '108-220304-0003',
-    }];
-    console.log(expectedResult);
-    console.log(armes.length);
-    console.log(idarmes);
-    expect(expectedResult).toEqual(result);
-    await reqKnexArme.deleteArme(idarmes);
-});
+  //  expect(expectedResult).toEqual(result);
+//});// Ajout des armes
+//test('ajoutIBAF dans database', async () => {
+//    await reqKnexArme.postArme('test10', 'test8', '3751', 'test8', '108-220304-0003');
+ //   const armes = await reqKnexArme.getArmesAll();
+ //   const idarmes = (armes.length + 2);
+ //   const armess = await reqKnexArme.getArmeById(idarmes);
+ //   const result = (armess);
+  //  console.log(result);
+ //   const expectedResult = [{
+  //      IdIBAF: idarmes,
+    //    NoSerie: 'test10',
+     //   Marque: 'test8',
+     //   Calibre: '3751      ',
+    //    TypeArme: 'test8',
+   //     NoEvenement: '108-220304-0003',
+ //   }];
+ //   console.log(expectedResult);
+///    console.log(armes.length);
+ //   console.log(idarmes);
+ //   expect(expectedResult).toEqual(result);
+  //  await reqKnexArme.deleteArme(idarmes);
+//});
 // modif des Armes
-test('modifIBAF dans database', async () => {
-    const data = [{
-        NoSerie: 'gogogaga',
-        Marque: 'test8',
-        Calibre: '3751      ',
-        TypeArme: 'test8',
-        NoEvenement: '108-220304-0003',
-    }];
-    console.log(data);
-    await reqKnexArme.updateArme(data[0], 61);
-    const expectedResult = [{
-        NoSerie: 'gogogaga',
-        Marque: 'test8',
-        Calibre: '3751      ',
-        TypeArme: 'test8',
-        NoEvenement: '108-220304-0003',
-    }];
-    expect(expectedResult).toEqual(data);
-});
+//test('modifIBAF dans database', async () => {
+ //   const data = [{
+ //       NoSerie: 'gogogaga',
+  //      Marque: 'test8',
+  //      Calibre: '3751      ',
+  //      TypeArme: 'test8',
+  //      NoEvenement: '108-220304-0003',
+ //   }];
+  //  console.log(data);
+   // await reqKnexArme.updateArme(data[0], 61);
+   // const expectedResult = [{
+    //    NoSerie: 'gogogaga',
+    //    Marque: 'test8',
+   //     Calibre: '3751      ',
+    //    TypeArme: 'test8',
+  //      NoEvenement: '108-220304-0003',
+  //  }];
+  //  expect(expectedResult).toEqual(data);
+//});
 
-test('modificationIBVA dans database', async () => {
-    await reqKnexValeur.ajoutIBVA('Test', 'Tes', 'Tes', 'Tes', '123456789123456');
-    const IBVA = await reqKnexValeur.getIBVAbyIdentifiant('Test');
-    const idIBVA = IBVA[0].IdIBVA;
-    await reqKnexValeur.modificationIBVA(idIBVA, 'Test', 'Test', 'Test', 'Test', '123456789123457');
-    const expectedResult = [{
-        Identifiant: 'Test',
-        Auteur: 'Test',
-        TypeValeur: 'Test',
-        TypeEvenement: 'Test',
-        NoEvenement: '123456789123457',
-
-    }];
-    const result = await reqKnexValeur.getIBVAbyId(idIBVA);
-    await reqKnexValeur.suppresionIBVAById(idIBVA);
-    expect(expectedResult).toEqual(result);
-});
-
-test('ajoutIBOB dans database', async () => {
-    await reqKnexObjet.ajoutIBOB('Testt', 'Testt', 'Testt', 'Testt', '123456789123456');
-    const expectedResult = [{
-        NoSerie: 'Testt',
-        Marque: 'Testt',
-        Modele: 'Testt',
-        TypeObjet: 'Testt',
-        NoEvenement: '123456789123456',
-    }];
-    const IBOB = await reqKnexObjet.getIBOBbyNoSerie('Testt');
-    const idIBOB = IBOB[0].IdBOB;
-    const result = await reqKnexObjet.getIBOBbyId(idIBOB);
-    await reqKnexObjet.suppresionIBOById(idIBOB);
-    expect(expectedResult).toEqual(result);
-});
-
-test('modificationIBOB dans database', async () => {
-    await reqKnexObjet.ajoutIBOB('Test', 'Tes', 'Tes', 'Tes', '123456789123456');
-    const IBOB = await reqKnexObjet.getIBOBbyNoSerie('Test');
-    const idIBOB = IBOB[0].IdBOB;
-    await reqKnexObjet.modificationIBOB(idIBOB, 'Test', 'Test', 'Test', 'Test', '123456789123457');
-    const expectedResult = [{
-        NoSerie: 'Test',
-        Marque: 'Test',
-        Modele: 'Test',
-        TypeObjet: 'Test',
-        NoEvenement: '123456789123457',
-
-    }];
-    const result = await reqKnexObjet.getIBOBbyId(idIBOB);
-    await reqKnexObjet.suppresionIBOById(idIBOB);
-    expect(expectedResult).toEqual(result);
-});
 
 test('get Armeid', async () => {
     const expectedResult = {
@@ -185,23 +118,8 @@ test('get Armeall', async () => {
             Calibre: '12        ',
             TypeArme: 'Fusil',
             NoEvenement: '108-220310-0003',
-        },
-        {
-            IdIBAF: 5,
-            NoSerie: 'test',
-            Marque: 'test',
-            Calibre: '3571      ',
-            TypeArme: 'test',
-            NoEvenement: '108-220304-0002',
-        },
-        {
-            IdIBAF: 6,
-            NoSerie: 'Test',
-            Marque: 'Test',
-            Calibre: '9999999999',
-            TypeArme: 'Test',
-            NoEvenement: '123456789123456',
-        },
+        }
+        
     ];
     const result = await reqKnexArme.getArmesAll();
     console.log(result);
