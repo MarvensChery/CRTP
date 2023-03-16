@@ -16,7 +16,32 @@ function connexion(identifiant, motDePasse, studentOrProf) {
         .andWhere('Etudiant', studentOrProf);
 }
 
+function insertUsers(identifiant, motDePasse,studentOrProf,nomFamille) {
+    knex('Utilisateurs')
+        .insert(
+            {'Identifiant': identifiant,
+            'MotDePasse':motDePasse,
+            'Etudiant':studentOrProf,
+            'NomFamille':nomFamille}
+        )
+};
+
+function getPasswords(){
+    knex
+    .from('Utilisateurs')
+    .select('Identifiant','MotDePasse')
+};
+
+function updatePassword(identifiant,password){
+    knex('Utilisateurs')
+        .where({'Identifiant': identifiant})
+        .update({'MotDePasse': password})
+};
+
 module.exports = {
     getUtilisateursAll,
     connexion,
+    insertUsers,
+    getPasswords,
+    updatePassword,
 };

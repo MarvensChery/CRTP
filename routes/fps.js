@@ -3,6 +3,11 @@ const express = require('express');
 const request = require('../database/fps');
 
 const router = express.Router();
+
+const bcrypt = require('bcrypt');
+
+
+
 // Route pour récupérer un fps selon l'id
 router.get('/:idFps', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');

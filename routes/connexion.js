@@ -51,4 +51,28 @@ router.post('/', async (req, res) => {
     });
 });
 
+router.post('/inscription', async (req, res) => {
+    
+    try{
+        let salt = await bcrypt.genSalt();
+        const password = await bcrypt.hash(req.body.motDePasse, salt);
+        await request.insertUser(req.body.identifiant,password,req.body.Etudiant,req.body.NomFamille);
+        res.status(201).send();
+    } catch {
+        res.status(401).send();
+    }
+});
+
+router.post('/update'){
+    let passwords = await request.getPasswords();
+    for (i=0;i<passwords.length;i++){
+        let unHashedPassword = passwords[i].MotDePasse
+        let salt = await bcrypt.genSalt();
+        let hashedPassword = await bcrypt.hash(unHashedPassword,salt);
+        await request.updatePassword(passwords[i].Identifiant,hashedPassword)
+    };
+};
+
+
+
 module.exports = router;
