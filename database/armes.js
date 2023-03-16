@@ -8,21 +8,25 @@ function getArmesAll() {
     return knex('IBAF');
 }
 
+function getArmeLast() {
+    return knex('IBAF').orderBy('IdIBAF', 'desc').first();
+}
+
 // Insert notre donnee dans la database.
-async function insertArme(data) {
+function insertArme(data) {
     return knex('IBAF')
-        .insert(data);
+        .insert(data).then(() => knex('IBAF').select('IdIBAF').orderBy('IdIBAF', 'desc').first());
 }
 
 // Update et retourne les donees qui ont le meme ID.
-async function updateArme(data, id) {
+function updateArme(data, id) {
     return knex('IBAF')
         .update(data)
         .where('IdIBAF', id);
 }
 
 // Delete les donnees qui ont le meme ID.
-async function deleteArme(id) {
+function deleteArme(id) {
     return knex('IBAF')
         .where('IdIBAF', id)
         .del();
@@ -31,20 +35,16 @@ async function deleteArme(id) {
 // Return les donnees avec le meme ID.
 function getArmeById(id) {
     return knex('IBAF')
-        .where('IdIBAF', id);
+        .where('IdIBAF', id)
+        .first();
 }
 
-// Return les donnees avec le meme NoEvenement.
-function getArmeByNoEvenement(id) {
-    return knex('IBAF')
-        .where('NoEvenement', id);
-}
 // Exporte les fonctions.
 module.exports = {
     getArmesAll,
+    getArmeLast,
+    getArmeById,
     insertArme,
     updateArme,
     deleteArme,
-    getArmeById,
-    getArmeByNoEvenement,
 };
