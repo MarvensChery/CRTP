@@ -212,8 +212,11 @@ async function updateDescription(
 }
 
 function getPersonnesAll() {
-    return knex('Personnes');
+    return knex('Personnes')
+    .select('*')
 }
+
+
 
 module.exports = {
     putPersonne,
