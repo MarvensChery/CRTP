@@ -25,12 +25,11 @@ router.post('/', async (req, res) => {
     let resultat;
     try {
         const { Identifiant } = req.body;
+        if (Identifiant === undefined || req.body.MotDePasse === undefined) return res.status(400).send('Le courriel out le mot de passe ne peut pas être null');
         resultat = await request.getUtilisateurByIdentifiant(Identifiant);
     } catch (error) {
         res.status(500).json(error);
     }
-
-    if (!req.body.Identifiant === undefined || !req.body.MotDePasse === undefined) return res(400).send('Le courriel out le mot de passe ne peut pas être null');
 
     if (resultat.length === 0) {
         return res.status(404).send('Utilisateur introuvable');
