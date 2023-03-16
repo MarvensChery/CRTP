@@ -30,8 +30,10 @@ router.post('/', async (req, res) => {
         res.status(500).json(error);
     }
 
+    if (!req.body.Courriel || !req.body.MotDePasse) return res(400).send('Le courriel out le mot de passe ne peut pas être null');
+
     if (resultat.length === 0) {
-        return res.status(404).json({ succes: false });
+        return res.status(404).send('Utilisateur introuvable');
     }
     const verifMDP = bcrypt.compareSync(req.body.MotDePasse, resultat[0].MotDePasse);
     if (!verifMDP) return res.status(401).send('Courriel ou mot de passe invalide');
