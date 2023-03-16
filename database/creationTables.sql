@@ -56,14 +56,13 @@ GO
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
-GO 
+GO  
 CREATE TABLE [FPS](
 	[IdFPS] [int] IDENTITY(1,1) NOT NULL,
 	[IdPersonne] [int] NOT NULL,
 	[NoFPS] [nchar](7) NOT NULL,
 	[DateMesure] [datetime] NOT NULL,
 	[CD] [nvarchar](50) NOT NULL,
-	[Antecedents] [varchar](150) NOT NULL,
 	[Violent] [bit] NULL,
 	[Echappe] [bit] NULL,
 	[Suicidaire] [bit] NULL,
