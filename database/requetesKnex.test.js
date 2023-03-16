@@ -45,6 +45,14 @@ const reqKnexValeur = require('./valeurs');
 //     expect(result[0].IPPE).toEqual(expected);
 // });
 
+// Vérifie ippe(recherche de personne)
+test('get Ippe by id dans database', async () => {
+    const expectedResult = await reqKnex.getIPPE(8);
+    expect(expectedResult.length).toEqual(1);
+});
+
+
+
 test('get IBOB by id dans database', async () => {
     const expectedResult = [{
         Marque: 'LG',
