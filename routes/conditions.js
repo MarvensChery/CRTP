@@ -4,46 +4,31 @@ const request = require('../database/conditions');
 
 const router = express.Router();
 
-router.put('/:IdCondition', async (req, res) => {
-    const { IdCondition } = req.params;
-    const {
-        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal,
-    } = req.body;
-    if (Number.isNaN(IdCondition)) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
+router.put('/:idCondition', async (req, res) => {
+    try {
+        if (req.body.IdIPPE === undefined || req.body.IdPersonne === undefined || req.body.Libelle === undefined
+            || req.body.HeureDebut === undefined || req.body.HeureFin === undefined || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+
+        // verifier si l'entite est deja dans la base de donnees
+        const DataAdd = await request.returnCondition(req.params.idCondition);
+        // si non renvoye une erreur
+        if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée', success: false });
+
+        const DataToSend = {
+            IdIPPE: req.body.IdIPPE,
+            IdPersonne: req.body.IdPersonne,
+            Libelle: req.body.Libelle,
+            HeureDebut: req.body.HeureDebut,
+            HeureFin: req.body.HeureFin,
+            Victime: req.body.Victime,
+            Frequentation: req.body.Frequentation,
+        };
+        // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
+        await request.modifierCondition(DataToSend, req.params.idCondition);
+        return res.status(200).json({ message: 'L’entité a été modifié avec succès', success: true });
+    } catch (error) {
+        return res.status(500).json({ message: error.message, success: false });
     }
-    if (Libelle === 'Ne pas entrer en contact avec') {
-        try {
-            await request.updateVictime(IdCondition, Champs1);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Ne pas fréquenter') {
-        try {
-            await request.updateFrequentation(IdCondition, Champs1);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    }
-    // Update une condition avec une adresse
-    if (Libelle === 'Avoir comme adresse le') {
-        try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Doit demeurer à cet endroit entre') {
-        try {
-            await request.updateHeure(IdCondition, Champs1, Champs2);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    }
-    return res.status(500).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
 router.get('/ippes/:idIppe', async (req, res) => {
