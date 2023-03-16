@@ -3,11 +3,13 @@ require('dotenv').config();
 
 const app = express();
 const cors = require('cors');
+const session = require('express-session');
 const authentification = require('./authentification');
 
 const PORT = process.env.PORT || 3000;
 const personnesRouter = require('./routes/personnes');
 const connexionRouter = require('./routes/connexion');
+const inscriptionRouter = require('./routes/inscription');
 const ippesRouter = require('./routes/ippes');
 const crimesRouter = require('./routes/crimes');
 const conditionsRouter = require('./routes/conditions');
@@ -20,9 +22,11 @@ app.use(express.static('public'));
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(session({ secret: process.env.TOKEN_KEY }));
 
 app.use('/personnes', authentification, personnesRouter);
 app.use('/connexion', connexionRouter);
+app.use('/inscription', inscriptionRouter);
 app.use('/ippes', authentification, ippesRouter);
 app.use('/crimes', authentification, crimesRouter);
 app.use('/conditions', authentification, conditionsRouter);

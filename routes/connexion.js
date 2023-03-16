@@ -1,5 +1,5 @@
 const express = require('express');
-
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const request = require('../database/utilisateurs');
@@ -24,22 +24,24 @@ router.post('/', async (req, res) => {
 
     let resultat;
     try {
-        const { identifiant, motDePasse, studentOrProf } = req.body;
-        resultat = await request.connexion(identifiant, motDePasse, studentOrProf);
+        const { Courriel } = req.body;
+        resultat = await request.connexion(Courriel);
     } catch (error) {
         res.status(500).json(error);
     }
 
     if (resultat.length === 0) {
-        // envoi du message contenant les information pour le login
-        /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
-
         return res.status(404).json({ succes: false });
     }
+    const verifMDP = bcrypt.compareSync(req.body.MotDePasse, resultat[0].MotDePasse);
+    if (!verifMDP) return res.status(401).send('Informations invalides');
+
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
         expiresIn,
     });
+
+    req.session.token = accessToken;
 
     return res.status(200).json({
         succes: true,
