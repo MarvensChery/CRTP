@@ -24,8 +24,8 @@ router.post('/', async (req, res) => {
 
     let resultat;
     try {
-        const { Courriel } = req.body;
-        resultat = await request.connexion(Courriel);
+        const { Identifiant } = req.body;
+        resultat = await request.getUtilisateurByIdentifiant(Identifiant);
     } catch (error) {
         res.status(500).json(error);
     }
