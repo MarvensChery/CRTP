@@ -39,6 +39,7 @@ router.get('/', async (req, res) => {
 // Requete pour choix des informations selon la banque de donnees.
 router.post('/', async (req, res) => {
     try {
+        
         if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.calibre === undefined
 			|| req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
         // verifie si l'entite a ajouter existe deja dans la base de donnees.
@@ -58,7 +59,7 @@ router.post('/', async (req, res) => {
         // avoir le id de la nouvelle entité.
         const Data = await request.getArmeByNoEvenement(req.body.NoEvenement);
         if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdIBAF}`, success: true });
+        return res.status(200).json(Data[0].IdIBAF);
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
