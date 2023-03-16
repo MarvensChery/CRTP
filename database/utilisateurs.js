@@ -8,11 +8,6 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
-function getUtilisateurs(IdUtilisateur) {
-    return knex('Utilisateurs')
-        .where('Utilisateurs.IdUtilisateur', IdUtilisateur)
-        .select('*');
-}
 
 function insertUtilisateurs(IdUtilisateur, Identifiant, MotDePasse, Etudiant, NomFamille) {
     return knex('Utilisateurs')
@@ -42,6 +37,13 @@ async function deleteUtilisateurs(id) {
 }
 
 
+function getUtilisateurById(id) {
+    const rep = knex('Utilisateurs')
+        .where('idUtilisateur', '=', id);
+    console.log(rep);
+    return rep;
+}
+
 // Requete knex qui retourne les informations de connexion
 function connexion(identifiant, motDePasse, studentOrProf) {
     return knex('Utilisateurs')
@@ -52,9 +54,10 @@ function connexion(identifiant, motDePasse, studentOrProf) {
 
 module.exports = {
     getUtilisateursAll,
-    getUtilisateurs,
+    
     insertUtilisateurs,
     updateUtilisateurs,
     deleteUtilisateurs,
+    getUtilisateurById,
     connexion,
 };
