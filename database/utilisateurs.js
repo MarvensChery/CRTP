@@ -18,15 +18,8 @@ function postUtilisateur(data) {
         .insert(data);
 }
 
-// Requete knex qui retourne les informations de connexion
-function connexion(Courriel) {
-    return knex('Utilisateurs')
-        .where('Courriel', Courriel);
-}
-
 module.exports = {
     getUtilisateursAll,
     getUtilisateurByIdentifiant,
     postUtilisateur,
-    connexion,
 };
