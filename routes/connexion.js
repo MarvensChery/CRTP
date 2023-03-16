@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
         return res.status(404).json({ succes: false });
     }
     const verifMDP = bcrypt.compareSync(req.body.MotDePasse, resultat[0].MotDePasse);
-    if (!verifMDP) return res.status(401).send('Informations invalides');
+    if (!verifMDP) return res.status(401).send('Courriel ou mot de passe invalide');
 
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
