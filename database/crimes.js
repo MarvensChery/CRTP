@@ -8,12 +8,13 @@ function getCrimesAll() {
     return knex('Crimes');
 }
 
-function getCrimesById(idCrime) {
+// Retourne les donnees avec le meme id.
+function getCrimeById(id) {
     return knex('Crimes')
-        .where('idCrime', idCrime);
+        .where('', id);
 }
 
 module.exports = {
     getCrimesAll,
-    getCrimesById,
+    getCrimeById,
 };
