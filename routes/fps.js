@@ -3,6 +3,19 @@ const express = require('express');
 const request = require('../database/fps');
 
 const router = express.Router();
+router.get('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    let resultat;
+    try {
+        resultat = await request.getFps();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+    if (resultat.length === 0) {
+        return res.status(404).json({ message: "L'information n'existe pas dans la base de donnée !" });
+    }
+    return res.status(200).json(resultat);
+});
 // Route pour récupérer un fps selon l'id
 router.get('/:idFps', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
