@@ -13,13 +13,15 @@ function getUtilisateurByIdentifiant(Identifiant) {
         .where('Identifiant', Identifiant);
 }
 
-function postUtilisateur(data) {
+function insertUtilisateur(data) {
     return knex('Utilisateurs')
-        .insert(data);
+        .insert(data)
+        .returning('IdUtilisateur')
+        .then((IdUtilisateur) => console.log(`Id: ${IdUtilisateur[0]}`));
 }
 
 module.exports = {
     getUtilisateursAll,
     getUtilisateurByIdentifiant,
-    postUtilisateur,
+    insertUtilisateur,
 };
