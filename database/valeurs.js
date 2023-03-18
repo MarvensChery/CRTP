@@ -9,23 +9,29 @@ function getValeursAll() {
 }
 
 // Ajoute la donnee a la base.
-async function postValeur(data) {
+async function insertValeur(data) {
     return knex('IBVA')
-        .insert(data);
+        .insert(data)
+        .returning('IdIBVA')
+        .then((IdIBVA) => console.log(`Id: ${IdIBVA[0]}`));
 }
 
 // Update la donnee avec le meme id.
 async function updateValeur(data, id) {
     return knex('IBVA')
         .update(data)
-        .where('IdIBVA', id);
+        .where('IdIBVA', id)
+        .returning('*')
+        .then((Valeur) => console.log(`${Valeur.length} ligne modifiée`));
 }
 
 // Delete la donnee avec le meme id.
 async function deleteValeur(id) {
     return knex('IBVA')
         .where('IdIBVA', id)
-        .del();
+        .del()
+        .returning('*')
+        .then((Valeur) => console.log(`${Valeur.length} ligne supprimée`));
 }
 
 // Retourne les donnees avec le meme id.
@@ -42,7 +48,7 @@ function getValeurByNoEvenement(id) {
 // Exporte les fonctions.
 module.exports = {
     getValeursAll,
-    postValeur,
+    insertValeur,
     updateValeur,
     deleteValeur,
     getValeurById,
