@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable import/order */
 const express = require('express');
 
 const request = require('../database/fps');
@@ -21,6 +23,13 @@ router.get('/:idFps', async (req, res) => {
     }
     return res.status(200).json(resultat);
 });
+
+router.get('/personnes/fps/:idPersonnes', async (req, res) => {
+    const IdPersonne = req.params;
+    let resultat = await request.getPersonnesFps(IdPersonne);
+});
+
+
 // Route pour ajouter un fps
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
