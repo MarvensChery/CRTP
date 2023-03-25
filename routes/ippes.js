@@ -8,7 +8,7 @@ router.get('/:IdIPPE', async (req, res) => {
     let resultat;
     const { IdIPPE } = req.params;
     if (IdIPPE === undefined) {
-        return res.status(400).json('paramètre manquant');
+        return res.status(400).json('La requête est mal formée ou les paramètres sont invalides.');
     }
     try {
         resultat = await db.getIPPE(IdIPPE);
@@ -41,7 +41,7 @@ router.put('/:IdIPPE', async (req, res) => {
             return res.status(500).json({ message: error.message });
         }
     }
-    return res.status(400).json({ message: 'aucun élément à été modifier' });
+    return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
 });
 
 // Route pour la suppression d'un ippe
@@ -49,7 +49,7 @@ router.delete('/:IdIPPE', async (req, res) => {
     const { IdIPPE } = req.params;
     try {
         if (req.params.IdIPPE == null) {
-            return res.status(400).json({ message: 'identifiant manquant' });
+            return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
         }
         const exist = await db.getIPPE(IdIPPE);
         if (!exist.length) {
