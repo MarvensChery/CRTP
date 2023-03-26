@@ -143,7 +143,7 @@ async function insertIppePersonne(IdPersonne, IPPE) {
     await knex('PersonnesIPPE').insert({ IdPersonne, IdIPPE: lastIdIppe.IdIPPE });
     return lastIdIppe;
 }
-// Requete knex pour modifier la table IPPE
+// Requete knex pour modifier un IPPE
 async function updateIppe(IdIPPE, IPPE) {
     return knex('IPPE')
         .update(IPPE)
