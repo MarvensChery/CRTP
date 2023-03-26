@@ -8,7 +8,7 @@ function getPersonnes() {
     return knex('Personnes');
 }
 
-function getPersonne(IdPersonne) {
+function getPersonneById(IdPersonne) {
     return knex('Personnes')
         .where('Personnes.IdPersonne', IdPersonne)
         .select('*');
@@ -90,7 +90,7 @@ function getPersonnesAll() {
 module.exports = {
     updatePersonne,
     insertPersonne,
-    getPersonne,
+    getPersonneById,
     deletePersonne,
     getIppePersonne,
     getPersonnesAll,
