@@ -296,7 +296,8 @@ router.post('/:idPersonne/ippe', async (req, res) => {
     }
     try {
         const resultat = await dbIPPE.insertIppePersonne(idPersonne, IPPE);
-        return res.status(200).json(resultat);
+        const retour = await dbIPPE.getIPPE(resultat.IdIPPE);
+        return res.status(200).json(retour[0]);
     } catch (error) {
         return res.status(500).json(error.message);
     }

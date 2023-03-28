@@ -18,7 +18,7 @@ router.get('/:IdIPPE', async (req, res) => {
         }
 
         // retourne que les valeurs au client; necessaire a la recherche IPPE
-        return res.status(200).json(resultat);
+        return res.status(200).json(resultat[0]);
     } catch (error) {
         return res.status(500).json(error.message);
     }
