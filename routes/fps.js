@@ -8,6 +8,9 @@ router.get('/:idFps', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     const { idFps } = req.params;
     let resultat;
+    if (idFps === undefined){
+        return res.status(400).json('id manquant');
+    }
     try {
         resultat = await request.getFps(idFps);
     } catch (error) {
