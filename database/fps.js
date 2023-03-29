@@ -36,9 +36,16 @@ function getFps(IdFPS) {
         .where({ 'FPS.IdFPS': IdFPS });
 }
 
+function getIdPersonne(NomDeFamille, Prenom1, Prenom2, Masculin, DateNaissance){
+    return knex('Personnes')
+    .select('IdPersonne')
+    .where({'NomFamille': NomDeFamille, 'Prenom1': Prenom1, 'Prenom2': Prenom2, 'Masculin': Masculin, 'DateNaissance': DateNaissance});
+} 
+
 function addFps(
     IdPersonne,
     NoFPS,
+    DatePersonne,
     Violent,
     CD,
     Echappe,
@@ -61,6 +68,7 @@ function addFps(
         .insert({
             IdPersonne,
             NoFPS,
+            DatePersonne,
             CD,
             Violent,
             Echappe,
@@ -152,6 +160,7 @@ function deleteFps(IdFPS) {
 
 module.exports = {
     getFps,
+    getIdPersonne,
     addFps,
     updateDescription,
     updateFps,

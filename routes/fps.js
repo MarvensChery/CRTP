@@ -21,8 +21,10 @@ router.get('/:idFps', async (req, res) => {
 // Route pour ajouter un fps
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
+    const DatePersonne = new Date().toJSON().slice(0,10);
+    let IdPersonne
     const {
-        IdPersonne, NoFPS, Violent, CD,
+        NomFamille, Prenom1, Prenom2, Masculin, DateNaissance, NoFPS, Violent, CD,
         Echappe, Suicidaire, Desequilibre,
         Contagieux, Violence, Fraude,
         ConduiteVehicule, IntroEffraction, Sexe, ArmeOffensive, Vol,
@@ -30,9 +32,19 @@ router.post('/', async (req, res) => {
         Yeux, Marques,
     } = req.body;
     try {
+        IdPersonne = await request.getIdPersonne(NomFamille, Prenom1, Prenom2, Masculin, DateNaissance);
+        IdPersonne = IdPersonne[0].IdPersonne
+        if (!IdPersonne){
+            res.status(404).json('Personne pas trouvé')
+        }
+    }catch (error){
+        res.status(500).json(error.message);
+    }
+    try {
         await request.addFps(
             IdPersonne,
             NoFPS,
+            DatePersonne,
             Violent,
             CD,
             Echappe,
@@ -69,14 +81,24 @@ router.post('/', async (req, res) => {
 router.put('/:idFps', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     const { idFps } = req.params;
+    let IdPersonne;
     const {
-        IdPersonne, NoFPS, Violent, CD,
+        NomFamille, Prenom1, Prenom2, Masculin, DateNaissance, NoFPS, Violent, CD,
         Echappe, Suicidaire, Desequilibre,
         Contagieux, Violence, Fraude,
         ConduiteVehicule, IntroEffraction, Sexe, ArmeOffensive, Vol,
         Drogue, Mefait, Incendie, AutreInfraction, Race, Taille, Poids,
         Yeux, Marques,
     } = req.body;
+    try {
+        IdPersonne = await request.getIdPersonne(NomFamille, Prenom1, Prenom2, Masculin, DateNaissance);
+        if (!IdPersonne){
+            res.status(404).json('Personne pas trouvé')
+        }
+    }catch (error){
+        res.status(500).json(error.message);
+    }
+
     try {
         await request.updateFps(
             idFps,
