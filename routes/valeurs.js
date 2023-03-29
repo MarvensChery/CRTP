@@ -38,6 +38,13 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // choix des infos a envoyer selon la banque de données choisi
     try {
+         //paramettre de test
+       /* req.body.NoSerie = 231321;
+        req.body.auteur = "dfgdfg"
+        req.body.typeVa = "12312"
+        req.body.resIBVA = "asdqew"
+        req.body.NoEvenement = "dsaf"*/
+
         if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
             || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
