@@ -13,7 +13,7 @@ router.get('/:idFps', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     const { idFps } = req.params;
     let resultat;
-    if (idFps === undefined){
+    if (idFps === undefined) {
         return res.status(400).json('id manquant');
     }
     try {
@@ -32,7 +32,7 @@ router.get('/personnes/:idPersonne/fps', async (req, res) => {
     let resultat;
     console.log('aaaaaaa', IdPersonne.idPersonne);
     try {
-    resultat = await request.getPersonnesFps(IdPersonne.idPersonne);
+        resultat = await request.getPersonnesFps(IdPersonne.idPersonne);
     } catch (error) {
         res.status(500).json(error.message);
     }
@@ -45,7 +45,7 @@ router.get('/personnes/:idPersonne/fps', async (req, res) => {
 // Route pour ajouter un fps
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-    const DateMesure = new Date().toJSON().slice(0,10);
+    const DateMesure = new Date().toJSON().slice(0, 10);
     let IdPersonne
     const {
         NomFamille, Prenom1, Prenom2, Masculin, DateNaissance, NoFPS, Violent, CD,
@@ -58,16 +58,16 @@ router.post('/', async (req, res) => {
     try {
         IdPersonne = await request.getIdPersonne(NomFamille, Prenom1, Prenom2, Masculin, DateNaissance);
         IdPersonne = IdPersonne[0].IdPersonne
-        if (!IdPersonne){
+        if (!IdPersonne) {
             res.status(404).json('Personne pas trouvé')
         }
-    }catch (error){
+    } catch (error) {
         res.status(500).json(error.message);
     }
     try {
         await request.addFps(
             IdPersonne,
-            NoFPS+"H",
+            NoFPS + "H",
             DateMesure,
             Violent,
             CD,
@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
         res.status(500).json(error.message);
     }
 
-    return res.status(200).json({ message: "L'ajout du FPS est réussi !" });
+    return res.status(200).json({ message: "l’entité a été ajoutée avec succès. L’entité ajoutée est dans le corps de la réponse, avec l’id généré" });
 });
 // Route pour modifier un fps selon l'id
 router.put('/:idFps', async (req, res) => {
@@ -116,10 +116,10 @@ router.put('/:idFps', async (req, res) => {
     } = req.body;
     try {
         IdPersonne = await request.getIdPersonne(NomFamille, Prenom1, Prenom2, Masculin, DateNaissance);
-        if (!IdPersonne){
+        if (!IdPersonne) {
             res.status(404).json('Personne pas trouvé')
         }
-    }catch (error){
+    } catch (error) {
         res.status(500).json(error.message);
     }
 
