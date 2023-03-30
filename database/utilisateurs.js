@@ -8,14 +8,14 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
-function insertUtilisateurs(Identifiant, MotDePasse, Etudiant, NomFamille) {
+function insertUtilisateurs(Identifiant, MotDePasse, Etudiant, IdPersonne) {
     return knex('Utilisateurs')
         .insert({
 
             Identifiant,
             MotDePasse,
             Etudiant,
-            NomFamille,
+            IdPersonne,
 
         }, ['IdUtilisateur'])
         .returning('IdUtilisateur');

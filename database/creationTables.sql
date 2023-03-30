@@ -1,4 +1,4 @@
-USE [CRTPEquipeX]
+USE [CRTPEquipe5]
 GO
 /****** Object:  Table [dbo].[CategoriesCrime]    Script Date: 07/03/2023 12:37:51 ******/
 SET ANSI_NULLS ON
@@ -660,11 +660,11 @@ GO
 SET IDENTITY_INSERT [dbo].[Utilisateurs] ON 
 
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (1, N'e1233772', N'bonjour', 1, 8)
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (1, N'e1233772', N'$2b$10$dkVjYiaYLKCDq7ZeQvIgduxdpnLPA5F6iCP6tFZRilFTD15we4V7S', 1, 8)
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (2, N'e1233152', N'bonjour', 1, 10)
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (2, N'e1233152', N'$2b$10$zrGaWRacw7NuEVb2Llqy..E6/GUSDfskWxxiyGc0VMho85kai6nf6', 1, 10)
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (11, N'2248', N'bonjour', 0, 1)
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [IdPersonne]) VALUES (11, N'2248', N'$2b$10$M6ghr8MOf2I1wm5FB.J3QupD6uxXHgPqamv3GQxkQVZtB67bzg3fu', 0, 1)
 GO
 SET IDENTITY_INSERT [dbo].[Utilisateurs] OFF
 GO
