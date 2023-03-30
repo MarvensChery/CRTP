@@ -10,10 +10,10 @@ router.get('/:idArme', async (req, res) => {
     try {
         let data;
         if (req.params.idArme !== undefined) data = await request.getArmeById(req.params.idArme);
-        else return res.status(400).json({ message: 'paramètre manquant', success: false });
+        else return res.status(400).json({ message: 'Paramètre manquant', success: false });
         if (data.length === 0) {
             // retourne la valeur negative.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+            return res.status(404).json({ message: 'Aucune donnée trouvée', success: false });
         }
         // retourne que les valeurs au client;
         return res.status(200).json(data);
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
         const data = await request.getArmesAll();
         if (data.length === 0) {
             // retourne la valeur negative.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+            return res.status(404).json({ message: 'Aucune donnée trouvée', success: false });
         }
         // retourne que les valeurs au client;
         return res.status(200).json(data);
@@ -39,13 +39,12 @@ router.get('/', async (req, res) => {
 // Requete pour choix des informations selon la banque de donnees.
 router.post('/', async (req, res) => {
     try {
-        
         if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.calibre === undefined
-			|| req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+			|| req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'Paramètre manquant', success: false });
         // verifie si l'entite a ajouter existe deja dans la base de donnees.
         const DataAdd = await request.getArmeByNoEvenement(req.body.NoEvenement);
         // si oui renvoyer une erreur.
-        if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée', success: false });
+        if (DataAdd.length !== 0) return res.status(404).json({ message: 'L\'entité se trouve déjà dans la base de données', success: false });
         // si non ajouter l'entite.
         const DataToSend = {
             NoSerie: req.body.NoSerie,
@@ -58,7 +57,7 @@ router.post('/', async (req, res) => {
         await request.postArme(DataToSend);
         // avoir le id de la nouvelle entité.
         const Data = await request.getArmeByNoEvenement(req.body.NoEvenement);
-        if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        if (Data.length === 0) return res.status(404).json({ message: 'Aucune donnée trouvée', success: false });
         return res.status(200).json(Data[0].IdIBAF);
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
@@ -69,12 +68,12 @@ router.post('/', async (req, res) => {
 router.put('/:idArme', async (req, res) => {
     try {
         if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.calibre === undefined
-            || req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+            || req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'Paramètre manquant', success: false });
 
         // verifier si l'entite est deja dans la base de donnees.
         const DataAdd = await request.getArmeById(req.params.idArme);
         // si non renvoye une erreur
-        if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée', success: false });
+        if (DataAdd.length === 0) return res.status(404).json({ message: 'L\'entité n\'existe pas dans la base de données', success: false });
 
         const DataToSend = {
             NoSerie: req.body.NoSerie,
@@ -98,12 +97,12 @@ router.delete('/:idArme', async (req, res) => {
         data = await request.getArmeById(req.params.idArme);
         if (data.length === 0) {
             // retourne message d'erreur.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+            return res.status(404).json({ message: 'Aucune donnée trouvée', success: false });
         }
 
         await request.deleteArme(req.params.idArme);
         // retourne une confirmation.
-        return res.status(200).json({ message: 'l\'objet a bien été supprimé', success: true });
+        return res.status(200).json({ message: 'L\'objet a bien été supprimé', success: true });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
