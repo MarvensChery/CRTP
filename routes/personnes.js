@@ -239,7 +239,7 @@ router.put('/:idPersonne/description', async (req, res) => {
     const { Depressif } = req.body;
 
     if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
     }
 
     try {
@@ -275,12 +275,12 @@ router.put('/:idPersonne/description', async (req, res) => {
 router.get('/:idPersonne/ippes', async (req, res) => {
     const { idPersonne } = req.params;
     if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('les paramètres sont invalides.');
+        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
     }
     try {
         const resultat = await request.getIppePersonne(idPersonne);
         if (resultat.length === 0 || resultat === undefined) {
-            return res.status(404).send('La personne ne possède pas d\'IPPE!');
+            return res.status(404).send('La personne ne possède pas d\'IPPE.');
         }
         return res.status(200).send(resultat);
     } catch (error) {
@@ -292,11 +292,11 @@ router.post('/:idPersonne/ippe', async (req, res) => {
     const { idPersonne } = req.params;
     const IPPE = req.body;
     if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('les paramètres sont invalides.');
+        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
     }
     try {
         const resultat = await dbIPPE.insertIppePersonne(idPersonne, IPPE);
-        return res.status(200).json({ success: true, message: `IPPE ajouté ${resultat}` });
+        return res.status(200).json(resultat);
     } catch (error) {
         return res.status(500).json(error.message);
     }
