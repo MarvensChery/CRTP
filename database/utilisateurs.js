@@ -9,11 +9,10 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
-async function getUtilisateurByIdentifiant(identifiant) {
-      const utilisateur = await knex('utilisateurs')
-        .where({ Identifiant: identifiant })
+function getUtilisateurByIdentifiant(Identifiant) {
+    return knex('utilisateurs')
+        .where('Identifiant', Identifiant)
         .first();
-      return utilisateur;
 }
 
 // Requete knex qui retourne les informations de connexion
@@ -24,14 +23,9 @@ function connexion(identifiant, motDePasse) {
         .andWhere('MotDePasse', motDePasse);
 }
 
-function inscription(identifiant, motDePasse, studentOrProf, nomFamille) {
+function inscription(user) {
     return knex('Utilisateurs')
-        .insert({
-            Identifiant: identifiant,
-            MotDePasse: motDePasse,
-            Etudiant: studentOrProf,
-            NomFamille: nomFamille,
-        });
+        .insert(user);
 }
 
 async function hashAllPassword() {
@@ -45,6 +39,7 @@ async function hashAllPassword() {
     }
     console.log('hash effectue sur tous les mdp');
 }
+
 module.exports = {
     getUtilisateursAll,
     getUtilisateurByIdentifiant,
