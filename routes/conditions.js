@@ -5,17 +5,12 @@ const request = require('../database/conditions');
 const router = express.Router();
 
 router.put('/:idCondition', async (req, res) => {
-    try {
-        if (req.body.IdIPPE === undefined
+    if (!Number(req.params.idCondition) || req.body.IdIPPE === undefined
             || req.body.IdPersonne === undefined || req.body.Libelle === undefined
             || req.body.HeureDebut === undefined || req.body.HeureFin === undefined
-            || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'paramètre manquant' });
+            || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
 
-        // verifier si l'entite est deja dans la base de donnees
-        const DataAdd = await request.getCondition(req.params.idCondition);
-        // si non renvoye une erreur
-        if (DataAdd.length === 0) return res.status(404).json({ message: 'L\'entité n\'existe pas dans la base de donnée' });
-
+    try {
         const DataToSend = {
             IdIPPE: req.body.IdIPPE,
             IdPersonne: req.body.IdPersonne,
@@ -25,10 +20,11 @@ router.put('/:idCondition', async (req, res) => {
             Victime: req.body.Victime,
             Frequentation: req.body.Frequentation,
         };
-        /* donner en parametre le type de la table/ les donnees a update/
-        et le id de l'entite a update */
-        await request.updateCondition(DataToSend, req.params.idCondition);
-        return res.status(200).json({ message: 'L\'entité a été modifié avec succès' });
+
+        const resultat = await request.updateCondition(DataToSend, req.params.idCondition);
+
+        if (resultat === 1) return res.status(200).json({ message: 'L\'entité a été modifié avec succès' });
+        return res.status(404).json({ message: 'L\'entité n\'existe pas dans la base de donnée' });
     } catch (error) {
         return res.status(500).json({ message: error.message });
     }
@@ -50,6 +46,8 @@ router.get('/ippes/:idIppe', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    if (req.body.IdPersonne === undefined || req.body.Libelle === undefined
+        || req.body.HeureDebut === undefined || req.body.HeureFin === undefined || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'Paramètre manquant' });
     try {
         const nouvelleCondition = {
             IdIPPE: req.body.IdIPPE,
@@ -61,9 +59,9 @@ router.post('/', async (req, res) => {
             Frequentation: req.body.Frequentation,
         };
 
-        await request.insertCondition(nouvelleCondition);
+        const resultat = await request.insertCondition(nouvelleCondition);
 
-        return res.status(201).json({ message: 'La nouvelle condition a été insérée avec succès.' });
+        return res.status(200).json(resultat);
     } catch (error) {
         console.error(`Erreur lors de l'insertion de la nouvelle condition: ${error.message}`);
         return res.status(500).json({ error: 'Erreur lors de l\'insertion de la nouvelle condition.' });
@@ -74,37 +72,29 @@ router.post('/', async (req, res) => {
 
 // Supprimer une condition
 router.delete('/:IdCondition', async (req, res) => {
-    let IdCondition;
+    if (!Number(req.params.IdCondition)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        IdCondition = req.params.IdCondition;
-        await request.deleteCondition(IdCondition);
+        const resultat = await request.deleteCondition(req.params.IdCondition);
+        if (resultat === 1) return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
+
+        return res.status(404).json({ message: 'Aucune donnée trouvé' });
     } catch (error) {
         res.status(500).json(error.message);
     }
-
-    if (!IdCondition) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
-    }
-
-    return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
 });
 
 // Retourner la condition
 router.get('/:IdCondition', async (req, res) => {
-    const { IdCondition } = req.params;
-    let resultat = [];
-    if (Number.isNaN(IdCondition)) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
-    }
+    if (!Number(req.params.idValeur)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        resultat = await request.getCondition(IdCondition);
-        if (resultat.length === 0) {
-            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" });
+        const data = await request.getCondition(req.params.IdCondition);
+        if (data.length === 0) {
+            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" }); 
         }
+        return res.status(200).send(data);
     } catch (error) {
         return res.status(500).json(error.message);
     }
-    return res.status(200).send(resultat);
 });
 
 module.exports = router;

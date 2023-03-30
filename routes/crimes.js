@@ -5,10 +5,9 @@ const request = require('../database/crimes');
 const router = express.Router();
 
 router.get('/:idCrime', async (req, res) => {
+    if (!Number(req.params.idCrime)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        let data;
-        if (req.params.idCrime !== undefined) data = await request.getCrimeById(req.params.idCrime);
-        else return res.status(400).json({ message: 'Paramètre manquant' });
+        const data = await request.getCrimeById(req.params.idCrime);
         if (data.length === 0) {
             // retourne la valeur negative
             return res.status(404).json({ message: 'Aucune donnée trouvé' });
@@ -20,17 +19,17 @@ router.get('/:idCrime', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-
-    let resultat;
+router.get('/', async (res) => {
     try {
-        resultat = await request.getCrimesAll();
+        const resultat = await request.getCrimesAll();
+        if (resultat.length === 0) {
+            // retourne la valeur negative
+            return res.status(404).json({ message: 'Aucune donnée trouvé' });
+        } // retourne que les valeurs au client;
+        return res.status(200).json(resultat);
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json({ message: error.message });
     }
-
-    return res.status(200).json(resultat);
 });
 
 module.exports = router;

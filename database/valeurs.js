@@ -12,8 +12,8 @@ function getValeursAll() {
 async function insertValeur(data) {
     return knex('IBVA')
         .insert(data)
-        .returning('IdIBVA')
-        .then((IdIBVA) => console.log(`Id: ${IdIBVA[0]}`));
+        .returning('*')
+        .then((Valeur) => Valeur);
 }
 
 // Update la donnee avec le meme id.
@@ -22,7 +22,7 @@ async function updateValeur(data, id) {
         .update(data)
         .where('IdIBVA', id)
         .returning('*')
-        .then((Valeur) => console.log(`${Valeur.length} ligne modifiée`));
+        .then((Valeur) => Valeur.length);
 }
 
 // Delete la donnee avec le meme id.
@@ -31,7 +31,7 @@ async function deleteValeur(id) {
         .where('IdIBVA', id)
         .del()
         .returning('*')
-        .then((Valeur) => console.log(`${Valeur.length} ligne supprimée`));
+        .then((Valeur) => Valeur.length);
 }
 
 // Retourne les donnees avec le meme id.
