@@ -5,7 +5,6 @@ const db = require('../database/utilisateurs');
 
 const router = express.Router();
 
-
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
@@ -19,7 +18,6 @@ router.post('/', async (req, res) => {
             return res.status(404).json({ message: 'Mot de passe incorrect' });
         }
         const expiresIn = 14400;
-        console.log(expiresIn, process.env.TOKEN_KEY, utilisateur.Identifiant)
 
         const accessToken = jwt.sign(
             { identifiant: utilisateur.Identifiant },
