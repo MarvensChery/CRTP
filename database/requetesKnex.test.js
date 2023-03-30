@@ -1,8 +1,5 @@
-const { TestWatcher } = require('jest');
 const reqKnex = require('./ippes');
 const { getArmesAll, getArmeById } = require('./armes');
-const reqKnexObjet = require('./objets');
-const reqKnexValeur = require('./valeurs');
 
 // test Vérifie la fonction getIPPE
 test('get Ippe by id dans database', async () => {
@@ -13,21 +10,21 @@ test('get Ippe by id dans database', async () => {
 // getIppePersonne,
 
 // verifier la fonction getArmeAll
-const result = async () => { await getArmesAll(); };
-
 describe('getArmesAll()', () => {
-    test('le premier objet de la liste a une propriete nom', async () => {
-        expect(result[0]).toHaveProperty('nom');
+    let armes;
+    beforeEach(async () => { armes = await getArmesAll(); });
+    it('devrait avoir la propriété IdIBAF sur le premier objet de la liste', async () => {
+        expect(armes[0]).toHaveProperty('IdIBAF');
     });
-    test('le resultat ne doit pas etre vide', async () => {
-        expect(result.length).toBeGreaterThan(0);
+    it('devrait retourner une liste qui n\'est pas vide', async () => {
+        expect(armes.length).toBeGreaterThan(0);
     });
-    test('verifier que le resultat est un tableau', async () => {
-        expect(Array.isArray(result)).toBe(true);
+    it('devrait retourner un tableau', async () => {
+        expect(Array.isArray(armes)).toBe(true);
     });
-    test('le type de la variable doit etre un objet', async () => {
-        expect(typeof result[0]).toBe('object');
+    it('devrait retourner une liste d\'objet', async () => {
+        expect(typeof armes[0]).toBe('object');
     });
 });
-
 // getArmeById,
+
