@@ -22,15 +22,15 @@ function updateCondition(data, idCondition) {
         .update(data)
         .where('IdCondition', idCondition)
         .returning('*')
-        .then((Condition) => console.log(`${Condition.length} ligne modifiée`));
+        .then((Condition) => Condition.length);
 }
 
 // Requete knex qui insert la nouvelle condition
 function insertCondition(nouvelleCondition) {
     return knex('Conditions')
         .insert(nouvelleCondition)
-        .returning('IdCondition')
-        .then((IdCondition) => console.log(`Id: ${IdCondition[0]}`));
+        .returning('*')
+        .then((Condition) => Condition);
 }
 
 // Requete knex qui delete une conditions
@@ -39,7 +39,7 @@ function deleteCondition(IdCondition) {
         .where({ IdCondition })
         .del()
         .returning('*')
-        .then((Condition) => console.log(`${Condition.length} ligne supprimée`));
+        .then((Condition) => Condition.length);
 }
 
 module.exports = {
