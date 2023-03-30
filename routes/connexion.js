@@ -49,6 +49,7 @@ router.post('/', async (req, res) => {
     const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
         expiresIn,
     });
+    res.json({ accessToken });
 
     return res.status(200).json({
         succes: true,
@@ -62,8 +63,8 @@ router.post('/', async (req, res) => {
 
 router.post('/inscription', async (req, res) => {
     try {
-        const salt = await bcrypt.genSalt();
-        const password = await bcrypt.hash(req.body.motDePasse, salt);
+        const salt = bcrypt.genSalt();
+        const password = bcrypt.hash(req.body.motDePasse, salt);
         await request.insertUser(req.body.identifiant, password, req.body.Etudiant, req.body.NomFamille);
         res.status(201).send();
     } catch {
