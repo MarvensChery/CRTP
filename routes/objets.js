@@ -40,8 +40,8 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
     // choix des infos a envoyer selon la banque de données choisi
     try {
-        if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.modele === undefined
-			|| req.body.typeOb === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (req.body.NoSerie === undefined || req.body.Marque === undefined || req.body.Modele === undefined
+			|| req.body.TypeObjet === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
         // verifie si l'entite a ajouter existe deja dans la base de donnees
         const DataAdd = await request.getObjetByNoEvenement(req.body.NoEvenement);
         // si oui renvoyer une erreur
@@ -49,9 +49,9 @@ router.post('/', async (req, res) => {
 
         const DataToSend = {
             NoSerie: req.body.NoSerie,
-            Marque: req.body.marque,
-            Modele: req.body.modele,
-            TypeObjet: req.body.typeOb,
+            Marque: req.body.Marque,
+            Modele: req.body.Modele,
+            TypeObjet: req.body.TypeObjet,
             NoEvenement: req.body.NoEvenement,
         };
             // ajout de données

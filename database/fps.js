@@ -2,8 +2,11 @@ const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
-
-function getFps(IdFPS) {
+function getFps() {
+    return knex('FPS')
+        .select('*');
+}
+function getFpsId(IdFPS) {
     return knex('FPS')
         .select(
             'Personnes.IdPersonne',
@@ -34,6 +37,13 @@ function getFps(IdFPS) {
         )
         .fullOuterJoin('Personnes', 'Personnes.IdPersonne', '=', 'FPS.IdPersonne')
         .where({ 'FPS.IdFPS': IdFPS });
+}
+
+// eslint-disable-next-line no-unused-vars
+function getPersonnesFps(IdPersonne) {
+    return knex('FPS')
+    .select('*')
+    .where('IdPersonne', '=', IdPersonne);
 }
 
 function getIdPersonne(NomDeFamille, Prenom1, Prenom2, Masculin, DateNaissance){
@@ -161,8 +171,10 @@ function deleteFps(IdFPS) {
 module.exports = {
     getFps,
     getIdPersonne,
+    getFpsId,
     addFps,
     updateDescription,
     updateFps,
     deleteFps,
+    getPersonnesFps,
 };

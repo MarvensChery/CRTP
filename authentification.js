@@ -1,4 +1,5 @@
 /* eslint-disable consistent-return */
+
 const jwt = require('jsonwebtoken');
 
 // express authentification middleware
