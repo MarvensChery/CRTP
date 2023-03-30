@@ -64,7 +64,7 @@ router.post('/inscription', async (req, res) => {
     try {
         const salt = await bcrypt.genSalt();
         const password = await bcrypt.hash(req.body.motDePasse, salt);
-        await request.insertUser(req.body.identifiant,password,req.body.Etudiant, req.body.NomFamille);
+        await request.insertUser(req.body.identifiant, password, req.body.Etudiant, req.body.NomFamille);
         res.status(201).send();
     } catch {
         res.status(401).send();

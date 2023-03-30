@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/personnes', authentification, personnesRouter);
+app.use('/personnes', personnesRouter);
 app.use('/connexion', connexionRouter);
 app.use('/ippes', authentification, ippesRouter);
 app.use('/crimes', authentification, crimesRouter);
@@ -29,7 +29,7 @@ app.use('/conditions', authentification, conditionsRouter);
 app.use('/objets', authentification, objetsRouter);
 app.use('/armes', authentification, armesRouter);
 app.use('/valeurs', authentification, valeursRouter);
-app.use('/fps', authentification, fpsRouter);
+app.use('/fps', fpsRouter);
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);

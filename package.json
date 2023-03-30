@@ -20,7 +20,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^26.1.3",
     "jest": "^27.5.1",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.22"
   },
   "scripts": {
     "lint": "npx eslint *.js",
