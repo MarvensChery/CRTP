@@ -105,37 +105,6 @@ function formatterIPPE(IPPEs) {
     return resultat;
 }
 
-// Permet d'avoir un évènement d'une personne particulièrement celle qu'on a prévu de modifié
-async function getInfoPersonneIppe(IdPersonne, IdIPPE) {
-    const data = await knex('personnes').first()
-        .fullOuterJoin('PersonnesIPPE', 'PersonnesIPPE.IdPersonne', 'Personnes.IdPersonne')
-        .fullOuterJoin('IPPE', 'IPPE.IdIPPE', 'PersonnesIPPE.IdIPPE')
-        .leftOuterJoin('Conditions', 'Conditions.IdPersonne', 'PersonnesIPPE.IdPersonne')
-        .leftOuterJoin('Crimes', 'Crimes.IdCrime', 'IPPE.IdNatureCrime')
-        .where('Personnes.IdPersonne', IdPersonne)
-        .andWhere('IPPE.IdIPPE', IdIPPE);
-
-    const conditions = await knex('Conditions').where('Conditions.IdIPPE', IdIPPE);
-    let libelleList = [];
-    conditions.forEach((element) => {
-        if (element.Libelle !== null) {
-            if (element.Libelle.includes('entrer en contact')) libelleList.push(`${element.Libelle} ${element.Victime}`);
-            else if (element.Libelle.includes('fréquenter')) libelleList.push(`${element.Libelle} ${element.Frequentation}`);
-            else if (element.Libelle.includes('Avoir comme adresse')) libelleList.push(`${element.Libelle} ${data.Adresse1} ${data.Ville} ${data.Province} ${data.CodePostal}`);
-            else libelleList.push(element.Libelle);
-        } else {
-            // si aucunes conditions n'est presente rien est envoyer dans le tableau de conditions
-            libelleList = null;
-        }
-    });
-    const dataTosend = {
-        data,
-        libelleList,
-    };
-
-    return dataTosend;
-}
-
 // Requete knex pour ajouter un évènement  IPPE à  personne
 async function insertIppePersonne(IdPersonne, IPPE) {
     await knex('IPPE').insert(IPPE);
@@ -176,7 +145,6 @@ module.exports = {
     getIppesAll,
     getIPPE,
     insertIppePersonne,
-    getInfoPersonneIppe,
     updateIppe,
     deleteResponse,
     formatterIPPE, // pas utiliser en ce moment!
