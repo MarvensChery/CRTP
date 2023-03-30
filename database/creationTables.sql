@@ -692,23 +692,23 @@ INSERT [dbo].[PersonnesIPPE] ([IdPersonne], [IdIPPE]) VALUES (10, 27)
 GO
 SET IDENTITY_INSERT [dbo].[Utilisateurs] ON
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (1, N'e1234567', N'bonjour', 1, N'EtudiantAganier')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (1, N'e1234567', N'$2b$10$SiszMdWey0AHXHpo.9OpnOfheZof0rkwitj.zPCjy5X/O8uFv9SY6', 1, N'EtudiantAganier')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (2, N'1234', N'bonjour', 0, N'ProfLamarre')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (2, N'1234', N'$2b$10$fdF/JvIJcGmgShdBYiWA1uRg6g3tT.xsM03srI/3WfTH.9P9CWBvu', 0, N'ProfLamarre')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (4, N'e1236443', N'bonjour', 1, N'Masse')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (4, N'e1236443', N'$2b$10$be7d7EVBTSdgAIl2FbaRSuwRr88EdpiGPOrkFW5tS1rpqYl3CNYue', 1, N'Masse')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (5, N'e1235341', N'bonjour', 1, N'Busseau')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (5, N'e1235341', N'$2b$10$Dlgl2SObQ10m5pp0ZTWsHuPfPX09S2mdjH8gthySv0XXtbK.PlzUC', 1, N'Busseau')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (6, N'e1231880', N'bonjour', 1, N'Vaillancourt')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (6, N'e1231880', N'$2b$10$23EP4hiYQaSp7GtKRFcEW.69DGnv0/jhmi11xOAp3p9bFECTCXPtm', 1, N'Vaillancourt')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (7, N'e1237247', N'bonjour', 1, N'Talbot')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (7, N'e1237247', N'$2b$10$UQnPe6zGTW93.WtO1uycguQTkqEspTyMlaDQUSXNQIh4NPQkDxWHi', 1, N'Talbot')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (8, N'e1239547', N'bonjour', 1, N'Lafleur')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (8, N'e1239547', N'$2b$10$RhglDZ3vmbdIIZR85O.zG.GmQhBwiVDUIRgd4xc2UscIfKbydc8Qy', 1, N'Lafleur')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (9, N'e1233306', N'bonjour', 1, N'Wilson')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (9, N'e1233306', N'$2b$10$PfJzGiPgg.tAw.V.PspzVekJ29tX067LbLmNnTTBDlCpiB3bqE1G.', 1, N'Wilson')
 GO
-INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (10, N'e1234634', N'bonjour', 1, N'Gagnon')
+INSERT [dbo].[Utilisateurs] ([IdUtilisateur], [Identifiant], [MotDePasse], [Etudiant], [NomFamille]) VALUES (10, N'e1234634', N'$2b$10$tEnlfWLz.0T7AxdCZEbc5OlN3qoWpO44M6vACm21fZTBbJrNpY4E.', 1, N'Gagnon')
 GO
 SET IDENTITY_INSERT [dbo].[Utilisateurs] OFF
 GO
