@@ -18,11 +18,10 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
-router.post('/connexion', async (req, res) => {
+router.post('/token', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-    try {
         const { identifiant, motDePasse } = req.body;
-        resultat = await request.getUtilisateurByIdentifiant(identifiant);
+        const resultat = await request.getUtilisateurByIdentifiant(identifiant);
         console.log(resultat);
         if (!resultat || resultat.length === 0) {
             return res.status(404).json({ succes: false, message: 'Identifiant incorrect' });
@@ -31,10 +30,6 @@ router.post('/connexion', async (req, res) => {
         if (!match) {
             return res.status(404).json({ succes: false, message: 'Mot de passe incorrect' });
         }
-    } catch (error) {
-        return res.status(500).json(error.message);
-    }
-
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat.Identifiant }, process.env.TOKEN_KEY, {
         expiresIn,
