@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
     return res.status(200).json(resultat);
 });
 
-router.post('/connexion', async (req, res) => {
+router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
         const { identifiant, motDePasse } = req.body;
