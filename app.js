@@ -26,7 +26,7 @@ app.use('/connexion', connexionRouter);
 app.use('/ippes', authentification, ippesRouter);
 app.use('/crimes', authentification, crimesRouter);
 app.use('/conditions', authentification, conditionsRouter);
-app.use('/objets', authentification, objetsRouter);
+app.use('/objets', objetsRouter);
 app.use('/armes', authentification, armesRouter);
 app.use('/valeurs', authentification, valeursRouter);
 app.use('/fps', fpsRouter);

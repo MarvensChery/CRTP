@@ -68,24 +68,43 @@ router.post('/', async (req, res) => {
 
 // route pour modifier les donnees dans la base
 router.put('/:idObjet', async (req, res) => {
+    let NoSerie = req.body.NoSerie;
+    let Marque = req.body.marque;
+    let Modele = req.body.modele;
+    let TypeObjet = req.body.typeOb;
+    let NoEvenement = req.body.NoEvenement;
     try {
-        if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.modele === undefined
-		    || req.body.typeOb === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (!NoSerie && !Marque && !Modele && !TypeObjet && !NoEvenement) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
-        // verifier si l'entite est deja dans la base de donnees
-        const DataAdd = await request.getObjetById(req.params.idObjet);
-        // si non renvoye une erreur
-        if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée', success: false });
+        let DataToSend = {};
 
-        const DataToSend = {
-            NoSerie: req.body.NoSerie,
-            Marque: req.body.marque,
-            Modele: req.body.modele,
-            TypeObjet: req.body.typeOb,
-            NoEvenement: req.body.NoEvenement,
-        };
+        if(NoSerie){
+            NoSerie = {NoSerie: NoSerie}
+            Object.assign(DataToSend, NoSerie)
+        }
+
+        if(Marque){
+            Marque = {Marque: Marque}
+            Object.assign(DataToSend, Marque)
+        }
+
+        if(Modele){
+            Modele = {Modele: Modele}
+            Object.assign(DataToSend, Modele)
+        }
+
+        if(TypeObjet){
+            TypeObjet = {TypeObjet: TypeObjet}
+            Object.assign(DataToSend, TypeObjet)
+        }
+
+        if(NoEvenement){
+            NoEvenement = {NoEvenement: NoEvenement}
+            Object.assign(DataToSend, NoEvenement)
+        }
         // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
-        await request.updateObjet(DataToSend, req.params.idObjet);
+        const del = await request.updateObjet(DataToSend, req.params.idObjet);
+        console.log(del)
         return res.status(200).json({ message: 'L’entité a été modifié avec succès', success: true });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
@@ -96,15 +115,13 @@ router.put('/:idObjet', async (req, res) => {
 router.delete('/:idObjet', async (req, res) => {
     let data;
     try {
-        data = await request.getObjetById(req.params.idObjet);
-        if (data.length === 0) {
-            // retourne message d'erreur
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        }
-
-        await request.deleteObjet(req.params.idObjet);
+        const del = await request.deleteObjet(req.params.idObjet);
         // retourne une confirmation
+        if(del == 1){
         return res.status(200).json({ message: 'l\'objet a bien été supprimé', success: true });
+        }else if(del == 0){
+        return res.status(404).json({message: 'aucun objet trouvé'})
+        }
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }

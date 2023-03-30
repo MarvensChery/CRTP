@@ -18,20 +18,20 @@ async function postObjet(data) {
 async function updateObjet(data, id) {
     return knex('IBOB')
         .update(data)
-        .where('IdBOB', id);
+        .where('IdIBOB', id);
 }
 
 // Delete les donnees avec le meme Id.
 async function deleteObjet(id) {
     return knex('IBOB')
-        .where('IdBOB', id)
+        .where('IdIBOB', id)
         .del();
 }
 
 // Return les donnees avec le meme Id.
 function getObjetById(id) {
     return knex('IBOB')
-        .where('IdBOB', id);
+        .where('IdIBOB', id);
 }
 
 // Return les donnees avec le meme NoEvenement.
