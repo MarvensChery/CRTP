@@ -9,11 +9,10 @@ function getUtilisateursAll() {
 }
 
 // Requete knex qui retourne les informations de connexion
-function connexion(identifiant, motDePasse, studentOrProf) {
+function connexion(identifiant, etudiantOuProf) {
     return knex('Utilisateurs')
         .where('Identifiant', identifiant)
-        .andWhere('MotDePasse', motDePasse)
-        .andWhere('Etudiant', studentOrProf);
+        .andWhere('Etudiant', etudiantOuProf);
 }
 
 module.exports = {

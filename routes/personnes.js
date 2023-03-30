@@ -104,92 +104,46 @@ router.put('/:idPersonne', async (req, res) => {
     } */
 
     const { idPersonne } = req.params;
-    const {
-        IdPersonne,
-        TypePersonne,
-        NomFamille,
-        Prenom1,
-        Prenom2,
-        Masculin,
-        DateNaissance,
-        Telephone,
-        NoPermis,
-        Adresse1,
-        Adresse2,
-        Ville,
-        Province,
-        CodePostal,
-        Race,
-        Taille,
-        Poids,
-        Yeux,
-        Cheveux,
-        Marques,
-        Toxicomanie,
-        Desorganise,
-        Depressif,
-        Suicidaire,
-        Violent,
-        Gilet,
-        Pantalon,
-        AutreVetement,
-    } = req.body;
+    if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
+    }
 
-    // if (!TypePersonne || !NomFamille || !Prenom1 || Masculin === null || !DateNaissance) {
-    //     return res.status(400).json('Le type de personne,
-    // prenom1, nom, sex et la DDN ne peuvent etre vide');
-    // }
-
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+    if (req.body.TypePersonne === '' || req.body.NomFamille === '' || req.body.Prenom1 === '' || req.body.Masculin === ''
+        || req.body.DateNaissance === '') {
+        return res.status(400).json({
+            message: 'Paramètre(s) manquant.',
+            details: 'Le type, le nom de famille, le prénom, le genre, la date de naissance de la personne ne peuvent être vide. ',
+            success: false,
+        });
     }
 
     try {
-        await request.putPersonne(
-            {
-                IdPersonne,
-                TypePersonne,
-                NomFamille,
-                Prenom1,
-                Prenom2,
-                Masculin,
-                DateNaissance,
-                Telephone,
-                NoPermis,
-                Adresse1,
-                Adresse2,
-                Ville,
-                Province,
-                CodePostal,
-                Race,
-                Taille,
-                Poids,
-                Yeux,
-                Cheveux,
-                Marques,
-                Toxicomanie,
-                Desorganise,
-                Depressif,
-                Suicidaire,
-                Violent,
-                Gilet,
-                Pantalon,
-                AutreVetement,
-            },
-        );
-        return res.status(200).json('Personne modifiée');
-    } catch (error) {
-        return res.status(500).json(error);
-    }
-    /* {
-        "TypePersonne": "Enseignant",
-        "NomFamille":"Test1",
-        "Prenom1":"test1",
-        "Prenom2":"test1",
-        "Masculin":1,
-        "DateNaissance": "2014-01-01"
+        const verificationEntite = await request.getPersonne(idPersonne);
+        if (verificationEntite.length === 0) {
+            return res.status(404).json({ message: 'La personne n\'existe pas dans la base de donnée', success: false });
+        }
 
-    } */
+        const DataToSend = {
+            TypePersonne: req.body.typePersonne,
+            NomFamille: req.body.nomFamille,
+            Prenom1: req.body.prenom1,
+            Prenom2: req.body.prenom2,
+            Masculin: req.body.masculin,
+            DateNaissance: req.body.dateNaissance,
+            Telephone: req.body.telephone,
+            NoPermis: req.body.noPermis,
+            Adresse1: req.body.adresse1,
+            Adresse2: req.body.adresse2,
+            Ville: req.body.ville,
+            Province: req.body.province,
+            CodePostal: req.body.codePostal,
+        };
+
+        const resultat = await request.updatePersonne(DataToSend, idPersonne);
+        return res.status(200).json({ message: 'Personne modifiée', success: true, 'ligne(s) modifiée(s)': resultat });
+    } catch (error) {
+        return res.status(500).json({ message: error.message, success: false });
+    }
 });
 
 router.delete('/:idPersonne', async (req, res) => {
@@ -213,64 +167,7 @@ router.delete('/:idPersonne', async (req, res) => {
         return res.status(500).json(error.message);
     }
 });
-router.put('/:idPersonne/description', async (req, res) => {
-    const { idPersonne } = req.params;
-    const { Telephone } = req.body;
-    const { NoPermis } = req.body;
-    const { AdresseUn } = req.body;
-    const { AdresseDeux } = req.body;
-    const { Ville } = req.body;
-    const { Province } = req.body;
-    const { CP } = req.body;
-    const { Race } = req.body;
-    const { Taille } = req.body;
-    const { Poids } = req.body;
-    const { Yeux } = req.body;
-    const { Cheveux } = req.body;
-    const { Marques } = req.body;
-    const { Gilet } = req.body;
-    const { Pantalon } = req.body;
-    const { Autre } = req.body;
-    const { Toxicomanie } = req.body;
-    const { Desorganise } = req.body;
-    const { Suicidaire } = req.body;
-    const { Violent } = req.body;
-    const { Depressif } = req.body;
 
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
-    }
-
-    try {
-        await request.updateDescription(
-            idPersonne,
-            Telephone,
-            NoPermis,
-            AdresseUn,
-            AdresseDeux,
-            Ville,
-            Province,
-            CP,
-            Race,
-            Taille,
-            Poids,
-            Yeux,
-            Cheveux,
-            Marques,
-            Gilet,
-            Pantalon,
-            Autre,
-            Toxicomanie,
-            Desorganise,
-            Suicidaire,
-            Violent,
-            Depressif,
-        );
-        return res.status(200).json('Description modifiée');
-    } catch (error) {
-        return res.status(500).json('Les valeurs ne sont pas conforme.');
-    }
-});
 router.get('/:idPersonne/ippes', async (req, res) => {
     const { idPersonne } = req.params;
     if (Number.isNaN(idPersonne)) {
@@ -286,4 +183,5 @@ router.get('/:idPersonne/ippes', async (req, res) => {
         return res.status(500).json(error.message);
     }
 });
+
 module.exports = router;

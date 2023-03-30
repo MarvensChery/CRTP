@@ -7,6 +7,7 @@ const authentification = require('./authentification');
 
 const PORT = process.env.PORT || 3000;
 const personnesRouter = require('./routes/personnes');
+const descriptionPersonnesRouter = require('./routes/descriptionPersonnes');
 const connexionRouter = require('./routes/connexion');
 const ippesRouter = require('./routes/ippes');
 const crimesRouter = require('./routes/crimes');
@@ -18,18 +19,20 @@ const fpsRouter = require('./routes/fps');
 
 app.use(express.static('public'));
 app.use(cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use('/personnes', authentification, personnesRouter);
+app.use('/descriptionPersonnes', descriptionPersonnesRouter);
 app.use('/connexion', connexionRouter);
-app.use('/ippes', authentification, ippesRouter);
-app.use('/crimes', authentification, crimesRouter);
-app.use('/conditions', authentification, conditionsRouter);
-app.use('/objets', authentification, objetsRouter);
-app.use('/armes', authentification, armesRouter);
-app.use('/valeurs', authentification, valeursRouter);
-app.use('/fps', authentification, fpsRouter);
+app.use('/ippes', ippesRouter);
+app.use('/crimes', crimesRouter);
+app.use('/conditions', conditionsRouter);
+app.use('/objets', objetsRouter);
+app.use('/armes', armesRouter);
+app.use('/valeurs', valeursRouter);
+app.use('/fps', fpsRouter);
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);

@@ -15,10 +15,12 @@ async function postValeur(data) {
 }
 
 // Update la donnee avec le meme id.
-async function updateValeur(data, id) {
+async function updateValeur(data, idValeur) {
     return knex('IBVA')
         .update(data)
-        .where('IdIBVA', id);
+        .where('IdIBVA', idValeur)
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 // Delete la donnee avec le meme id.
