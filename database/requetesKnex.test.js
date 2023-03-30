@@ -1,33 +1,62 @@
-const { TestWatcher } = require('jest');
 const reqKnex = require('./ippes');
 const { getArmesAll, getArmeById } = require('./armes');
-const reqKnexObjet = require('./objets');
-const reqKnexValeur = require('./valeurs');
+const { getIppePersonne } = require('./personnes');
 
 // test Vérifie la fonction getIPPE
-test('get Ippe by id dans database', async () => {
-    const expectedResult = await reqKnex.getIPPE(8);
-    expect(expectedResult.length).toEqual(1);
+describe('getippe()', () => {
+    let ippe;
+    beforeEach(async () => { ippe = await getArmeById(1); });
+    it('devrait avoir la propriété ippe sur le premier objet de la liste', async () => {
+        expect(ippe).toHaveProperty('IdIPPE');
+    });
+    it('devrait retourner un objet', async () => {
+        expect(typeof ippe).toBe('object');
+    });
 });
 
 // getIppePersonne,
-
+describe('getIppePersonne()', () => {
+    let personne;
+    beforeEach(async () => { personne = await getIppePersonne(3); });
+    it('devrait avoir la propriété IdIPPE sur le premier objet de la liste', async () => {
+        expect(personne[0]).toHaveProperty('IdIPPE');
+    });
+    it('devrait retourner une liste qui n\'est pas vide', async () => {
+        expect(personne.length).toBeGreaterThan(0);
+    });
+    it('devrait retourner un tableau', async () => {
+        expect(Array.isArray(personne)).toBe(true);
+    });
+    it('devrait retourner une liste d\'objet', async () => {
+        expect(typeof personne[0]).toBe('object');
+    });
+});
 // verifier la fonction getArmeAll
-const result = async () => { await getArmesAll(); };
-
 describe('getArmesAll()', () => {
-    test('le premier objet de la liste a une propriete nom', async () => {
-        expect(result[0]).toHaveProperty('nom');
+    let armes;
+    beforeEach(async () => { armes = await getArmesAll(); });
+    it('devrait avoir la propriété IdIBAF sur le premier objet de la liste', async () => {
+        expect(armes[0]).toHaveProperty('IdIBAF');
     });
-    test('le resultat ne doit pas etre vide', async () => {
-        expect(result.length).toBeGreaterThan(0);
+    it('devrait retourner une liste qui n\'est pas vide', async () => {
+        expect(armes.length).toBeGreaterThan(0);
     });
-    test('verifier que le resultat est un tableau', async () => {
-        expect(Array.isArray(result)).toBe(true);
+    it('devrait retourner un tableau', async () => {
+        expect(Array.isArray(armes)).toBe(true);
     });
-    test('le type de la variable doit etre un objet', async () => {
-        expect(typeof result[0]).toBe('object');
+    it('devrait retourner une liste d\'objet', async () => {
+        expect(typeof armes[0]).toBe('object');
     });
 });
 
-// getArmeById,
+// verifier la fonction getArmeid
+describe('getArmeId()', () => {
+    let armesId;
+    beforeEach(async () => { armesId = await getArmeById(1); });
+    it('devrait avoir la propriété IdIBAF sur le premier objet de la liste', async () => {
+        expect(armesId).toHaveProperty('IdIBAF');
+    });
+    it('devrait retourner un objet', async () => {
+        expect(typeof armesId).toBe('object');
+    });
+});

@@ -6,8 +6,8 @@ const db = require('../database/utilisateurs');
 const router = express.Router();
 
 
-
 router.post('/', async (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
     try {
         res.header('Access-Control-Allow-Origin', '*');
         const { Identifiant, MotDePasse } = req.body;
