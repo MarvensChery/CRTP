@@ -45,10 +45,16 @@ const reqKnexValeur = require('./valeurs');
 //     expect(result[0].IPPE).toEqual(expected);
 // });
 
-// Vérifie ippe(recherche de personne)
+// Vérifie la fonction getIPPE
 test('get Ippe by id dans database', async () => {
     const expectedResult = await reqKnex.getIPPE(8);
     expect(expectedResult.length).toEqual(1);
+});
+
+//verifier la fonction getIppesAll
+test('get Ippe all' , async () => {
+    const resultExpect = await reqKnex.getIppesAll();
+    
 });
 
 

@@ -106,7 +106,9 @@ function formatterIPPE(IPPEs) {
 }
 
 // Permet d'avoir un évènement d'une personne particulièrement celle qu'on a prévu de modifié
-async function getInfoPersonneIppe(IdPersonne, IdIPPE) {
+async function 
+
+getInfoPersonneIppe(IdPersonne, IdIPPE) {
     const data = await knex('personnes').first()
         .fullOuterJoin('PersonnesIPPE', 'PersonnesIPPE.IdPersonne', 'Personnes.IdPersonne')
         .fullOuterJoin('IPPE', 'IPPE.IdIPPE', 'PersonnesIPPE.IdIPPE')
