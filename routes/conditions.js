@@ -31,9 +31,9 @@ router.put('/:idCondition', async (req, res) => {
 });
 
 router.get('/ippes/:idIppe', async (req, res) => {
+    if (!Number(req.params.idIppe)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        let data;
-        if (req.params.idIppe !== undefined) { data = await request.getConditionsOfEvenement(req.params.idIppe); } else return res.status(400).json({ message: 'paramètre manquant' });
+        const data = await request.getConditionsOfEvenement(req.params.idIppe);
         if (data.length === 0) {
             // retourne la valeur negative
             return res.status(404).json({ message: 'Aucune donnée trouvé' });
@@ -79,7 +79,7 @@ router.delete('/:IdCondition', async (req, res) => {
 
         return res.status(404).json({ message: 'Aucune donnée trouvé' });
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
 });
 
@@ -89,7 +89,7 @@ router.get('/:IdCondition', async (req, res) => {
     try {
         const data = await request.getCondition(req.params.IdCondition);
         if (data.length === 0) {
-            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" }); 
+            return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" });
         }
         return res.status(200).send(data);
     } catch (error) {
