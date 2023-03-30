@@ -9,14 +9,16 @@ router.get('/:IdArme', async (req, res) => {
         if (!req.params.IdArme) {
             return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
         }
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
+        }
         const arme = await db.getArmeById(req.params.IdArme);
-
         if (!arme) {
             return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
         }
         return res.status(200).json(arme);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
@@ -30,7 +32,7 @@ router.get('/', async (req, res) => {
         }
         return res.status(200).json(armes);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
@@ -45,7 +47,7 @@ router.post('/', async (req, res) => {
         const armeNouvelle = await db.getArmeById(id.IdIBAF);
         return res.status(200).json(armeNouvelle);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
@@ -59,6 +61,9 @@ router.put('/:IdArme', async (req, res) => {
             || !req.body.TypeArme || !req.body.NoEvenement) {
             return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
         }
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
+        }
 
         const arme = await db.getArmeById(req.params.IdArme);
         if (!arme) {
@@ -71,7 +76,7 @@ router.put('/:IdArme', async (req, res) => {
         const armeUpdate = await db.getArmeById(req.params.IdArme);
         return res.status(200).json(armeUpdate);
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
@@ -80,6 +85,9 @@ router.delete('/:IdArme', async (req, res) => {
     try {
         if (!req.params.IdArme) {
             return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
+        }
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
         }
         const arme = await db.getArmeById(req.params.IdArme);
         if (!arme) {
@@ -91,7 +99,7 @@ router.delete('/:IdArme', async (req, res) => {
         }
         return res.status(200).json({ message: 'L\'arme a bien été supprimée' });
     } catch (error) {
-        return res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 

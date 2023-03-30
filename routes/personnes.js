@@ -272,19 +272,19 @@ router.put('/:idPersonne/description', async (req, res) => {
         return res.status(500).json('Les valeurs ne sont pas conforme.');
     }
 });
-router.get('/:idPersonne/ippes', async (req, res) => {
-    const { idPersonne } = req.params;
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
+router.get('/:IdPersonne/ippes', async (req, res) => {
+    const { IdPersonne } = req.params;
+    if (!+(IdPersonne)) {
+        return res.status(400).json({ message: 'Le paramètre "IdPersonne" n\'est pas un int' });
     }
     try {
-        const resultat = await request.getIppePersonne(idPersonne);
-        if (resultat.length === 0 || resultat === undefined) {
+        const resultat = await request.getIppePersonne(IdPersonne);
+        if (!resultat.length || !resultat) {
             return res.status(404).send('La personne ne possède pas d\'IPPE.');
         }
         return res.status(200).send(resultat);
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
