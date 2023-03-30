@@ -1,68 +1,62 @@
-const { TestWatcher } = require('jest');
-const reqKnex = require('./ippes');
 const reqUtilisateurs = require('./utilisateurs');
 const reqKnexArme = require('./armes');
-const reqKnexObjet = require('./objets');
-const reqKnexValeur = require('./valeurs');
 
+// test('test1', async () => {
+//  await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
+//  const expectedResult = [{
+//     IdIBAF: 5,
+//      NoSerie: "test",
+//     Marque: "test",
+//     Calibre: '3571      ',
+//     TypeArme: "test",
+//     NoEvenement: '108-220304-0002',
+// }];
 
-//test('test1', async () => {
-  //  await reqKnexArme.postArme('Test', 'Test', '3571      ', 'Test', '108-220304-0002');
-  //  const expectedResult = [{
-   //     IdIBAF: 5,
-  //      NoSerie: "test",
-   //     Marque: "test",
-   //     Calibre: '3571      ',
-   //     TypeArme: "test",
-   //     NoEvenement: '108-220304-0002',
-   // }];
-    
-    //const result = await reqKnexArme.getArmeById();
-    
-  //  expect(expectedResult).toEqual(result);
-//});// Ajout des armes
-//test('ajoutIBAF dans database', async () => {
+// const result = await reqKnexArme.getArmeById();
+
+//  expect(expectedResult).toEqual(result);
+// });// Ajout des armes
+// test('ajoutIBAF dans database', async () => {
 //    await reqKnexArme.postArme('test10', 'test8', '3751', 'test8', '108-220304-0003');
- //   const armes = await reqKnexArme.getArmesAll();
- //   const idarmes = (armes.length + 2);
- //   const armess = await reqKnexArme.getArmeById(idarmes);
- //   const result = (armess);
-  //  console.log(result);
- //   const expectedResult = [{
-  //      IdIBAF: idarmes,
-    //    NoSerie: 'test10',
-     //   Marque: 'test8',
-     //   Calibre: '3751      ',
-    //    TypeArme: 'test8',
-   //     NoEvenement: '108-220304-0003',
- //   }];
- //   console.log(expectedResult);
+//   const armes = await reqKnexArme.getArmesAll();
+//   const idarmes = (armes.length + 2);
+//   const armess = await reqKnexArme.getArmeById(idarmes);
+//   const result = (armess);
+//  console.log(result);
+//   const expectedResult = [{
+//      IdIBAF: idarmes,
+//    NoSerie: 'test10',
+//   Marque: 'test8',
+//   Calibre: '3751      ',
+//    TypeArme: 'test8',
+//     NoEvenement: '108-220304-0003',
+//   }];
+//   console.log(expectedResult);
 ///    console.log(armes.length);
- //   console.log(idarmes);
- //   expect(expectedResult).toEqual(result);
-  //  await reqKnexArme.deleteArme(idarmes);
-//});
+//   console.log(idarmes);
+//   expect(expectedResult).toEqual(result);
+//  await reqKnexArme.deleteArme(idarmes);
+// });
 // modif des Armes
-//test('modifIBAF dans database', async () => {
- //   const data = [{
- //       NoSerie: 'gogogaga',
-  //      Marque: 'test8',
-  //      Calibre: '3751      ',
-  //      TypeArme: 'test8',
-  //      NoEvenement: '108-220304-0003',
- //   }];
-  //  console.log(data);
-   // await reqKnexArme.updateArme(data[0], 61);
-   // const expectedResult = [{
-    //    NoSerie: 'gogogaga',
-    //    Marque: 'test8',
-   //     Calibre: '3751      ',
-    //    TypeArme: 'test8',
-  //      NoEvenement: '108-220304-0003',
-  //  }];
-  //  expect(expectedResult).toEqual(data);
-//});
-
+// test('modifIBAF dans database', async () => {
+//   const data = [{
+//       NoSerie: 'gogogaga',
+//      Marque: 'test8',
+//      Calibre: '3751      ',
+//      TypeArme: 'test8',
+//      NoEvenement: '108-220304-0003',
+//   }];
+//  console.log(data);
+// await reqKnexArme.updateArme(data[0], 61);
+// const expectedResult = [{
+//    NoSerie: 'gogogaga',
+//    Marque: 'test8',
+//     Calibre: '3751      ',
+//    TypeArme: 'test8',
+//      NoEvenement: '108-220304-0003',
+//  }];
+//  expect(expectedResult).toEqual(data);
+// });
 
 test('get Armeid', async () => {
     const expectedResult = {
@@ -118,14 +112,13 @@ test('get Armeall', async () => {
             Calibre: '12        ',
             TypeArme: 'Fusil',
             NoEvenement: '108-220310-0003',
-        }
-        
+        },
+
     ];
     const result = await reqKnexArme.getArmesAll();
     console.log(result);
     expect(expectedResult).toEqual(result);
 });
-
 
 test('GET /utilisateurs', async () => {
     const expected = [
