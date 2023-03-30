@@ -143,19 +143,13 @@ async function insertIppePersonne(IdPersonne, IPPE) {
     await knex('IPPE').insert(IPPE);
     const lastIdIppe = await knex('IPPE').max('IdIPPE as IdIPPE').first();
     await knex('PersonnesIPPE').insert({ IdPersonne, IdIPPE: lastIdIppe.IdIPPE });
-    return lastIdIppe.IdIPPE;
+    return lastIdIppe;
 }
-// Requete knex pour modifier la table IPPE
+// Requete knex pour modifier un IPPE
 async function updateIppe(IdIPPE, IPPE) {
-    try {
-        const resultat = await knex('IPPE')
-            .update(IPPE)
-            .where('IdIPPE', IdIPPE);
-        return resultat;
-    } catch (err) {
-        console.log(err);
-        return { err };
-    }
+    return knex('IPPE')
+        .update(IPPE)
+        .where('IdIPPE', IdIPPE);
 }
 
 // Requete knex pour Supprimer les réponses IPPE d'une personne
