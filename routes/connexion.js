@@ -20,16 +20,16 @@ router.get('/', async (req, res) => {
 
 router.post('/token', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-        const { identifiant, motDePasse } = req.body;
-        const resultat = await request.getUtilisateurByIdentifiant(identifiant);
-        console.log(resultat);
-        if (!resultat || resultat.length === 0) {
-            return res.status(404).json({ succes: false, message: 'Identifiant incorrect' });
-        }
-        const match = await bcrypt.compare(motDePasse, resultat.MotDePasse);
-        if (!match) {
-            return res.status(404).json({ succes: false, message: 'Mot de passe incorrect' });
-        }
+    const { identifiant, motDePasse } = req.body;
+    const resultat = await request.getUtilisateurByIdentifiant(identifiant);
+    console.log(resultat);
+    if (!resultat || resultat.length === 0) {
+        return res.status(404).json({ succes: false, message: 'Identifiant incorrect' });
+    }
+    const match = await bcrypt.compare(motDePasse, resultat.MotDePasse);
+    if (!match) {
+        return res.status(404).json({ succes: false, message: 'Mot de passe incorrect' });
+    }
     const expiresIn = 14400;
     const accessToken = jwt.sign({ identifiant: resultat.Identifiant }, process.env.TOKEN_KEY, {
         expiresIn,
@@ -48,7 +48,9 @@ router.post('/token', async (req, res) => {
 router.post('/inscription', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
-        const { Identifiant, MotDePasse, studentOrProf, NomFamille } = req.body;
+        const {
+            Identifiant, MotDePasse, studentOrProf, NomFamille,
+        } = req.body;
         const MdpHash = await bcrypt.hash(MotDePasse, 10);
         const utilisateur = await request.inscription(Identifiant, MdpHash, studentOrProf, NomFamille);
         const expiresIn = 14400;
