@@ -1,24 +1,21 @@
 /* eslint-disable consistent-return */
 const jwt = require('jsonwebtoken');
 
+const config = process.env;
+
 // express authentification middleware
 const authentification = (req, res, next) => {
-    const token = req.headers.authorization;
-    if (token) {
-        jwt.verify(token, process.env.TOKEN_KEY, (err, decoded) => {
-            if (err) {
-                return res.status(401).json({
-                    message: 'Token invalide',
-                });
-            }
-            req.decoded = decoded;
-            next();
-        });
-    } else {
-        return res.status(401).json({
-            message: 'Token manquant',
-        });
+    const token = req.headers.authorization || req.body.token || req.query.token || req.headers['x-access-token'];
+    if (!token) {
+        return res.status(403).send("Un jeton est requis pour l'authentification");
     }
+    try {
+        const decoded = jwt.verify(token.slice(7), config.TOKEN_KEY);
+        req.user = decoded;
+    } catch (err) {
+        return res.status(401).send('Jeton Invalide');
+    }
+    return next();
 };
 
 module.exports = authentification;

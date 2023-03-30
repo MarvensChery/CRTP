@@ -1,5 +1,7 @@
+/* eslint-disable no-dupe-keys */
 const { TestWatcher } = require('jest');
-const reqKnex = require('./ippes');
+const reqKnexPersonne = require('./personnes');
+const reqKnexIPPE = require('./ippes');
 const reqKnexArme = require('./armes');
 const reqKnexObjet = require('./objets');
 const reqKnexValeur = require('./valeurs');
@@ -45,6 +47,64 @@ const reqKnexValeur = require('./valeurs');
 //     expect(result[0].IPPE).toEqual(expected);
 // });
 
+test('Obtenir toutes les 7 personnes de la database', async () => {
+    const received = await reqKnexPersonne.getPersonnes();
+    expect(received).toHaveLength(7);
+});
+
+test('Obtenir tous les 4 IBVA de la database', async () => {
+    const received = await reqKnexValeur.getValeursAll();
+    expect(received).toHaveLength(4);
+});
+
+test('Obtenir une personne selon son id dans la database', async () => {
+    const expectedResult = [{
+        IdPersonne: 4,
+        TypePersonne: 'Personnage',
+        NomFamille: 'Sirois',
+        Prenom1: 'Danielle',
+        Prenom2: null,
+        Masculin: false,
+        DateNaissance: new Date('1980-02-14T00:00:00.000Z'),
+        Telephone: null,
+        NoPermis: null,
+        Adresse1: null,
+        Adresse2: null,
+        Ville: null,
+        Province: null,
+        CodePostal: null,
+        Race: null,
+        Taille: null,
+        Poids: null,
+        Yeux: null,
+        Cheveux: null,
+        Marques: null,
+        Toxicomanie: null,
+        Desorganise: null,
+        Depressif: null,
+        Suicidaire: null,
+        Violent: null,
+        Gilet: null,
+        Pantalon: null,
+        AutreVetement: null,
+    }];
+    const received = await reqKnexPersonne.getPersonneById(4);
+    expect(received).toMatchObject(expectedResult);
+});
+
+test('Obtenir un IBVA selon son id dans la database', async () => {
+    const expectedResult = [{
+        IdIBVA: 5,
+        Identifiant: '628181-4249-96708',
+        Auteur: 'MASTERCARD',
+        TypeValeur: 'Carte de crédit / débit',
+        TypeEvenement: 'Perdu',
+        NoEvenement: '123-220301-0007',
+    }];
+    const received = await reqKnexValeur.getValeurById(5);
+    expect(received).toMatchObject(expectedResult);
+});
+
 test('get IBOB by id dans database', async () => {
     const expectedResult = [{
         Marque: 'LG',
@@ -53,20 +113,8 @@ test('get IBOB by id dans database', async () => {
         NoSerie: '410MXBPVF637',
         TypeObjet: 'RA',
     }];
-    const result = await reqKnexObjet.getIBOBbyId(1);
-    expect(expectedResult).toEqual(result);
-});
-
-test('get IBVA by id dans database', async () => {
-    const expectedResult = [{
-        Identifiant: '628181-4249-96708',
-        Auteur: 'MASTERCARD',
-        TypeValeur: 'Carte de crédit / débit',
-        TypeEvenement: 'Perdu',
-        NoEvenement: '123-220301-0007',
-    }];
-    const result = await reqKnexValeur.getIBVAbyId(5);
-    expect(expectedResult).toEqual(result);
+    const received = await reqKnexObjet.getIBOBbyId(1);
+    expect(expectedResult).toEqual(received);
 });
 
 test('get IBAF by id dans database', async () => {
