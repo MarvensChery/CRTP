@@ -1,16 +1,16 @@
-const reqKnex = require('./ippes');
+const { getIPPE } = require('./ippes');
 const { getArmesAll, getArmeById } = require('./armes');
 const { getIppePersonne } = require('./personnes');
 
 // test Vérifie la fonction getIPPE
 describe('getippe()', () => {
     let ippe;
-    beforeEach(async () => { ippe = await getArmeById(1); });
+    beforeEach(async () => { ippe = await getIPPE(8); });
     it('devrait avoir la propriété ippe sur le premier objet de la liste', async () => {
-        expect(ippe).toHaveProperty('IdIPPE');
+        expect(ippe[0]).toHaveProperty('IdIPPE');
     });
     it('devrait retourner un objet', async () => {
-        expect(typeof ippe).toBe('object');
+        expect(typeof ippe[0]).toBe('object');
     });
 });
 
