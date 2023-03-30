@@ -278,11 +278,11 @@ router.get('/:IdPersonne/ippes', async (req, res) => {
         return res.status(400).json({ message: 'Le paramètre "IdPersonne" n\'est pas un int' });
     }
     try {
-        const resultat1 = await request.getPersonne(idPersonne);
+        const resultat1 = await request.getPersonne(IdPersonne);
         if (!resultat1) {
-            return res.status(404).send(`La personne avec l'id ${idPersonne} n'a pas été trouvé.`);
+            return res.status(404).send(`La personne avec l'id ${IdPersonne} n'a pas été trouvé.`);
         }
-        const resultat2 = await request.getIppePersonne(idPersonne);
+        const resultat2 = await request.getIppePersonne(IdPersonne);
         if (!resultat2.length || !resultat2) {
             return res.status(404).send('La personne ne possède pas d\'IPPE.');
         }
