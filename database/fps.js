@@ -45,7 +45,7 @@ function getIdPersonne(NomDeFamille, Prenom1, Prenom2, Masculin, DateNaissance){
 function addFps(
     IdPersonne,
     NoFPS,
-    DatePersonne,
+    DateMesure,
     Violent,
     CD,
     Echappe,
@@ -68,7 +68,7 @@ function addFps(
         .insert({
             IdPersonne,
             NoFPS,
-            DatePersonne,
+            DateMesure,
             CD,
             Violent,
             Echappe,

@@ -21,7 +21,7 @@ router.get('/:idFps', async (req, res) => {
 // Route pour ajouter un fps
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-    const DatePersonne = new Date().toJSON().slice(0,10);
+    const DateMesure = new Date().toJSON().slice(0,10);
     let IdPersonne
     const {
         NomFamille, Prenom1, Prenom2, Masculin, DateNaissance, NoFPS, Violent, CD,
@@ -43,8 +43,8 @@ router.post('/', async (req, res) => {
     try {
         await request.addFps(
             IdPersonne,
-            NoFPS,
-            DatePersonne,
+            NoFPS+"H",
+            DateMesure,
             Violent,
             CD,
             Echappe,
