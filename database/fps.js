@@ -36,9 +36,23 @@ function getFps(IdFPS) {
         .where({ 'FPS.IdFPS': IdFPS });
 }
 
+// eslint-disable-next-line no-unused-vars
+function getPersonnesFps(IdPersonne) {
+    return knex('FPS')
+    .select('*')
+    .where('IdPersonne', '=', IdPersonne);
+}
+
+function getIdPersonne(NomDeFamille, Prenom1, Prenom2, Masculin, DateNaissance){
+    return knex('Personnes')
+    .select('IdPersonne')
+    .where({'NomFamille': NomDeFamille, 'Prenom1': Prenom1, 'Prenom2': Prenom2, 'Masculin': Masculin, 'DateNaissance': DateNaissance});
+} 
+
 function addFps(
     IdPersonne,
     NoFPS,
+    DateMesure,
     Violent,
     CD,
     Echappe,
@@ -61,6 +75,7 @@ function addFps(
         .insert({
             IdPersonne,
             NoFPS,
+            DateMesure,
             CD,
             Violent,
             Echappe,
@@ -152,8 +167,10 @@ function deleteFps(IdFPS) {
 
 module.exports = {
     getFps,
+    getIdPersonne,
     addFps,
     updateDescription,
     updateFps,
     deleteFps,
+    getPersonnesFps,
 };

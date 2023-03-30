@@ -23,12 +23,12 @@ app.use(express.json());
 
 app.use('/personnes', personnesRouter);
 app.use('/connexion', connexionRouter);
-app.use('/ippes', ippesRouter);
-app.use('/crimes', crimesRouter);
-app.use('/conditions', conditionsRouter);
+app.use('/ippes', authentification, ippesRouter);
+app.use('/crimes', authentification, crimesRouter);
+app.use('/conditions', authentification, conditionsRouter);
 app.use('/objets', objetsRouter);
-app.use('/armes', armesRouter);
-app.use('/valeurs', valeursRouter);
+app.use('/armes', authentification, armesRouter);
+app.use('/valeurs', authentification, valeursRouter);
 app.use('/fps', fpsRouter);
 
 app.listen(PORT, () => {
