@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:IdIPPE', async (req, res) => {
     let resultat;
     const { IdIPPE } = req.params;
-    if (IdIPPE === undefined) {
+    if (!IdIPPE) {
         return res.status(400).json('La requête est mal formée ou les paramètres sont invalides.');
     }
     try {
@@ -48,7 +48,7 @@ router.put('/:IdIPPE', async (req, res) => {
 router.delete('/:IdIPPE', async (req, res) => {
     const { IdIPPE } = req.params;
     try {
-        if (req.params.IdIPPE == null) {
+        if (!req.params.IdIPPE) {
             return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
         }
         const exist = await db.getIPPE(IdIPPE);
