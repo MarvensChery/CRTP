@@ -44,7 +44,7 @@ router.get('/:idPersonne', async (req, res) => {
     }
     try {
         resultat = await request.getPersonne(idPersonne);
-        if (resultat.length === 0 || resultat === undefined) {
+        if (!resultat.length || !resultat) {
             return res.status(404).send('La personne n\'existe pas!');
         }
         return res.status(200).send(resultat);
@@ -278,11 +278,15 @@ router.get('/:IdPersonne/ippes', async (req, res) => {
         return res.status(400).json({ message: 'Le paramètre "IdPersonne" n\'est pas un int' });
     }
     try {
-        const resultat = await request.getIppePersonne(IdPersonne);
-        if (!resultat.length || !resultat) {
+        const resultat1 = await request.getPersonne(IdPersonne);
+        if (!resultat1) {
+            return res.status(404).send(`La personne avec l'id ${IdPersonne} n'a pas été trouvé.`);
+        }
+        const resultat2 = await request.getIppePersonne(IdPersonne);
+        if (!resultat2.length || !resultat2) {
             return res.status(404).send('La personne ne possède pas d\'IPPE.');
         }
-        return res.status(200).send(resultat);
+        return res.status(200).send(resultat2);
     } catch (error) {
         return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
@@ -291,15 +295,18 @@ router.get('/:IdPersonne/ippes', async (req, res) => {
 router.post('/:idPersonne/ippe', async (req, res) => {
     const { idPersonne } = req.params;
     const IPPE = req.body;
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
-    }
     try {
-        const resultat = await dbIPPE.insertIppePersonne(idPersonne, IPPE);
-        const retour = await dbIPPE.getIPPE(resultat.IdIPPE);
-        return res.status(200).json(retour[0]);
+        if (!+(idPersonne)) {
+            return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
+        }
+        const personne = await request.getPersonne(idPersonne);
+        if (personne.length === 1) {
+            const resultat = await dbIPPE.insertIppePersonne(idPersonne, IPPE);
+            const retour = await dbIPPE.getIPPE(resultat.IdIPPE);
+            return res.status(200).json(retour[0]);
+        } return res.status(400).json({ message: `La personne avec l'id ${idPersonne} n'a pas été trouvé.` });
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 module.exports = router;
