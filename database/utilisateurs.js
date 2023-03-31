@@ -16,8 +16,8 @@ function getUtilisateurByIdentifiant(Identifiant) {
 function insertUtilisateur(data) {
     return knex('Utilisateurs')
         .insert(data)
-        .returning('IdUtilisateur')
-        .then((IdUtilisateur) => console.log(`Id: ${IdUtilisateur[0]}`));
+        .returning('*')
+        .then((Utilisateur) => Utilisateur);
 }
 
 module.exports = {
