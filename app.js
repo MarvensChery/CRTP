@@ -26,13 +26,13 @@ app.use(express.json());
 app.use('/personnes', authentification, personnesRouter);
 app.use('/descriptionPersonnes', descriptionPersonnesRouter);
 app.use('/connexion', connexionRouter);
-app.use('/ippes', ippesRouter);
-app.use('/crimes', crimesRouter);
-app.use('/conditions', conditionsRouter);
-app.use('/objets', objetsRouter);
-app.use('/armes', armesRouter);
-app.use('/valeurs', valeursRouter);
-app.use('/fps', fpsRouter);
+app.use('/ippes', authentification, ippesRouter);
+app.use('/crimes', authentification, crimesRouter);
+app.use('/conditions', authentification, conditionsRouter);
+app.use('/objets', authentification, objetsRouter);
+app.use('/armes', authentification, armesRouter);
+app.use('/valeurs', authentification, valeursRouter);
+app.use('/fps', authentification, fpsRouter);
 
 app.listen(PORT, () => {
     console.log(`Mon application roule sur http://localhost:${PORT}`);

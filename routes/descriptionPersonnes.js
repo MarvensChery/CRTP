@@ -7,53 +7,33 @@ const router = express.Router();
 
 router.put('/:idPersonne', async (req, res) => {
     const { idPersonne } = req.params;
+    // vérification des paramètres passés dans l'url.
     if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
         return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
 
-    if (req.body.TypePersonne === '' || req.body.NomFamille === '' || req.body.Prenom1 === '' || req.body.Masculin === ''
-        || req.body.DateNaissance === '') {
-        return res.status(400).json({
-            message: 'Paramètre(s) manquant.',
-            details: 'Le type, le nom de famille, le prénom, le genre, la date de naissance de la personne ne peuvent être vide. ',
-            success: false,
-        });
-    }
-
     try {
-        const verificationEntite = await request.getPersonne(idPersonne);
+        // Vérification de l'existence de la personne dans la base de donnée.
+        const verificationEntite = await request.getPersonneById(idPersonne);
         if (verificationEntite.length === 0) {
             return res.status(404).json({ message: 'La personne n\'existe pas dans la base de donnée', success: false });
         }
 
         const DataToSend = {
-            TypePersonne: req.body.typePersonne,
-            NomFamille: req.body.nomFamille,
-            Prenom1: req.body.prenom1,
-            Prenom2: req.body.prenom2,
-            Masculin: req.body.masculin,
-            DateNaissance: req.body.dateNaissance,
-            Telephone: req.body.telephone,
-            NoPermis: req.body.noPermis,
-            Adresse1: req.body.adresse1,
-            Adresse2: req.body.adresse2,
-            Ville: req.body.ville,
-            Province: req.body.province,
-            CodePostal: req.body.codePostal,
-            Race: req.body.race,
-            Taille: req.body.taille,
-            Poids: req.body.poids,
-            Yeux: req.body.yeux,
-            Cheveux: req.body.cheveux,
-            Marques: req.body.marques,
-            Toxicomanie: req.body.toxicomanie,
-            Desorganise: req.body.desorganise,
-            Depressif: req.body.depressif,
-            Suicidaire: req.body.suicidaire,
-            Violent: req.body.violent,
-            Gilet: req.body.gilet,
+            Race: req.body.Race,
+            Taille: req.body.Taille,
+            Poids: req.body.Poids,
+            Yeux: req.body.Yeux,
+            Cheveux: req.body.Cheveux,
+            Marques: req.body.Marques,
+            Toxicomanie: req.body.Toxicomanie,
+            Desorganise: req.body.Desorganise,
+            Depressif: req.body.Depressif,
+            Suicidaire: req.body.Suicidaire,
+            Violent: req.body.Violent,
+            Gilet: req.body.Gilet,
             Pantalon: req.body.Pantalon,
-            AutreVetement: req.body.autreVetement,
+            AutreVetement: req.body.AutreVetement,
         };
 
         const resultat = await request.updatePersonne(DataToSend, idPersonne);
