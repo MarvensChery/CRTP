@@ -53,12 +53,6 @@ router.get('/:idPersonne', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    // Pour quand on uilisera les tokens
-    /* if(sessionStorage.getItem('Etudiant')){
-        res.status(401).json(error.message, 'le client n’a pas les autorisations nécessaires
-            pour ajouter la ressource.');
-    } */
-
     const { TypePersonne } = req.body;
     const { NomFamille } = req.body;
     const { Prenom1 } = req.body;
@@ -97,17 +91,12 @@ router.post('/', async (req, res) => {
 });
 
 router.put('/:idPersonne', async (req, res) => {
-    // Pour quand on uilisera les tokens
-    /* if(sessionStorage.getItem('Etudiant')){
-        res.status(401).json(error.message, 'le client n’a pas les autorisations nécessaires
-            pour ajouter la ressource.');
-    } */
-
     const { idPersonne } = req.params;
+    // Vérification des paramètres passés dans l'url.
     if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
         return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
-
+    // Vérification des paramètres passés dans le body de la requête.
     if (req.body.TypePersonne === '' || req.body.NomFamille === '' || req.body.Prenom1 === '' || req.body.Masculin === ''
         || req.body.DateNaissance === '') {
         return res.status(400).json({
@@ -118,25 +107,26 @@ router.put('/:idPersonne', async (req, res) => {
     }
 
     try {
-        const verificationEntite = await request.getPersonne(idPersonne);
+        // Vérification de l'existence de la personne dans la base de donnée.
+        const verificationEntite = await request.getPersonneById(idPersonne);
         if (verificationEntite.length === 0) {
             return res.status(404).json({ message: 'La personne n\'existe pas dans la base de donnée', success: false });
         }
 
         const DataToSend = {
-            TypePersonne: req.body.typePersonne,
-            NomFamille: req.body.nomFamille,
-            Prenom1: req.body.prenom1,
-            Prenom2: req.body.prenom2,
-            Masculin: req.body.masculin,
-            DateNaissance: req.body.dateNaissance,
-            Telephone: req.body.telephone,
-            NoPermis: req.body.noPermis,
-            Adresse1: req.body.adresse1,
-            Adresse2: req.body.adresse2,
-            Ville: req.body.ville,
-            Province: req.body.province,
-            CodePostal: req.body.codePostal,
+            TypePersonne: req.body.TypePersonne,
+            NomFamille: req.body.NomFamille,
+            Prenom1: req.body.Prenom1,
+            Prenom2: req.body.Prenom2,
+            Masculin: req.body.Masculin,
+            DateNaissance: req.body.DateNaissance,
+            Telephone: req.body.Telephone,
+            NoPermis: req.body.NoPermis,
+            Adresse1: req.body.Adresse1,
+            Adresse2: req.body.Adresse2,
+            Ville: req.body.Ville,
+            Province: req.body.Province,
+            CodePostal: req.body.CodePostal,
         };
 
         const resultat = await request.updatePersonne(DataToSend, idPersonne);
@@ -147,12 +137,6 @@ router.put('/:idPersonne', async (req, res) => {
 });
 
 router.delete('/:idPersonne', async (req, res) => {
-    // Pour quand on uilisera les tokens
-    /* if(sessionStorage.getItem('Etudiant')){
-        res.status(401).json(error.message, 'le client n’a pas les autorisations nécessaires
-        pour supprimer la ressource.');
-    } */
-
     const { idPersonne } = req.params;
 
     if (Number.isNaN(idPersonne)) {
