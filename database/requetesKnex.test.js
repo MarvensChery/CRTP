@@ -3,7 +3,7 @@ const { getArmesAll, getArmeById } = require('./armes');
 const { getIppePersonne } = require('./personnes');
 
 // test Vérifie la fonction getIPPE
-describe('getippe()', () => {
+describe('getIppe()', () => {
     let ippe;
     beforeEach(async () => { ippe = await getIPPE(8); });
     it('devrait avoir la propriété ippe sur le premier objet de la liste', async () => {
@@ -50,7 +50,7 @@ describe('getArmesAll()', () => {
 });
 
 // verifier la fonction getArmeid
-describe('getArmeId()', () => {
+describe('getArmeById()', () => {
     let armesId;
     beforeEach(async () => { armesId = await getArmeById(1); });
     it('devrait avoir la propriété IdIBAF sur le premier objet de la liste', async () => {

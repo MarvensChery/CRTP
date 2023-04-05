@@ -8,7 +8,7 @@ router.get('/:IdIPPE', async (req, res) => {
     let resultat;
     const { IdIPPE } = req.params;
     if (!IdIPPE) {
-        return res.status(400).json('La requête est mal formée ou les paramètres sont invalides.');
+        return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
     }
     try {
         if (!+(IdIPPE)) {
@@ -17,7 +17,7 @@ router.get('/:IdIPPE', async (req, res) => {
         resultat = await db.getIPPE(IdIPPE);
         if (!resultat.length) {
             // retourne la valeur negative si la personne na pas de fichier IPPE
-            return res.status(404).json('L\'IPPE n\'a pas été trouvé');
+            return res.status(404).json({ message: 'L\'IPPE n\'a pas été trouvé' });
         }
 
         // retourne que les valeurs au client; necessaire a la recherche IPPE
