@@ -201,17 +201,19 @@ router.delete('/:idPersonne', async (req, res) => {
 
     const { idPersonne } = req.params;
 
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+    if (!Number.isInteger(parseFloat(idPersonne))) {
+        return res.status(400).send({message: 'la requête est mal formée ou les paramètres sont invalides.' });
     }
     try {
-        // Supprime les conditions, les IPPE et la personne de la BD
-        const response = await request.deletePersonne(idPersonne);
-        if (response.length > 0) return res.status(200).send({ message: 'Une personne a été supprimé' });
-        return res.status(404).send({ message: "Personne n'a été supprimé" });
+        await request.deletePersonne(idPersonne);
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).send({ message: 'le serveur a rencontré une erreur non gérée' });
     }
+
+    if ((await request.deletePersonne(idPersonne)).length === 0) {
+        return res.status(404).send({ message: 'Personne non trouvée' });
+    }
+    return res.status(200).send({ message: 'Une personne a été supprimé' });
 });
 router.put('/:idPersonne/description', async (req, res) => {
     const { idPersonne } = req.params;
