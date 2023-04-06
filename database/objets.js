@@ -11,14 +11,14 @@ function getObjetsAll() {
 // Ajoute les donnees dans la database.
 async function postObjet(data) {
     return knex('IBOB')
-        .insert(data);
+        .insert(data).returning('*');
 }
 
 // Update les donnees avec le meme Dd.
 async function updateObjet(data, id) {
     return knex('IBOB')
         .update(data)
-        .where('IdIBOB', id);
+        .where('IdIBOB', id).retunring('*');
 }
 
 // Delete les donnees avec le meme Id.
