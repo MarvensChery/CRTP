@@ -8,9 +8,12 @@ const request = require('../database/objets');
 const router = express.Router();
 // Requete pour obtenir idObjet et retourne valeurs.
 router.get('/:idObjet', async (req, res) => {
+    const idObjet = req.params.idObjet
+    let data;
+
+    if(!isNaN(idObjet)){
     try {
-        let data;
-        if (req.params.idObjet !== undefined) data = await request.getObjetById(req.params.idObjet);
+        if (idObjet !== undefined) data = await request.getObjetById(idObjet);
         else return res.status(400).json({ message: 'paramètre manquant', success: false });
         if (data.length === 0) {
             // retourne la valeur negative
@@ -21,6 +24,9 @@ router.get('/:idObjet', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
+}else{
+    res.status(400).json({message: "Bad request", success: false })
+}
 });
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -39,28 +45,25 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     // choix des infos a envoyer selon la banque de données choisi
+    const NoSerie = req.body.NoSerie;
+    const Marque = req.body.marque;
+    const Modele = req.body.modele;
+    const TypeObjet = req.body.typeOb;
+    const NoEvenement = req.body.NoEvenement;
     try {
-        if (req.body.NoSerie === undefined || req.body.Marque === undefined || req.body.Modele === undefined
-			|| req.body.TypeObjet === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (NoSerie === undefined || Marque === undefined || Modele === undefined
+			|| TypeObjet === undefined || NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
         // verifie si l'entite a ajouter existe deja dans la base de donnees
         const DataAdd = await request.getObjetByNoEvenement(req.body.NoEvenement);
         // si oui renvoyer une erreur
         if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée', success: false });
 
-        const DataToSend = {
-            NoSerie: req.body.NoSerie,
-            Marque: req.body.Marque,
-            Modele: req.body.Modele,
-            TypeObjet: req.body.TypeObjet,
-            NoEvenement: req.body.NoEvenement,
-        };
+        const DataToSend = {NoSerie, Marque, Modele, TypeObjet, NoEvenement,};
             // ajout de données
-        await request.postObjet(DataToSend);
-        // avoir le id de la nouvelle entité
-        const Data = await request.getObjetByNoEvenement(req.body.NoEvenement);
-        console.log(Data);
+        const inserted = await request.postObjet(DataToSend);
+
         if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdBOB}`, success: true });
+        return res.status(200).json(inserted);
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
@@ -68,54 +71,37 @@ router.post('/', async (req, res) => {
 
 // route pour modifier les donnees dans la base
 router.put('/:idObjet', async (req, res) => {
-    let NoSerie = req.body.NoSerie;
-    let Marque = req.body.marque;
-    let Modele = req.body.modele;
-    let TypeObjet = req.body.typeOb;
-    let NoEvenement = req.body.NoEvenement;
+    const NoSerie = req.body.NoSerie;
+    const Marque = req.body.marque;
+    const Modele = req.body.modele;
+    const TypeObjet = req.body.typeOb;
+    const NoEvenement = req.body.NoEvenement;
+    const idObjet = req.params.idObjet
+
+    if(!isNaN(idObjet)){
     try {
-        if (!NoSerie && !Marque && !Modele && !TypeObjet && !NoEvenement) return res.status(400).json({ message: 'paramètre manquant', success: false });
+        if (!NoSerie || !Marque || !Modele || !TypeObjet || !NoEvenement) return res.status(400).json({ message: 'paramètre manquant', success: false });
 
-        let DataToSend = {};
+        let DataToSend = {NoSerie, Marque, Modele, TypeObjet, NoEvenement};
 
-        if(NoSerie){
-            NoSerie = {NoSerie: NoSerie}
-            Object.assign(DataToSend, NoSerie)
-        }
-
-        if(Marque){
-            Marque = {Marque: Marque}
-            Object.assign(DataToSend, Marque)
-        }
-
-        if(Modele){
-            Modele = {Modele: Modele}
-            Object.assign(DataToSend, Modele)
-        }
-
-        if(TypeObjet){
-            TypeObjet = {TypeObjet: TypeObjet}
-            Object.assign(DataToSend, TypeObjet)
-        }
-
-        if(NoEvenement){
-            NoEvenement = {NoEvenement: NoEvenement}
-            Object.assign(DataToSend, NoEvenement)
-        }
         // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
-        const del = await request.updateObjet(DataToSend, req.params.idObjet);
-        console.log(del)
-        return res.status(200).json({ message: 'L’entité a été modifié avec succès', success: true });
+        const updated = await request.updateObjet(DataToSend, idObjet);
+        return res.status(200).json(updated);
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
+}else{
+    res.status(400).json({message: "Bad request", success: false })
+}
 });
 
 // route pour delete l'entité
 router.delete('/:idObjet', async (req, res) => {
-    let data;
+    const idObjet = req.params.idObjet
+
+    if(!isNaN(idObjet)){
     try {
-        const del = await request.deleteObjet(req.params.idObjet);
+        const del = await request.deleteObjet(idObjet);
         // retourne une confirmation
         if(del == 1){
         return res.status(200).json({ message: 'l\'objet a bien été supprimé', success: true });
@@ -125,6 +111,9 @@ router.delete('/:idObjet', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
+}else{
+    res.status(400).json({message: "Bad request", success: false })
+}
 });
 
 module.exports = router;
