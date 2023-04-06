@@ -2,7 +2,7 @@
 /* eslint-disable max-len */
 const express = require('express');
 
-const request = require('../database/armes'); 
+const request = require('../database/armes');
 
 const router = express.Router();
 // Requete pour obtenir idArme.
