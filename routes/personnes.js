@@ -53,41 +53,40 @@ router.get('/:idPersonne', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { TypePersonne } = req.body;
-    const { NomFamille } = req.body;
-    const { Prenom1 } = req.body;
-    const { Prenom2 } = req.body;
-    const { Masculin } = req.body;
-    const { DateNaissance } = req.body;
 
-    if (!TypePersonne || !NomFamille || !Prenom1 || Masculin === null || !DateNaissance) {
-        return res.status(400).json('Le type de personne, prenom1, nom, sex et la DDN ne peuvent etre vide');
-    }
+    if (req.body.TypePersonne === '' || req.body.NomFamille === '' || req.body.Prenom1 === '' || req.body.Masculin === ''
+    || req.body.DateNaissance === '') {
+    return res.status(400).json({
+        message: 'Paramètre(s) manquant.',
+        details: 'Le type, le nom de famille, le prénom, le genre, la date de naissance de la personne ne peuvent être vide. ',
+        success: false,
+    });
+}
 
     try {
-        const id = await request.insertPersonne(
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
-        );
+        const DataToSend = {
+            TypePersonne: req.body.TypePersonne,
+            NomFamille: req.body.NomFamille,
+            Prenom1: req.body.Prenom1,
+            Prenom2: req.body.Prenom2,
+            Masculin: req.body.Masculin,
+            DateNaissance: req.body.DateNaissance,
+            Telephone: req.body.Telephone,
+            NoPermis: req.body.NoPermis,
+            Adresse1: req.body.Adresse1,
+            Adresse2: req.body.Adresse2,
+            Ville: req.body.Ville,
+            Province: req.body.Province,
+            CodePostal: req.body.CodePostal,
+        };
+        const resultat = await request.insertPersonne(DataToSend);
         return res.status(200).json({
             message: 'Personne ajoutée',
-            IdPersonne: id,
+            IdPersonne: resultat,
         });
     } catch (error) {
         return res.status(500).json(error.message);
     }
-    /* {
-        "TypePersonne": "Test",
-        "NomFamille":"Test",
-        "Prenom1":"test",
-        "Prenom2":"test",
-        "Masculin":1,
-        "DateNaissance":"114445"
-    }   */
 });
 
 router.put('/:idPersonne', async (req, res) => {
