@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/personnes', authentification, personnesRouter);
+app.use('/personnes', personnesRouter);
 app.use('/descriptionPersonnes', descriptionPersonnesRouter);
 app.use('/connexion', connexionRouter);
 app.use('/ippes', authentification, ippesRouter);

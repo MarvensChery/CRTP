@@ -43,7 +43,6 @@ router.put('/:idPersonne', async (req, res) => {
     }
 });
 
-
 router.post('/:idPersonne', async (req, res) => {
     const { idPersonne } = req.params;
     if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
@@ -74,7 +73,7 @@ router.post('/:idPersonne', async (req, res) => {
         };
 
         const resultat = await request.updatePersonne(DataToSend, idPersonne);
-        return res.status(200).json({ message: 'Description ajoutee', success: true, 'ligne(s) modifiée(s)': resultat });
+        return res.status(200).json({ message: 'Description ajoutée', success: true, 'ligne(s) modifiée(s)': resultat });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }

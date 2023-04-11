@@ -53,15 +53,15 @@ router.get('/:idPersonne', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-
+    // Vérification des paramètres passés dans le body de la requête.
     if (req.body.TypePersonne === '' || req.body.NomFamille === '' || req.body.Prenom1 === '' || req.body.Masculin === ''
     || req.body.DateNaissance === '') {
-    return res.status(400).json({
-        message: 'Paramètre(s) manquant.',
-        details: 'Le type, le nom de famille, le prénom, le genre, la date de naissance de la personne ne peuvent être vide. ',
-        success: false,
-    });
-}
+        return res.status(400).json({
+            message: 'Paramètre(s) manquant.',
+            details: 'Le type, le nom de famille, le prénom, le genre, la date de naissance de la personne ne peuvent être vide. ',
+            success: false,
+        });
+    }
 
     try {
         const DataToSend = {
@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
         const resultat = await request.insertPersonne(DataToSend);
         return res.status(200).json({
             message: 'Personne ajoutée',
-            IdPersonne: resultat,
+            IdPersonne: resultat[0].IdPersonne,
         });
     } catch (error) {
         return res.status(500).json(error.message);
