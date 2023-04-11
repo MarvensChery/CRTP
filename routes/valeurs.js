@@ -4,6 +4,7 @@ const express = require('express');
 const request = require('../database/valeurs');
 
 const router = express.Router();
+
 // Requete pour obtenir idValeur et retourn valeur.
 router.get('/:idValeur', async (req, res) => {
     const { idValeur } = req.params;

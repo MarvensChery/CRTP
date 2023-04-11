@@ -23,15 +23,15 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use('/personnes', personnesRouter);
-app.use('/descriptionPersonnes', descriptionPersonnesRouter);
+app.use('/personnes', authentification, personnesRouter);
+app.use('/descriptionPersonnes', authentification, descriptionPersonnesRouter);
 app.use('/connexion', connexionRouter);
 app.use('/ippes', authentification, ippesRouter);
 app.use('/crimes', authentification, crimesRouter);
 app.use('/conditions', authentification, conditionsRouter);
 app.use('/objets', authentification, objetsRouter);
 app.use('/armes', authentification, armesRouter);
-app.use('/valeurs', valeursRouter);
+app.use('/valeurs', authentification, valeursRouter);
 app.use('/fps', authentification, fpsRouter);
 
 app.listen(PORT, () => {
