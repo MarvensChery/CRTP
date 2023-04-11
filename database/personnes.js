@@ -25,7 +25,8 @@ async function InfoPersonneIppebyId(IdPersonne) {
 }
 
 // Permet d'ajouter une personne à la base de donnée
-function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
+function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance, Telephone,
+    NoPermis, Adresse1, Adresse2, Ville, Province, CodePostal) {
     return knex('Personnes')
         .insert({
             TypePersonne,
@@ -34,6 +35,13 @@ function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, Da
             Prenom2,
             Masculin,
             DateNaissance,
+            Telephone,
+            NoPermis,
+            Adresse1,
+            Adresse2,
+            Ville,
+            Province,
+            CodePostal,
         }, ['IdPersonne'])
         .returning('IdPersonne');
 }
