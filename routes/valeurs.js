@@ -6,13 +6,15 @@ const request = require('../database/valeurs');
 const router = express.Router();
 // Requete pour obtenir idValeur et retourn valeur.
 router.get('/:idValeur', async (req, res) => {
+    const { idValeur } = req.params;
+    // Vérification des paramètres passés dans la requête.
+    if (Number.isNaN(Number.parseInt(idValeur, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
+    }
     try {
-        let data;
-        if (req.params.idValeur !== undefined) data = await request.getValeurById(req.params.idValeur);
-        else return res.status(400).json({ message: 'paramètre manquant', success: false });
+        const data = await request.getValeurById(idValeur);
         if (data.length === 0) {
-            // retourne la valeur negative
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+            return res.status(404).json({ message: 'Aucune donnée trouvé', success: false });
         }
         // retourne que les valeurs au client;
         return res.status(200).json(data);
@@ -23,13 +25,11 @@ router.get('/:idValeur', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const data = await request.getValeursAll();
-        if (data.length === 0) {
-            // retourne la valeur negative
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        const resultat = await request.getValeursAll();
+        if (resultat.length === 0) {
+            return res.status(404).json({ message: 'Aucune donnée trouvé', success: false });
         }
-        // retourne que les valeurs au client;
-        return res.status(200).json(data);
+        return res.status(200).json(resultat);
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }

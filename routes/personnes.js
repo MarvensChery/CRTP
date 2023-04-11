@@ -4,13 +4,11 @@ const request = require('../database/personnes');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-
     try {
         const resultat = await request.getPersonnesAll();
         res.status(200).json(resultat);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ message: error.message, success: false });
     }
 });
 
@@ -27,22 +25,24 @@ router.get('/:idPersonne/infoIPPE', async (req, res) => {
     }
 });
 
+// eslint-disable-next-line consistent-return
 router.get('/:idPersonne', async (req, res) => {
     const { idPersonne } = req.params;
-    if (isNaN(idPersonne)) {
-        res.status(400).json({ error: 'invalid parameters' });
-        return;
+
+    // Vérification des paramètres passés dans l'url.
+    if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
 
     try {
-        const resultat = await request.getPersonne(idPersonne);
-        if (resultat.length === 0 || resultat === undefined) {
-            res.status(404).json({ error: 'not found' });
+        const resultat = await request.getPersonneById(idPersonne);
+        if (resultat.length === 0) {
+            res.status(404).json({ message: 'Personne non trouvée.', success: false });
         } else {
             res.status(200).json(resultat);
         }
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message, success: false });
     }
 });
 

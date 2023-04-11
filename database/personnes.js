@@ -79,10 +79,8 @@ async function deletePersonne(IdPersonne) {
 
 function getPersonnesAll() {
     return knex('Personnes')
-    .select('*')
+        .select('*');
 }
-
-
 
 module.exports = {
     updatePersonne,
