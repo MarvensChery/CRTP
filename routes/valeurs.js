@@ -60,8 +60,13 @@ router.post('/', async (req, res) => {
             success: true,
         });
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: 'le serveur a rencontré une erreur non gérée', success: false });
     }
+    if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
+        || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) {
+        return res.status(400).json({ message: 'paramètre manquant ou invalide', success: false });
+    }
+    return res.status(200).json({ message: 'L’entité a été ajoutée avec succès', success: true });
 });
 
 // Route pour modifier les données dans la base.
@@ -119,6 +124,11 @@ router.delete('/:idValeur', async (req, res) => {
     } catch (error) {
         return res.status(500).send({ message: error.message, success: false });
     }
+
+    if ((await request.getValeurById(idValeur)).length === 0) {
+        return res.status(404).send({ message: 'valeur non trouvée' });
+    }
+    return res.status(200).send({ message: 'Une valeur a été supprimé' });
 });
 
 module.exports = router;
