@@ -83,9 +83,10 @@ router.post('/', async (req, res) => {
         return res.status(200).json({
             message: 'Personne ajoutée',
             IdPersonne: resultat[0].IdPersonne,
+            success: true,
         });
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({ message: error.message, success: false });
     }
 });
 
@@ -138,16 +139,21 @@ router.put('/:idPersonne', async (req, res) => {
 router.delete('/:idPersonne', async (req, res) => {
     const { idPersonne } = req.params;
 
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+    // Vérification des paramètres passés dans l'url.
+    if (Number.isNaN(Number.parseInt(idPersonne, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
+
     try {
-        // Supprime les conditions, les IPPE et la personne de la BD
-        const response = await request.deletePersonne(idPersonne);
-        if (response.length > 0) return res.status(200).send({ message: 'Une personne a été supprimé' });
-        return res.status(404).send({ message: "Personne n'a été supprimé" });
+        const verificationEntite = await request.getPersonneById(idPersonne);
+        if (verificationEntite.length === 0) {
+            return res.status(404).send({ message: 'Personne non trouvée', success: false });
+        }
+
+        const resultat = await request.deletePersonne(idPersonne);
+        return res.status(200).send({ message: 'Une personne a été supprimé', success: true, 'ligne(s) modifiée(s)': resultat });
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).send({ message: error.message, success: false });
     }
 });
 

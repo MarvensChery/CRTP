@@ -36,32 +36,37 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    // choix des infos a envoyer selon la banque de données choisi
-    try {
-        if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
-            || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
-
-        // verifie si l'entite a ajouter existe deja dans la base de donnees
-        const DataAdd = await request.getValeurByNoEvenement(req.body.NoEvenement);
-        // si oui renvoyer une erreur
-        if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée', success: false });
-
-        const DataToSend = {
-            Identifiant: req.body.NoSerie,
-            Auteur: req.body.auteur,
-            TypeValeur: req.body.typeVa,
-            TypeEvenement: req.body.resIBVA,
-            NoEvenement: req.body.NoEvenement,
-        };
-            // ajout de données
-        await request.postValeur(DataToSend);
-        // avoir le id de la nouvelle entité
-        const Data = await request.getValeurByNoEvenement(req.body.NoEvenement);
-        if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdIBVA}`, success: true });
-    } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+    // Vérification des paramètres passés dans le body de la requête.
+    if (req.body.Identifiant === '' || req.body.Auteur === '' || req.body.TypeValeur === '') {
+        return res.status(400).json({
+            message: 'Paramètre(s) manquant.',
+            details: 'L\'identifiant, l\'auteur, le type de valeur ne peuvent être vide.',
+            success: false,
+        });
     }
+
+    const DataToSend = {
+        Identifiant: req.body.Identifiant,
+        Auteur: req.body.Auteur,
+        TypeValeur: req.body.TypeValeur,
+        TypeEvenement: req.body.TypeEvenement,
+        NoEvenement: req.body.NoEvenement,
+    };
+    try {
+        const resultat = await request.postValeur(DataToSend);
+        return res.status(200).json({
+            message: 'L’entité a été ajoutée avec succès',
+            IdValeur: resultat[0].IdIBVA,
+            success: true,
+        });
+    } catch (error) {
+        return res.status(500).json({ message: 'le serveur a rencontré une erreur non gérée', success: false });
+    }
+    if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
+        || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) {
+        return res.status(400).json({ message: 'paramètre manquant ou invalide', success: false });
+    }
+    return res.status(200).json({ message: 'L’entité a été ajoutée avec succès', success: true });
 });
 
 // Route pour modifier les données dans la base.
@@ -99,22 +104,31 @@ router.put('/:idValeur', async (req, res) => {
     }
 });
 
-// route pour delete l'entité
+// Route pour supprimer une entité.
 router.delete('/:idValeur', async (req, res) => {
-    let data;
+    const { idValeur } = req.params;
+
+    // Vérification des paramètres passés dans la requête.
+    if (Number.isNaN(Number.parseInt(idValeur, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
+    }
+
     try {
-        data = await request.getValeurById(req.params.idValeur);
-        if (data.length === 0) {
-            // retourne message d'erreur
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        const verificationEntite = await request.getValeurById(idValeur);
+        if (verificationEntite.length === 0) {
+            return res.status(404).send({ message: 'Valeur non trouvée', success: false });
         }
 
-        await request.deleteValeur(req.params.idValeur);
-        // retourne une confirmation
-        return res.status(200).json({ message: 'l\'objet a bien été supprimé', success: true });
+        const resultat = await request.deleteValeur(idValeur);
+        return res.status(200).send({ message: 'Une valeur a été supprimé', success: true, 'ligne(s) modifiée(s)': resultat });
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).send({ message: error.message, success: false });
     }
+
+    if ((await request.getValeurById(idValeur)).length === 0) {
+        return res.status(404).send({ message: 'valeur non trouvée' });
+    }
+    return res.status(200).send({ message: 'Une valeur a été supprimé' });
 });
 
 module.exports = router;

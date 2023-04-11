@@ -31,7 +31,7 @@ app.use('/crimes', authentification, crimesRouter);
 app.use('/conditions', authentification, conditionsRouter);
 app.use('/objets', authentification, objetsRouter);
 app.use('/armes', authentification, armesRouter);
-app.use('/valeurs', authentification, valeursRouter);
+app.use('/valeurs', valeursRouter);
 app.use('/fps', authentification, fpsRouter);
 
 app.listen(PORT, () => {
