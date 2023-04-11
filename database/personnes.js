@@ -31,6 +31,15 @@ function insertPersonne(data) {
         .returning('IdPersonne');
 }
 
+// Permet d'ajouter la description d'une personne à la base de données
+function insertDescriptionPersonne(data, idPersonne) {
+    return knex('Personnes')
+        .where('IdPersonne', idPersonne)
+        .update(data)
+        .returning('*')
+        .then((rows) => rows.length);
+}
+
 // Info necessaire pour le tableau de la page personne
 async function getIppePersonne(IdPersonne) {
     const resultat = await knex('IPPE')
@@ -85,6 +94,7 @@ function getPersonnesAll() {
 module.exports = {
     updatePersonne,
     insertPersonne,
+    insertDescriptionPersonne,
     getPersonneById,
     deletePersonne,
     getIppePersonne,

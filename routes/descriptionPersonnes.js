@@ -72,7 +72,7 @@ router.post('/:idPersonne', async (req, res) => {
             AutreVetement: req.body.AutreVetement,
         };
 
-        const resultat = await request.updatePersonne(DataToSend, idPersonne);
+        const resultat = await request.insertDescriptionPersonne(DataToSend, idPersonne);
         return res.status(200).json({ message: 'Description ajoutée', success: true, 'ligne(s) modifiée(s)': resultat });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
