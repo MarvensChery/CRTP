@@ -64,13 +64,15 @@ router.post('/', async (req, res) => {
     }
 });
 
-// route pour modifier les donnees dans la base
+// Route pour modifier les données dans la base.
 router.put('/:idValeur', async (req, res) => {
     const { idValeur } = req.params;
+    // Vérification des paramètres passés dans la requête.
     if (Number.isNaN(Number.parseInt(idValeur, 10))) {
         return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
-    if (req.body.identifiant === '' || req.body.auteur === '' || req.body.typeValeur === '') {
+    // Vérification des paramètres passés dans le body de la requête.
+    if (req.body.Identifiant === '' || req.body.Auteur === '' || req.body.TypeValeur === '') {
         return res.status(400).json({
             message: 'Paramètre(s) manquant.',
             details: 'L\'identifiant, l\'auteur, le type de valeur ne peuvent être vide.',
@@ -79,19 +81,17 @@ router.put('/:idValeur', async (req, res) => {
     }
 
     try {
-        // verifier si l'entite est deja dans la base de donnees
+        // Vérifier si l'entité est déjà dans la base de données.
         const verificationEntite = await request.getValeurById(req.params.idValeur);
-        // si non renvoye une erreur
         if (verificationEntite.length === 0) return res.status(404).json({ message: 'L\'entité n\'existe pas dans la base de donnée', success: false });
 
         const DataToSend = {
-            Identifiant: req.body.identifiant,
-            Auteur: req.body.auteur,
-            TypeValeur: req.body.typeValeur,
-            TypeEvenement: req.body.typeEvenement,
-            NoEvenement: req.body.noEvenement,
+            Identifiant: req.body.Identifiant,
+            Auteur: req.body.Auteur,
+            TypeValeur: req.body.TypeValeur,
+            TypeEvenement: req.body.TypeEvenement,
+            NoEvenement: req.body.NoEvenement,
         };
-        // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update
         const resultat = await request.updateValeur(DataToSend, req.params.idValeur);
         return res.status(200).json({ message: 'L\'entité a été modifiée avec succès', success: true, 'ligne(s) modifiée(s)': resultat });
     } catch (error) {

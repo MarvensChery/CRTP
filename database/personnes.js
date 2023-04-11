@@ -24,17 +24,10 @@ async function InfoPersonneIppebyId(IdPersonne) {
     return dataTosend;
 }
 
-// Permet d'ajouter une personne à la base de donnée
-function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
+// Permet d'ajouter une personne à la base de données
+function insertPersonne(data) {
     return knex('Personnes')
-        .insert({
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
-        }, ['IdPersonne'])
+        .insert(data, ['IdPersonne'])
         .returning('IdPersonne');
 }
 
@@ -49,7 +42,7 @@ async function getIppePersonne(IdPersonne) {
     return resultat;
 }
 
-// Permet de modifer une personne et/ou sa description
+// Permet de modifier une personne et/ou sa description
 async function updatePersonne(data, idPersonne) {
     await knex('Personnes')
         .where('IdPersonne', idPersonne)
