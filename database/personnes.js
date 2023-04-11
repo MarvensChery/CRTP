@@ -73,7 +73,8 @@ async function deletePersonne(IdPersonne) {
     return knex('Personnes')
         .where('IdPersonne', IdPersonne)
         .del()
-        .returning('*');
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 function getPersonnesAll() {

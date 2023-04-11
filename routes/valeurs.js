@@ -36,23 +36,32 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    // Vérification des paramètres passés dans le body de la requête.
+    if (req.body.Identifiant === '' || req.body.Auteur === '' || req.body.TypeValeur === '') {
+        return res.status(400).json({
+            message: 'Paramètre(s) manquant.',
+            details: 'L\'identifiant, l\'auteur, le type de valeur ne peuvent être vide.',
+            success: false,
+        });
+    }
+
     const DataToSend = {
-        Identifiant: req.body.NoSerie,
-        Auteur: req.body.auteur,
-        TypeValeur: req.body.typeVa,
-        TypeEvenement: req.body.resIBVA,
+        Identifiant: req.body.Identifiant,
+        Auteur: req.body.Auteur,
+        TypeValeur: req.body.TypeValeur,
+        TypeEvenement: req.body.TypeEvenement,
         NoEvenement: req.body.NoEvenement,
     };
     try {
-        await request.postValeur(DataToSend);
+        const resultat = await request.postValeur(DataToSend);
+        return res.status(200).json({
+            message: 'L’entité a été ajoutée avec succès',
+            IdValeur: resultat[0].IdIBVA,
+            success: true,
+        });
     } catch (error) {
-        return res.status(500).json({ message: 'le serveur a rencontré une erreur non gérée', success: false });
+        return res.status(500).json({ message: error.message, success: false });
     }
-    if (req.body.NoSerie === undefined || req.body.auteur === undefined || req.body.typeVa === undefined
-        || req.body.resIBVA === undefined || req.body.NoEvenement === undefined) {
-        return res.status(400).json({ message: 'paramètre manquant ou invalide', success: false });
-    }
-    return res.status(200).json({ message: 'L’entité a été ajoutée avec succès', success: true });
 });
 
 // Route pour modifier les données dans la base.
@@ -90,23 +99,26 @@ router.put('/:idValeur', async (req, res) => {
     }
 });
 
-// route pour delete l'entité
+// Route pour supprimer une entité.
 router.delete('/:idValeur', async (req, res) => {
-    const { idValeur } = req.params.idValeur;
+    const { idValeur } = req.params;
 
-    if (!Number.isInteger(parseFloat(idValeur))) {
-        return res.status(400).send({ message: 'la requête est mal formée ou les paramètres sont invalides.' });
+    // Vérification des paramètres passés dans la requête.
+    if (Number.isNaN(Number.parseInt(idValeur, 10))) {
+        return res.status(400).send({ message: 'La requête est mal formée.', success: false });
     }
+
     try {
-        await request.deleteValeur(idValeur);
-    } catch (error) {
-        return res.status(500).send({ message: 'le serveur a rencontré une erreur non gérée' });
-    }
+        const verificationEntite = await request.getValeurById(idValeur);
+        if (verificationEntite.length === 0) {
+            return res.status(404).send({ message: 'Valeur non trouvée', success: false });
+        }
 
-    if ((await request.getValeurById(idValeur)).length === 0) {
-        return res.status(404).send({ message: 'valeur non trouvée' });
+        const resultat = await request.deleteValeur(idValeur);
+        return res.status(200).send({ message: 'Une valeur a été supprimé', success: true, 'ligne(s) modifiée(s)': resultat });
+    } catch (error) {
+        return res.status(500).send({ message: error.message, success: false });
     }
-    return res.status(200).send({ message: 'Une valeur a été supprimé' });
 });
 
 module.exports = router;
