@@ -1,5 +1,4 @@
 const express = require('express');
-
 const request = require('../database/personnes');
 
 const router = express.Router();
@@ -7,48 +6,43 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
 
-    let resultat;
     try {
-        resultat = await request.getPersonnesAll();
+        const resultat = await request.getPersonnesAll();
+        res.status(200).json(resultat);
     } catch (error) {
-        res.status(500).json(error.message);
+        res.status(500).json({ error: error.message });
     }
-
-    return res.status(200).json(resultat);
 });
 
 router.get('/:idPersonne/infoIPPE', async (req, res) => {
-    const data = await request.InfoPersonneIppebyId(req.params.idPersonne);
-    if (data) {
-        res.status(200).json(data);
-    } else {
-        res.status(400).json({ status: 'not found' });
+    try {
+        const data = await request.InfoPersonneIppebyId(req.params.idPersonne);
+        if (data) {
+            res.status(200).json(data);
+        } else {
+            res.status(404).json({ error: 'not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-    return null;
 });
 
-// eslint-disable consistent-return
 router.get('/:idPersonne', async (req, res) => {
-    // Pour quand on uilisera les tokens
-    /* if(sessionStorage.getItem('Etudiant')){
-        res.status(401).json(error.message, 'le client n’a pas les autorisations nécessaires
-            pour accéder à la ressource.');
-    } */
-
     const { idPersonne } = req.params;
-    let resultat;
-
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+    if (isNaN(idPersonne)) {
+        res.status(400).json({ error: 'invalid parameters' });
+        return;
     }
+
     try {
-        resultat = await request.getPersonne(idPersonne);
+        const resultat = await request.getPersonne(idPersonne);
         if (resultat.length === 0 || resultat === undefined) {
-            return res.status(404).send('La personne n\'existe pas!');
+            res.status(404).json({ error: 'not found' });
+        } else {
+            res.status(200).json(resultat);
         }
-        return res.status(200).send(resultat);
     } catch (error) {
-        return res.status(500).json(error);
+        res.status(500).json({ error: error.message });
     }
 });
 
