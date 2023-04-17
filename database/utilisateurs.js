@@ -23,27 +23,33 @@ function connexion(identifiant, motDePasse) {
         .andWhere('MotDePasse', motDePasse);
 }
 
-function inscription(user) {
-    return knex('Utilisateurs')
-        .insert(user);
-}
+function insertUsers(identifiant, motDePasse,studentOrProf,nomFamille) {
+    knex('Utilisateurs')
+        .insert(
+            {'Identifiant': identifiant,
+            'MotDePasse':motDePasse,
+            'Etudiant':studentOrProf,
+            'NomFamille':nomFamille}
+        )
+};
 
-async function hashAllPassword() {
-    const utilisateurs = await knex('Utilisateurs')
-        .select('Identifiant', 'MotDePasse');
-    for (const utilisateur of utilisateurs) {
-        const hash = await bcrypt.hash(utilisateur.MotDePasse, 10);
-        await knex('Utilisateurs')
-            .where('Identifiant', utilisateur.Identifiant)
-            .update({ MotDePasse: hash });
-    }
-    console.log('hash effectue sur tous les mdp');
-}
+function getPasswords(){
+    knex
+    .from('Utilisateurs')
+    .select('Identifiant','MotDePasse')
+};
+
+function updatePassword(identifiant,password){
+    knex('Utilisateurs')
+        .where({'Identifiant': identifiant})
+        .update({'MotDePasse': password})
+};
 
 module.exports = {
     getUtilisateursAll,
     getUtilisateurByIdentifiant,
     connexion,
-    hashAllPassword,
-    inscription,
+    insertUsers,
+    getPasswords,
+    updatePassword,
 };
