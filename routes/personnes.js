@@ -1,6 +1,5 @@
 const express = require('express');
 const request = require('../database/personnes');
-const dbIPPE = require('../database/ippes');
 
 const router = express.Router();
 
@@ -11,6 +10,31 @@ router.get('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
+});
+
+router.get('/info', async (req, res) => {
+    let resultat;
+
+    const { nomFamille, prenom1 } = req.query;
+    const prenom2 = (req.query.prenom2 === '') ? null : req.query.prenom2;
+    const masculin = (req.query.masculin === 'true');
+    const { dateNaissance } = req.query;
+
+    if (nomFamille === undefined || prenom1 === undefined || prenom2 === undefined
+        || masculin === undefined || dateNaissance === undefined) {
+        return res.status(400).json('paramètre manquant');
+    }
+    try {
+        resultat = await request.getPersonne(nomFamille, prenom1, prenom2, masculin, dateNaissance);
+    } catch (error) {
+        return res.status(500).json(error.message);
+    }
+
+    if (resultat.length === 0) {
+        return res.status(404).json('Cette personne n\'est pas répertoriée');
+    }
+
+    return res.status(200).json(resultat);
 });
 
 router.get('/:idPersonne/infoIPPE', async (req, res) => {
@@ -158,11 +182,11 @@ router.get('/:idPersonne/ippes', async (req, res) => {
         return res.status(400).send('les paramètres sont invalides.');
     }
     try {
-        const resultat1 = await request.getPersonne(IdPersonne);
+        const resultat1 = await request.getPersonne(idPersonne);
         if (!resultat1) {
-            return res.status(404).send(`La personne avec l'id ${IdPersonne} n'a pas été trouvé.`);
+            return res.status(404).send(`La personne avec l'id ${idPersonne} n'a pas été trouvé.`);
         }
-        const resultat2 = await request.getIppePersonne(IdPersonne);
+        const resultat2 = await request.getIppePersonne(idPersonne);
         if (!resultat2.length || !resultat2) {
             return res.status(404).send('La personne ne possède pas d\'IPPE.');
         }

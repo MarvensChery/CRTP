@@ -14,6 +14,19 @@ function getPersonneById(IdPersonne) {
         .select('*');
 }
 
+async function getPersonne(nomFamille, prenom1, prenom2, masculin, dateNaissance) {
+    const resultat = await knex('Personnes')
+        .where({
+            NomFamille: nomFamille,
+            Prenom1: prenom1,
+            Prenom2: prenom2,
+            Masculin: masculin,
+            DateNaissance: dateNaissance,
+        });
+
+    return resultat;
+}
+
 async function InfoPersonneIppebyId(IdPersonne) {
     const data = await knex('Personnes').first()
         .where('IdPersonne', IdPersonne);
@@ -96,6 +109,7 @@ module.exports = {
     insertPersonne,
     insertDescriptionPersonne,
     getPersonneById,
+    getPersonne,
     deletePersonne,
     getIppePersonne,
     getPersonnesAll,
