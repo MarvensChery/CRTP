@@ -7,6 +7,7 @@ const authentification = require('./authentification');
 
 const PORT = process.env.PORT || 3000;
 const personnesRouter = require('./routes/personnes');
+const descriptionPersonnesRouter = require('./routes/descriptionPersonnes');
 const connexionRouter = require('./routes/connexion');
 const utilisateursRouter = require('./routes/utilisateurs');
 const ippesRouter = require('./routes/ippes');
@@ -19,10 +20,12 @@ const fpsRouter = require('./routes/fps');
 
 app.use(express.static('public'));
 app.use(cors());
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use('/personnes', authentification, personnesRouter);
+app.use('/descriptionPersonnes', authentification, descriptionPersonnesRouter);
 app.use('/connexion', connexionRouter);
 app.use('/ippes', authentification, ippesRouter);
 app.use('/crimes', authentification, crimesRouter);

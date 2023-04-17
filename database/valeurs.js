@@ -8,24 +8,29 @@ function getValeursAll() {
     return knex('IBVA');
 }
 
-// Ajoute la donnee a la base.
+// Ajoute une valeur dans la base de données.
 async function postValeur(data) {
     return knex('IBVA')
-        .insert(data);
+        .insert(data, ['IdIBVA'])
+        .returning('IdIBVA');
 }
 
 // Update la donnee avec le meme id.
-async function updateValeur(data, id) {
+async function updateValeur(data, idValeur) {
     return knex('IBVA')
         .update(data)
-        .where('IdIBVA', id);
+        .where('IdIBVA', idValeur)
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 // Delete la donnee avec le meme id.
 async function deleteValeur(id) {
     return knex('IBVA')
         .where('IdIBVA', id)
-        .del();
+        .del()
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 // Retourne les donnees avec le meme id.

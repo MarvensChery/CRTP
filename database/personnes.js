@@ -8,7 +8,7 @@ function getPersonnes() {
     return knex('Personnes');
 }
 
-function getPersonne(IdPersonne) {
+function getPersonneById(IdPersonne) {
     return knex('Personnes')
         .where('Personnes.IdPersonne', IdPersonne)
         .select('*');
@@ -24,19 +24,22 @@ async function InfoPersonneIppebyId(IdPersonne) {
     return dataTosend;
 }
 
-// Permet d'ajouter une personne à la base de donnée
-function insertPersonne(TypePersonne, NomFamille, Prenom1, Prenom2, Masculin, DateNaissance) {
+// Permet d'ajouter une personne à la base de données
+function insertPersonne(data) {
     return knex('Personnes')
-        .insert({
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
-        }, ['IdPersonne'])
+        .insert(data, ['IdPersonne'])
         .returning('IdPersonne');
 }
+
+// Permet d'ajouter la description d'une personne à la base de données
+function insertDescriptionPersonne(data, idPersonne) {
+    return knex('Personnes')
+        .where('IdPersonne', idPersonne)
+        .update(data)
+        .returning('*')
+        .then((rows) => rows.length);
+}
+
 // Info necessaire pour le tableau de la page personne
 async function getIppePersonne(IdPersonne) {
     const resultat = await knex('IPPE')
@@ -47,91 +50,14 @@ async function getIppePersonne(IdPersonne) {
 
     return resultat;
 }
-// Permet de modifer une personne
-async function updatePersonne(
-    IdPersonne,
-    TypePersonne,
-    NomFamille,
-    Prenom1,
-    Prenom2,
-    Masculin,
-    DateNaissance,
-) {
-    await knex('Personnes')
-        .where('IdPersonne', IdPersonne)
-        .update({
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
-        });
-}
 
-async function putPersonne(
-    {
-        IdPersonne,
-        TypePersonne,
-        NomFamille,
-        Prenom1,
-        Prenom2,
-        Masculin,
-        DateNaissance,
-        Telephone,
-        NoPermis,
-        Adresse1,
-        Adresse2,
-        Ville,
-        Province,
-        CodePostal,
-        Race,
-        Taille,
-        Poids,
-        Yeux,
-        Cheveux,
-        Marques,
-        Toxicomanie,
-        Desorganise,
-        Depressif,
-        Suicidaire,
-        Violent,
-        Gilet,
-        Pantalon,
-        AutreVetement,
-    },
-) {
+// Permet de modifier une personne et/ou sa description
+async function updatePersonne(data, idPersonne) {
     await knex('Personnes')
-        .where('IdPersonne', IdPersonne)
-        .update({
-            TypePersonne,
-            NomFamille,
-            Prenom1,
-            Prenom2,
-            Masculin,
-            DateNaissance,
-            Telephone,
-            NoPermis,
-            Adresse1,
-            Adresse2,
-            Ville,
-            Province,
-            CodePostal,
-            Race,
-            Taille,
-            Poids,
-            Yeux,
-            Cheveux,
-            Marques,
-            Toxicomanie,
-            Desorganise,
-            Depressif,
-            Suicidaire,
-            Violent,
-            Gilet,
-            Pantalon,
-            AutreVetement,
-        });
+        .where('IdPersonne', idPersonne)
+        .update(data)
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 // Supprime une personne ainsi que son IPPE et ses Conditions
@@ -156,73 +82,22 @@ async function deletePersonne(IdPersonne) {
     return knex('Personnes')
         .where('IdPersonne', IdPersonne)
         .del()
-        .returning('*');
-}
-
-// Permet de modifer les description d'une personne
-async function updateDescription(
-    IdPersonne,
-    telephone,
-    noPermis,
-    adresseUn,
-    adresseDeux,
-    ville,
-    province,
-    CP,
-    race,
-    taille,
-    poids,
-    yeux,
-    cheveux,
-    marques,
-    gilet,
-    pantalon,
-    Autre,
-    toxicomanie,
-    desorganise,
-    suicidaire,
-    violent,
-    depressif,
-) {
-    await knex('Personnes')
-        .where('IdPersonne', IdPersonne)
-        .update({
-            Telephone: telephone,
-            NoPermis: noPermis,
-            Adresse1: adresseUn,
-            Adresse2: adresseDeux,
-            Ville: ville,
-            Province: province,
-            CodePostal: CP,
-            Race: race,
-            Taille: taille,
-            Poids: poids,
-            Yeux: yeux,
-            Cheveux: cheveux,
-            Marques: marques,
-            Gilet: gilet,
-            Pantalon: pantalon,
-            AutreVetement: Autre,
-            Toxicomanie: toxicomanie,
-            Desorganise: desorganise,
-            Suicidaire: suicidaire,
-            Violent: violent,
-            Depressif: depressif,
-        });
+        .returning('*')
+        .then((rows) => rows.length);
 }
 
 function getPersonnesAll() {
-    return knex('Personnes');
+    return knex('Personnes')
+        .select('*');
 }
 
 module.exports = {
-    putPersonne,
-    insertPersonne,
-    getPersonne,
     updatePersonne,
+    insertPersonne,
+    insertDescriptionPersonne,
+    getPersonneById,
     deletePersonne,
     getIppePersonne,
-    updateDescription,
     getPersonnesAll,
     getPersonnes,
     InfoPersonneIppebyId,
