@@ -1,112 +1,107 @@
-/* eslint-disable no-tabs */
-/* eslint-disable max-len */
 const express = require('express');
-
-const request = require('../database/armes');
+const db = require('../database/armes');
 
 const router = express.Router();
-// Requete pour obtenir idArme.
-router.get('/:idArme', async (req, res) => {
+
+// Requête pour obtenir une arme avec son id.
+router.get('/:IdArme', async (req, res) => {
     try {
-        let data;
-        if (req.params.idArme !== undefined) data = await request.getArmeById(req.params.idArme);
-        else return res.status(400).json({ message: 'paramètre manquant', success: false });
-        if (data.length === 0) {
-            // retourne la valeur negative.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
         }
-        // retourne que les valeurs au client;
-        return res.status(200).json(data);
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
+        }
+        const arme = await db.getArmeById(req.params.IdArme);
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
+        }
+        return res.status(200).json(arme);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
-// Requete pour obtenir les valeurs et retourne valeur.
+
+// Requête pour obtenir toutes les armes
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
     try {
-        const data = await request.getArmesAll();
-        if (data.length === 0) {
-            // retourne la valeur negative.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        const armes = await db.getArmesAll();
+        if (!armes.length) {
+            return res.status(404).json({ message: 'Aucune donnée a été trouvée' });
         }
-        // retourne que les valeurs au client;
-        return res.status(200).json(data);
+        return res.status(200).json(armes);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
-// Requete pour choix des informations selon la banque de donnees.
+
+// Requête pour insérer une arme
 router.post('/', async (req, res) => {
     try {
-        if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.calibre === undefined
-			|| req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
-        // verifie si l'entite a ajouter existe deja dans la base de donnees.
-        const DataAdd = await request.getArmeByNoEvenement(req.body.NoEvenement);
-        // si oui renvoyer une erreur.
-        if (DataAdd.length !== 0) return res.status(404).json({ message: 'l\'entité se trouve déja dans la base de donnée', success: false });
-        // si non ajouter l'entite.
-        const DataToSend = {
-            NoSerie: req.body.NoSerie,
-            Marque: req.body.marque,
-            Calibre: req.body.calibre,
-            TypeArme: req.body.typeAr,
-            NoEvenement: req.body.NoEvenement,
-        };
-            // ajout de données
-        await request.postArme(DataToSend);
-        // avoir le id de la nouvelle entité.
-        const Data = await request.getArmeByNoEvenement(req.body.NoEvenement);
-        if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdIBAF}`, success: true });
+        if (!req.body.NoSerie || !req.body.Marque || !req.body.Calibre
+            || !req.body.TypeArme || !req.body.NoEvenement) {
+            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
+        }
+        const id = await db.insertArme(req.body);
+        const armeNouvelle = await db.getArmeById(id.IdIBAF);
+        return res.status(200).json(armeNouvelle);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 
-// route pour modifier les donnees dans la base.
-router.put('/:idArme', async (req, res) => {
+// Requête pour modifier une arme
+router.put('/:IdArme', async (req, res) => {
     try {
-        if (req.body.NoSerie === undefined || req.body.marque === undefined || req.body.calibre === undefined
-            || req.body.typeAr === undefined || req.body.NoEvenement === undefined) return res.status(400).json({ message: 'paramètre manquant', success: false });
-
-        // verifier si l'entite est deja dans la base de donnees.
-        // const DataAdd = await request.getArmeById(req.params.idArme);
-        // // si non renvoye une erreur
-        // if (DataAdd.length === 0) return res.status(404).json({ message: 'l\'entité n\'existe pas dans la base de donnée', success: false });
-
-        const DataToSend = {
-            NoSerie: req.body.NoSerie,
-            Marque: req.body.marque,
-            Calibre: req.body.calibre,
-            TypeArme: req.body.typeAr,
-            NoEvenement: req.body.NoEvenement,
-        };
-        // donner en parametre le type de la table/ les donnees a update/ et le id de l'entite a update.
-        const reponse = await request.updateArme(DataToSend, req.params.idArme);
-        console.log(reponse);
-        return res.status(200).json({ message: 'L’entité a été modifié avec succès', success: true });
-    } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
-    }
-});
-
-// route pour delete l'entité.
-router.delete('/:idArme', async (req, res) => {
-    let data;
-    try {
-        data = await request.getArmeById(req.params.idArme);
-        if (data.length === 0) {
-            // retourne message d'erreur.
-            return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
+        }
+        if (!req.body.NoSerie || !req.body.Marque || !req.body.Calibre
+            || !req.body.TypeArme || !req.body.NoEvenement) {
+            return res.status(400).json({ message: 'Un ou des paramètres du body sont manquants' });
+        }
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
         }
 
-        await request.deleteArme(req.params.idArme);
-        // retourne une confirmation.
-        return res.status(200).json({ message: 'l\'objet a bien été supprimé', success: true });
+        const arme = await db.getArmeById(req.params.IdArme);
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
+        }
+        const rows = await db.updateArme(req.body, req.params.IdArme);
+        if (rows !== 1) {
+            return res.status(500).json({ message: 'Il y a une erreur avec le serveur' });
+        }
+        const armeUpdate = await db.getArmeById(req.params.IdArme);
+        return res.status(200).json(armeUpdate);
     } catch (error) {
-        return res.status(500).json({ message: error.message, success: false });
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
-// exporte le module.
+
+// Requête pour supprimer une arme
+router.delete('/:IdArme', async (req, res) => {
+    try {
+        if (!req.params.IdArme) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" est manquant' });
+        }
+        if (!+(req.params.IdArme)) {
+            return res.status(400).json({ message: 'Le paramètre "IdArme" n\'est pas un int' });
+        }
+        const arme = await db.getArmeById(req.params.IdArme);
+        if (!arme) {
+            return res.status(404).json({ message: `${req.params.IdArme} ne correspond à aucune 'IdArme' dans la base de données` });
+        }
+        const rows = await db.deleteArme(req.params.IdArme);
+        if (rows !== 1) {
+            return res.status(500).json({ message: 'Il y a une erreur avec le serveur' });
+        }
+        return res.status(200).json({ message: 'L\'arme a bien été supprimée' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
+    }
+});
+
+// Exporter le router.
 module.exports = router;

@@ -1,4 +1,5 @@
 const knexModule = require('knex');
+const bcrypt = require('bcryptjs');
 const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
@@ -8,15 +9,41 @@ function getUtilisateursAll() {
     return knex('Utilisateurs');
 }
 
+function getUtilisateurByIdentifiant(Identifiant) {
+    return knex('utilisateurs')
+        .where('Identifiant', Identifiant)
+        .first();
+}
+
 // Requete knex qui retourne les informations de connexion
-function connexion(identifiant, motDePasse, studentOrProf) {
+
+function connexion(identifiant, motDePasse) {
     return knex('Utilisateurs')
         .where('Identifiant', identifiant)
-        .andWhere('MotDePasse', motDePasse)
-        .andWhere('Etudiant', studentOrProf);
+        .andWhere('MotDePasse', motDePasse);
+}
+
+function inscription(user) {
+    return knex('Utilisateurs')
+        .insert(user);
+}
+
+async function hashAllPassword() {
+    const utilisateurs = await knex('Utilisateurs')
+        .select('Identifiant', 'MotDePasse');
+    for (const utilisateur of utilisateurs) {
+        const hash = await bcrypt.hash(utilisateur.MotDePasse, 10);
+        await knex('Utilisateurs')
+            .where('Identifiant', utilisateur.Identifiant)
+            .update({ MotDePasse: hash });
+    }
+    console.log('hash effectue sur tous les mdp');
 }
 
 module.exports = {
     getUtilisateursAll,
+    getUtilisateurByIdentifiant,
     connexion,
+    hashAllPassword,
+    inscription,
 };

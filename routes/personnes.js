@@ -1,6 +1,7 @@
 const express = require('express');
 
 const request = require('../database/personnes');
+const dbIPPE = require('../database/ippes');
 
 const router = express.Router();
 
@@ -43,7 +44,7 @@ router.get('/:idPersonne', async (req, res) => {
     }
     try {
         resultat = await request.getPersonne(idPersonne);
-        if (resultat.length === 0 || resultat === undefined) {
+        if (!resultat.length || !resultat) {
             return res.status(404).send('La personne n\'existe pas!');
         }
         return res.status(200).send(resultat);
@@ -238,7 +239,7 @@ router.put('/:idPersonne/description', async (req, res) => {
     const { Depressif } = req.body;
 
     if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('la requête est mal formée ou les paramètres sont invalides.');
+        return res.status(400).send('La requête est mal formée ou les paramètres sont invalides.');
     }
 
     try {
@@ -271,19 +272,41 @@ router.put('/:idPersonne/description', async (req, res) => {
         return res.status(500).json('Les valeurs ne sont pas conforme.');
     }
 });
-router.get('/:idPersonne/ippes', async (req, res) => {
-    const { idPersonne } = req.params;
-    if (Number.isNaN(idPersonne)) {
-        return res.status(400).send('les paramètres sont invalides.');
+router.get('/:IdPersonne/ippes', async (req, res) => {
+    const { IdPersonne } = req.params;
+    if (!+(IdPersonne)) {
+        return res.status(400).json({ message: 'Le paramètre "IdPersonne" n\'est pas un int' });
     }
     try {
-        const resultat = await request.getIppePersonne(idPersonne);
-        if (resultat.length === 0 || resultat === undefined) {
-            return res.status(404).send('La personne ne possède pas d\'IPPE!');
+        const resultat1 = await request.getPersonne(IdPersonne);
+        if (!resultat1) {
+            return res.status(404).send(`La personne avec l'id ${IdPersonne} n'a pas été trouvé.`);
         }
-        return res.status(200).send(resultat);
+        const resultat2 = await request.getIppePersonne(IdPersonne);
+        if (!resultat2.length || !resultat2) {
+            return res.status(404).send('La personne ne possède pas d\'IPPE.');
+        }
+        return res.status(200).send(resultat2);
     } catch (error) {
-        return res.status(500).json(error.message);
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
+    }
+});
+
+router.post('/:idPersonne/ippe', async (req, res) => {
+    const { idPersonne } = req.params;
+    const IPPE = req.body;
+    try {
+        if (!+(idPersonne)) {
+            return res.status(400).json({ message: 'La requête est mal formée ou les paramètres sont invalides.' });
+        }
+        const personne = await request.getPersonne(idPersonne);
+        if (personne.length === 1) {
+            const resultat = await dbIPPE.insertIppePersonne(idPersonne, IPPE);
+            const retour = await dbIPPE.getIPPE(resultat.IdIPPE);
+            return res.status(200).json(retour[0]);
+        } return res.status(400).json({ message: `La personne avec l'id ${idPersonne} n'a pas été trouvé.` });
+    } catch (error) {
+        return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
 module.exports = router;

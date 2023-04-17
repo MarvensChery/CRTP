@@ -1,4 +1,4 @@
-USE [CRTPEquipeX]
+USE [CRTPEquipe2]
 GO
 /****** Object:  Table [dbo].[CategoriesCrime]    Script Date: 07/03/2023 12:37:51 ******/
 SET ANSI_NULLS ON
