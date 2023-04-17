@@ -6,95 +6,46 @@ const knex = knexModule(chaineConnexion);
 // Requete de test
 
 // Requete knex qui retourne les informations de la condition
-function returnCondition(idcondition) {
+function getCondition(idcondition) {
     return knex('Conditions')
         .where('IdCondition', idcondition);
 }
 
-// Requete knex qui retourne les informations de la condition
-function returnIdippe(Idpersonne) {
-    return knex('PersonnesIPPE')
-        .where('IdPersonne', Idpersonne);
-}
-
-// Requete knex qui update une condition avec une adresse
-function updateAdresse(Idpersonne, Adresse1, Adresse2, Ville, Province, CodePostal) {
-    return knex('Personnes')
-        .where({ Idpersonne })
-        .update({
-            Adresse1, Adresse2, Ville, Province, CodePostal,
-        });
-}
-
-// Requete knex qui update une condition avec une victime
-function updateVictime(IdCondition, Victime) {
+// Requete knex qui retourne les conditions d'un evenement
+function getConditionsOfEvenement(IdIPPE) {
     return knex('Conditions')
-        .where({ IdCondition })
-        .update({ Victime });
+        .where('IdIPPE', IdIPPE);
 }
 
-// Requete knex qui update une condition avec une frequentation
-function updateFrequentation(IdCondition, Frequentation) {
+function updateCondition(data, idCondition) {
     return knex('Conditions')
-        .where({ IdCondition })
-        .update({ Frequentation });
-}
-
-// Requete knex qui update les heures d'une conditions
-function updateHeure(IdCondition, HeureDebut, HeureFin) {
-    return knex('Conditions')
-        .where({ IdCondition })
-        .update({ HeureDebut })
-        .update({ HeureFin });
+        .update(data)
+        .where('IdCondition', idCondition)
+        .returning('*')
+        .then((Condition) => Condition.length);
 }
 
 // Requete knex qui insert la nouvelle condition
-function ajouterCondition(Idippe, Condition, Idpersonne) {
+function insertCondition(nouvelleCondition) {
     return knex('Conditions')
-        .insert({ IdIPPE: Idippe, Libelle: Condition, IdPersonne: Idpersonne });
-}
-
-// Requete knex qui insert la nouvelle condition avec une victime
-function ajouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, Victime: victime, IdPersonne: Idpersonne,
-        });
-}
-
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne,
-        });
-}
-
-// Requete knex qui insert la nouvelle condition avec une frequentation
-function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
-    return knex('Conditions')
-        .insert({
-            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne,
-        });
+        .insert(nouvelleCondition)
+        .returning('*')
+        .then((Condition) => Condition);
 }
 
 // Requete knex qui delete une conditions
 function deleteCondition(IdCondition) {
     return knex('Conditions')
         .where({ IdCondition })
-        .del();
+        .del()
+        .returning('*')
+        .then((Condition) => Condition.length);
 }
 
 module.exports = {
-    returnCondition,
-    updateAdresse,
-    updateVictime,
-    updateFrequentation,
-    updateHeure,
-    ajouterCondition,
-    returnIdippe,
-    ajouterConditionAvecVictime,
-    ajouterConditionAvecFrequentation,
-    ajouterConditionAvecHeure,
+    getCondition,
+    updateCondition,
+    getConditionsOfEvenement,
+    insertCondition,
     deleteCondition,
 };

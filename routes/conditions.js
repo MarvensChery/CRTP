@@ -4,153 +4,97 @@ const request = require('../database/conditions');
 
 const router = express.Router();
 
-router.put('/:IdCondition', async (req, res) => {
-    const { IdCondition } = req.params;
-    const {
-        Libelle, Champs1, Champs2, IdPersonne, Adresse2, Ville, Province, CodePostal,
-    } = req.body;
-    if (Number.isNaN(IdCondition)) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
+router.put('/:idCondition', async (req, res) => {
+    if (!Number(req.params.idCondition) || req.body.IdIPPE === undefined
+            || req.body.IdPersonne === undefined || req.body.Libelle === undefined
+            || req.body.HeureDebut === undefined || req.body.HeureFin === undefined
+            || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
+
+    try {
+        const DataToSend = {
+            IdIPPE: req.body.IdIPPE,
+            IdPersonne: req.body.IdPersonne,
+            Libelle: req.body.Libelle,
+            HeureDebut: req.body.HeureDebut,
+            HeureFin: req.body.HeureFin,
+            Victime: req.body.Victime,
+            Frequentation: req.body.Frequentation,
+        };
+
+        const resultat = await request.updateCondition(DataToSend, req.params.idCondition);
+
+        if (resultat === 1) return res.status(200).json({ message: 'L\'entité a été modifié avec succès' });
+        return res.status(404).json({ message: 'L\'entité n\'existe pas dans la base de donnée' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
-    if (Libelle === 'Ne pas entrer en contact avec') {
-        try {
-            await request.updateVictime(IdCondition, Champs1);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
+});
+
+router.get('/ippes/:idIppe', async (req, res) => {
+    if (!Number(req.params.idIppe)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
+    try {
+        const data = await request.getConditionsOfEvenement(req.params.idIppe);
+        if (data.length === 0) {
+            // retourne la valeur negative
+            return res.status(404).json({ message: 'Aucune donnée trouvé' });
         }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Ne pas fréquenter') {
-        try {
-            await request.updateFrequentation(IdCondition, Champs1);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
+        // retourne que les valeurs au client;
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
-    // Update une condition avec une adresse
-    if (Libelle === 'Avoir comme adresse le') {
-        try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    } if (Libelle === 'Doit demeurer à cet endroit entre') {
-        try {
-            await request.updateHeure(IdCondition, Champs1, Champs2);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: 'La modification de la condition est réussi !' });
-    }
-    return res.status(500).json({ message: "Cette condition n'est pas encore pris en charge par notre base de donnée !" });
 });
 
 router.post('/', async (req, res) => {
-    const {
-        IdIppe,
-        Libelle,
-        Champs1,
-        Champs2,
-        Champs3,
-        IdPersonne,
-        Option,
-        Adresse2,
-        Ville,
-        Province,
-        CodePostal,
-    } = req.body;
+    if (req.body.IdPersonne === undefined || req.body.Libelle === undefined
+        || req.body.HeureDebut === undefined || req.body.HeureFin === undefined || req.body.Victime === undefined || req.body.Frequentation === undefined) return res.status(400).json({ message: 'Paramètre manquant' });
+    try {
+        const nouvelleCondition = {
+            IdIPPE: req.body.IdIPPE,
+            IdPersonne: req.body.IdPersonne,
+            Libelle: req.body.Libelle,
+            HeureDebut: req.body.HeureDebut,
+            HeureFin: req.body.HeureFin,
+            Victime: req.body.Victime,
+            Frequentation: req.body.Frequentation,
+        };
 
-    if (Option === '3' || Option === '4') {
-        try {
-            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
-        } catch (error) {
-            return res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '2') {
-        try {
-            await request.ajouterCondition(IdIppe, Libelle, IdPersonne);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        try {
-            await request.updateAdresse(IdPersonne, Champs1, Adresse2, Ville, Province, CodePostal);
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '5') {
-        try {
-            await request.ajouterConditionAvecVictime(IdIppe, Libelle, Champs1, IdPersonne);
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '6') {
-        try {
-            await request.ajouterConditionAvecFrequentation(
-                IdIppe,
-                Libelle,
-                Champs1,
-                IdPersonne,
-            );
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
-    } if (Option === '7') {
-        try {
-            await request.ajouterConditionAvecHeure(
-                IdIppe,
-                Libelle,
-                Champs2,
-                Champs3,
-                IdPersonne,
-            );
-        } catch (error) {
-            res.status(500).json(error.message);
-        }
-        return res.status(200).json({ message: "L'ajout de la condition est réussi !" });
+        const resultat = await request.insertCondition(nouvelleCondition);
+
+        return res.status(200).json(resultat);
+    } catch (error) {
+        console.error(`Erreur lors de l'insertion de la nouvelle condition: ${error.message}`);
+        return res.status(500).json({ error: 'Erreur lors de l\'insertion de la nouvelle condition.' });
     }
-    return res.status(500).json({ message: 'Veuillez choisir une condition !' });
 });
 
 // Ajouter une condition avec des heures
 
 // Supprimer une condition
 router.delete('/:IdCondition', async (req, res) => {
-    let IdCondition;
+    if (!Number(req.params.IdCondition)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        IdCondition = req.params.IdCondition;
-        await request.deleteCondition(IdCondition);
+        const resultat = await request.deleteCondition(req.params.IdCondition);
+        if (resultat === 1) return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
+
+        return res.status(404).json({ message: 'Aucune donnée trouvé' });
     } catch (error) {
-        res.status(500).json(error.message);
+        return res.status(500).json(error.message);
     }
-
-    if (!IdCondition) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
-    }
-
-    return res.status(200).json({ message: 'La suppression de la condition est réussi !' });
 });
 
 // Retourner la condition
 router.get('/:IdCondition', async (req, res) => {
-    const { IdCondition } = req.params;
-    let resultat = [];
-    if (Number.isNaN(IdCondition)) {
-        return res.status(400).json({ message: "L'Id de condition ne peut jamais être null" });
-    }
+    if (!Number(req.params.idValeur)) return res.status(400).json({ message: 'Paramètre invalide ou manquant' });
     try {
-        resultat = await request.returnCondition(IdCondition);
-        if (resultat.length === 0) {
+        const data = await request.getCondition(req.params.IdCondition);
+        if (data.length === 0) {
             return res.status(404).json({ message: "La condition que vous recherchez n'existe pas !" });
         }
+        return res.status(200).send(data);
     } catch (error) {
         return res.status(500).json(error.message);
     }
-    return res.status(200).send(resultat);
 });
 
 module.exports = router;
