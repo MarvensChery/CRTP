@@ -42,8 +42,8 @@ function getFpsId(IdFPS) {
 // eslint-disable-next-line no-unused-vars
 function getPersonnesFps(IdPersonne) {
     return knex('FPS')
-    .select('*')
-    .where('IdPersonne', '=', IdPersonne);
+        .select('*')
+        .where('IdPersonne', '=', IdPersonne);
 }
 
 function addFps(data) {

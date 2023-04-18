@@ -66,7 +66,10 @@ function ajouterConditionAvecVictime(Idippe, Condition, victime, Idpersonne) {
 function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, Frequentation: frequentation, IdPersonne: Idpersonne,
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            Frequentation: frequentation,
+            IdPersonne: Idpersonne,
         });
 }
 
@@ -74,7 +77,11 @@ function ajouterConditionAvecFrequentation(Idippe, Condition, frequentation, Idp
 function ajouterConditionAvecHeure(Idippe, Condition, heuredebut, heurefin, Idpersonne) {
     return knex('Conditions')
         .insert({
-            IdIPPE: Idippe, Libelle: Condition, HeureDebut: heuredebut, HeureFin: heurefin, IdPersonne: Idpersonne,
+            IdIPPE: Idippe,
+            Libelle: Condition,
+            HeureDebut: heuredebut,
+            HeureFin: heurefin,
+            IdPersonne: Idpersonne,
         });
 }
 

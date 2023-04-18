@@ -18,7 +18,7 @@ async function postObjet(data) {
 async function updateObjet(data, id) {
     return knex('IBOB')
         .update(data)
-        .where('IdIBOB', id).retunring('*');
+        .where('IdIBOB', id).returning('*');
 }
 
 // Delete les donnees avec le meme Id.

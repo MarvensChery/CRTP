@@ -79,8 +79,8 @@ router.post('/update', async (req, res) => {
     for (let i = 0; i < passwords.length; i++) {
         const unHashedPassword = passwords[i].MotDePasse;
         const salt = await bcrypt.genSalt();
-        const hashedPassword = await bcrypt.hash(unHashedPassword,salt);
-        await request.updatePassword(passwords[i].Identifiant,hashedPassword)
+        const hashedPassword = await bcrypt.hash(unHashedPassword, salt);
+        await request.updatePassword(passwords[i].Identifiant, hashedPassword);
     }
 });
 
