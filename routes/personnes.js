@@ -182,7 +182,7 @@ router.get('/:idPersonne/ippes', async (req, res) => {
         return res.status(400).send('les paramètres sont invalides.');
     }
     try {
-        const resultat1 = await request.getPersonne(idPersonne);
+        const resultat1 = await request.getPersonneById(idPersonne);
         if (!resultat1) {
             return res.status(404).send(`La personne avec l'id ${idPersonne} n'a pas été trouvé.`);
         }
