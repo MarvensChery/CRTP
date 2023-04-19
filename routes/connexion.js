@@ -1,30 +1,37 @@
 const express = require('express');
-
 const jwt = require('jsonwebtoken');
-
-const bcrypt = require('bcrypt');
-const request = require('../database/utilisateurs');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bcrypt = require('bcryptjs');
+const db = require('../database/utilisateurs');
 
 const router = express.Router();
 
-// connexion d'un utiliisateur
 router.post('/', async (req, res) => {
-    // Etape 1 à implémenter ici....
-    const { Identifiant, MotDePasse } = req.body;
-    //   retrouver  lutilisateur dand la database
-    const user = await request.getUtilisateurByIdentifiant(Identifiant);
-
-    //   verifie son mdp
-    if (user.length > 0) {
-        const isMatch = await bcrypt.compare(MotDePasse, user[0].MotDePasse);
-        if (isMatch) {
-        //   cree le token avec une cle secret
-            const token = jwt.sign({ id: user[0].IdUtilisateur }, process.env.TOKEN_KEY, { expiresIn: '24h' });
-            return res.status(200).json({ token });
+    res.header('Access-Control-Allow-Origin', '*');
+    try {
+        res.header('Access-Control-Allow-Origin', '*');
+        const { Identifiant, MotDePasse } = req.body;
+        const utilisateur = await db.getUtilisateurByIdentifiant(Identifiant);
+        if (!utilisateur) {
+            return res.status(404).json({ message: 'Identifiant incorrect' });
         }
-        return res.status(401).json({ message: 'Invalid password or identifiant' });
-    }
-    return res.status(404).json({ message: 'Invalid password or identifiant' });
+        if (!bcrypt.compareSync(MotDePasse, utilisateur.MotDePasse)) {
+            return res.status(404).json({ message: 'Mot de passe incorrect' });
+        }
+        const expiresIn = 14400;
+
+        const accessToken = jwt.sign(
+            { identifiant: utilisateur.Identifiant },
+            process.env.TOKEN_KEY,
+            { expiresIn },
+        );
+        return res.status(200).json({
+            Etudiant: utilisateur.Etudiant,
+            Matricule: utilisateur.Identifiant,
+            access_token: accessToken,
+            expires_in: expiresIn,
+        });
+    } catch (error) { return res.status(500).json({ message: error.message }); }
 });
 
 module.exports = router;

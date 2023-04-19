@@ -2,7 +2,8 @@ const express = require('express');
 
 // const jwt = require('jsonwebtoken');
 
-const bcrypt = require('bcrypt');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bcrypt = require('bcryptjs');
 const request = require('../database/utilisateurs');
 const request2 = require('../database/personnes');
 
