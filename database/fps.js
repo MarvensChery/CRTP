@@ -2,8 +2,11 @@ const knexModule = require('knex');
 const chaineConnexion = require('../constantes');
 
 const knex = knexModule(chaineConnexion);
-
-function getFps(IdFPS) {
+function getFps() {
+    return knex('FPS')
+        .select('*');
+}
+function getFpsId(IdFPS) {
     return knex('FPS')
         .select(
             'Personnes.IdPersonne',
@@ -36,114 +39,28 @@ function getFps(IdFPS) {
         .where({ 'FPS.IdFPS': IdFPS });
 }
 
-function addFps(
-    IdPersonne,
-    NoFPS,
-    Violent,
-    CD,
-    Echappe,
-    Suicidaire,
-    Desequilibre,
-    Contagieux,
-    Violence,
-    Fraude,
-    ConduiteVehicule,
-    IntroEffraction,
-    Sexe,
-    ArmeOffensive,
-    Vol,
-    Drogue,
-    Mefait,
-    Incendie,
-    AutreInfraction,
-) {
+// eslint-disable-next-line no-unused-vars
+function getPersonnesFps(IdPersonne) {
     return knex('FPS')
-        .insert({
-            IdPersonne,
-            NoFPS,
-            CD,
-            Violent,
-            Echappe,
-            Suicidaire,
-            Desequilibre,
-            Contagieux,
-            Violence,
-            Fraude,
-            ConduiteVehicule,
-            IntroEffraction,
-            Sexe,
-            ArmeOffensive,
-            Vol,
-            Drogue,
-            Mefait,
-            Incendie,
-            AutreInfraction,
-        });
+        .select('*')
+        .where('IdPersonne', '=', IdPersonne);
 }
 
-function updateDescription(
-    IdPersonne,
-    Race,
-    Taille,
-    Poids,
-    Yeux,
-    Marques,
-) {
+function addFps(data) {
+    return knex('FPS')
+        .insert(data).returning('*');
+}
+
+function updateDescription(data, IdPersonne) {
     return knex('Personnes')
-        .update({
-            Race,
-            Taille,
-            Poids,
-            Yeux,
-            Marques,
-        })
+        .update(data)
         .where({ IdPersonne });
 }
 
-function updateFps(
-    IdFPS,
-    IdPersonne,
-    NoFPS,
-    Violent,
-    CD,
-    Echappe,
-    Suicidaire,
-    Desequilibre,
-    Contagieux,
-    Violence,
-    Fraude,
-    ConduiteVehicule,
-    IntroEffraction,
-    Sexe,
-    ArmeOffensive,
-    Vol,
-    Drogue,
-    Mefait,
-    Incendie,
-    AutreInfraction,
-) {
+function updateFps(data, IdFPS, IdPersonne) {
     return knex('FPS')
-        .update({
-            NoFPS,
-            CD,
-            Violent,
-            Echappe,
-            Suicidaire,
-            Desequilibre,
-            Contagieux,
-            Violence,
-            Fraude,
-            ConduiteVehicule,
-            IntroEffraction,
-            Sexe,
-            ArmeOffensive,
-            Vol,
-            Drogue,
-            Mefait,
-            Incendie,
-            AutreInfraction,
-        })
-        .where({ IdFPS, IdPersonne });
+        .update(data)
+        .where({ IdFPS, IdPersonne }).returning('*');
 }
 
 function deleteFps(IdFPS) {
@@ -152,8 +69,10 @@ function deleteFps(IdFPS) {
 
 module.exports = {
     getFps,
+    getFpsId,
     addFps,
     updateDescription,
     updateFps,
     deleteFps,
+    getPersonnesFps,
 };

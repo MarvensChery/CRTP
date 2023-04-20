@@ -11,27 +11,27 @@ function getObjetsAll() {
 // Ajoute les donnees dans la database.
 async function postObjet(data) {
     return knex('IBOB')
-        .insert(data);
+        .insert(data).returning('*');
 }
 
 // Update les donnees avec le meme Dd.
 async function updateObjet(data, id) {
     return knex('IBOB')
         .update(data)
-        .where('IdBOB', id);
+        .where('IdIBOB', id).returning('*');
 }
 
 // Delete les donnees avec le meme Id.
 async function deleteObjet(id) {
     return knex('IBOB')
-        .where('IdBOB', id)
+        .where('IdIBOB', id)
         .del();
 }
 
 // Return les donnees avec le meme Id.
 function getObjetById(id) {
     return knex('IBOB')
-        .where('IdBOB', id);
+        .where('IdIBOB', id);
 }
 
 // Return les donnees avec le meme NoEvenement.
