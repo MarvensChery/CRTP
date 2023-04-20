@@ -42,24 +42,6 @@ router.get('/:idFps', async (req, res) => {
     return res.status(400).json({ message: 'Bad request', success: false });
 });
 
-router.get('/personnes/:idPersonne/fps', async (req, res) => {
-    const IdPersonne = req.params;
-    let resultat;
-
-    if (!Number.isNaN(IdPersonne)) {
-        try {
-            resultat = await request.getPersonnesFps(IdPersonne.idPersonne);
-        } catch (error) {
-            res.status(500).json({ message: error.message, success: false });
-        }
-        if (resultat.length === 0) {
-            return res.status(404).json({ message: "L'information n'existe pas dans la base de donnée !", success: false });
-        }
-        return res.status(200).json(resultat);
-    }
-    return res.status(400).json({ message: 'Bad request', success: false });
-});
-
 // Route pour ajouter un fps
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
