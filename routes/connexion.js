@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         return res.status(200).json({
             Etudiant: utilisateur.Etudiant,
             Matricule: utilisateur.Identifiant,
-            access_token: accessToken,
+            token: accessToken,
             expires_in: expiresIn,
         });
     } catch (error) { return res.status(500).json({ message: error.message }); }
