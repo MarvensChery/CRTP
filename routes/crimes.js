@@ -19,7 +19,7 @@ router.get('/:idCrime', async (req, res) => {
     }
 });
 
-router.get('/', async (res) => {
+router.get('/', async (req, res) => {
     try {
         const resultat = await request.getCrimesAll();
         if (resultat.length === 0) {
