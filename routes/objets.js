@@ -60,7 +60,7 @@ router.post('/', async (req, res) => {
         const Data = await request.getObjetByNoEvenement(req.body.NoEvenement);
         console.log(Data);
         if (Data.length === 0) return res.status(404).json({ message: 'aucune donnée trouvé', success: false });
-        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdBOB}`, success: true });
+        return res.status(200).json({ message: `L’entité a été ajoutée avec succès Id: ${Data[0].IdIBOB}`, success: true });
     } catch (error) {
         return res.status(500).json({ message: error.message, success: false });
     }
