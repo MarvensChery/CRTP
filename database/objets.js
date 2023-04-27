@@ -11,7 +11,7 @@ function getObjetsAll() {
 // Ajoute les donnees dans la database.
 async function postObjet(data) {
     return knex('IBOB')
-        .insert(data);
+        .insert(data).returning('*');
 }
 
 // Update les donnees avec le meme Dd.
