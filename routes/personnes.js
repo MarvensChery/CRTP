@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('../database/personnes');
+const reqFPS = require('../database/fps');
 
 const router = express.Router();
 
@@ -38,15 +39,16 @@ router.get('/info', async (req, res) => {
 });
 
 router.get('/:idPersonne/fps', async (req, res) => {
-    const IdPersonne = req.params;
+    const { idPersonne } = req.params;
     let resultat;
 
-    if (!Number.isNaN(IdPersonne)) {
+    if (!Number.isNaN(idPersonne)) {
         try {
-            resultat = await request.getPersonnesFps(IdPersonne.idPersonne);
+            resultat = await reqFPS.getPersonnesFps(idPersonne);
         } catch (error) {
             res.status(500).json({ message: error.message, success: false });
         }
+
         if (resultat.length === 0) {
             return res.status(404).json({ message: "L'information n'existe pas dans la base de donnée !", success: false });
         }

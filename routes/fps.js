@@ -6,7 +6,7 @@ const request = require('../database/fps');
 
 const router = express.Router();
 
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 router.get('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
