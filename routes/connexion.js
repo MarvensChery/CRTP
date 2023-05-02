@@ -1,54 +1,37 @@
 const express = require('express');
-
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const request = require('../database/utilisateurs');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const bcrypt = require('bcryptjs');
+const db = require('../database/utilisateurs');
 
-const secret = 'dgjkgevuyetggvdghdfhegchgjdg,dvbmdghkdvghmdvhmshmg';
 const router = express.Router();
-
-router.get('/', async (req, res) => {
-    res.header('Access-Control-Allow-Origin', '*');
-
-    let resultat;
-    try {
-        resultat = await request.getUtilisateursAll();
-    } catch (error) {
-        res.status(500).json(error.message);
-    }
-
-    return res.status(200).json(resultat);
-});
 
 router.post('/', async (req, res) => {
     res.header('Access-Control-Allow-Origin', '*');
-
-    let resultat;
     try {
-        const { identifiant, motDePasse, studentOrProf } = req.body;
-        resultat = await request.connexion(identifiant, motDePasse, studentOrProf);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-    if (resultat.length === 0) {
-        // envoi du message contenant les information pour le login
-        /** ** TEMPORAIRE JUSQU'A TEMPS QUE L'ON VOIT LES NOTION DE TOKEN**** */
+        res.header('Access-Control-Allow-Origin', '*');
+        const { Identifiant, MotDePasse } = req.body;
+        const utilisateur = await db.getUtilisateurByIdentifiant(Identifiant);
+        if (!utilisateur) {
+            return res.status(404).json({ message: 'Identifiant incorrect' });
+        }
+        if (!bcrypt.compareSync(MotDePasse, utilisateur.MotDePasse)) {
+            return res.status(404).json({ message: 'Mot de passe incorrect' });
+        }
+        const expiresIn = 14400;
 
-        return res.status(404).json({ succes: false });
-    }
-    const expiresIn = 14400;
-    const accessToken = jwt.sign({ identifiant: resultat[0].Identifiant }, process.env.TOKEN_KEY, {
-        expiresIn,
-    });
-
-    return res.status(200).json({
-        succes: true,
-        Etudiant: resultat[0].Etudiant,
-        Matricule: resultat[0].Identifiant,
-        Nom: resultat[0].NomFamille,
-        access_token: accessToken,
-        expires_in: expiresIn,
-    });
+        const accessToken = jwt.sign(
+            { identifiant: utilisateur.Identifiant },
+            process.env.TOKEN_KEY,
+            { expiresIn },
+        );
+        return res.status(200).json({
+            Etudiant: utilisateur.Etudiant,
+            Matricule: utilisateur.Identifiant,
+            token: accessToken,
+            expires_in: expiresIn,
+        });
+    } catch (error) { return res.status(500).json({ message: error.message }); }
 });
 router.post('/inscription/', async (req, res) => {
     //  Creation d'un utilisateur
