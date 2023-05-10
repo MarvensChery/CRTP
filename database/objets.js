@@ -33,6 +33,10 @@ function getObjetById(id) {
     return knex('IBOB')
         .where('IdIBOB', id);
 }
+function getObjetByNumSerie(numSerie) {
+    return knex('IBOB')
+        .where('NoSerie', numSerie);
+}
 
 // Return les donnees avec le meme NoEvenement.
 function getObjetByNoEvenement(id) {
@@ -41,6 +45,7 @@ function getObjetByNoEvenement(id) {
 }
 // Exporte les fonctions.
 module.exports = {
+    getObjetByNumSerie,
     getObjetsAll,
     postObjet,
     updateObjet,
