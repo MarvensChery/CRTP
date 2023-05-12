@@ -26,6 +26,22 @@ router.get('/:IdIPPE', async (req, res) => {
         return res.status(500).json({ message: 'Il y a eu une erreur interne' });
     }
 });
+router.post('/insertIppePersonne/:IdPersonne', async (req, res) => {
+    // const { IPPE } = req.body.NoEvenement;
+    const { IdPersonne } = req.params;
+    console.log(req.body);
+    console.log(IdPersonne);
+    let resultat;
+
+    try {
+        await db.insertIppePersonne(IdPersonne, req.body);
+
+        return res.status(200).json(resultat);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred' });
+    }
+});
 
 // Route pour la modification d'un ippe
 router.put('/:IdIPPE', async (req, res) => {
