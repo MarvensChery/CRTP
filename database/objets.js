@@ -40,7 +40,7 @@ function getObjetByNumSerie(numSerie) {
 
 // Return les donnees avec le meme NoEvenement.
 function getObjetByNoEvenement(id) {
-    return knex('IdIBOB')
+    return knex('IBOB')
         .where('NoEvenement', id);
 }
 // Exporte les fonctions.
