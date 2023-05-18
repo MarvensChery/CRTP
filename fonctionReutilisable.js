@@ -12,3 +12,5 @@ function testRegex(JJ, MM, AA, sequenceChiffres) {
 }
 
 module.exports = { testRegex };
+
+// terminé
