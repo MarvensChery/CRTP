@@ -7,7 +7,10 @@ const knex = knexModule(chaineConnexion);
 function getArmesAll() {
     return knex('IBAF');
 }
-
+function getArmeByNumSerie(numSerie) {
+    return knex('IBAF')
+        .where('NoSerie', numSerie);
+}
 function getArmeLast() {
     return knex('IBAF').orderBy('IdIBAF', 'desc').first();
 }
@@ -41,6 +44,7 @@ function getArmeById(id) {
 
 // Exporte les fonctions.
 module.exports = {
+    getArmeByNumSerie,
     getArmesAll,
     getArmeLast,
     getArmeById,

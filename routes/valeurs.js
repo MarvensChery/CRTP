@@ -4,7 +4,43 @@ const express = require('express');
 const request = require('../database/valeurs');
 
 const router = express.Router();
-
+// Requete pour obtenir le noserie et retourne valeurs.
+router.get('/numSerie/:numSerie', async (req, res) => {
+    const { numSerie } = req.params;
+    let data;
+    console.log(numSerie);
+    if (numSerie) {
+        try {
+            data = await request.getValeurBynumserie(numSerie);
+            if (data.length === 0) {
+                return res.status(404).json({ message: 'Aucune donnée trouvée.', success: false });
+            }
+            return res.status(200).json(data);
+        } catch (error) {
+            return res.status(500).json({ message: error.message, success: false });
+        }
+    } else {
+        return res.status(400).json({ message: 'Numéro de série manquant.', success: false });
+    }
+});
+router.get('/auteur/:auteur', async (req, res) => {
+    const { auteur } = req.params;
+    let data;
+    console.log(auteur);
+    if (auteur) {
+        try {
+            data = await request.getValeurByauteur(auteur);
+            if (data.length === 0) {
+                return res.status(404).json({ message: 'Aucune donnée trouvée.', success: false });
+            }
+            return res.status(200).json(data);
+        } catch (error) {
+            return res.status(500).json({ message: error.message, success: false });
+        }
+    } else {
+        return res.status(400).json({ message: 'Auteur manquant.', success: false });
+    }
+});
 // Requete pour obtenir idValeur et retourn valeur.
 router.get('/:idValeur', async (req, res) => {
     const { idValeur } = req.params;

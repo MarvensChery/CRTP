@@ -3,6 +3,25 @@ const db = require('../database/armes');
 
 const router = express.Router();
 
+// Requete pour obtenir le noserie et retourne valeurs.
+router.get('/numSerie/:numSerie', async (req, res) => {
+    const { numSerie } = req.params;
+    let data;
+
+    if (numSerie) {
+        try {
+            data = await db.getArmeByNumSerie(numSerie);
+            if (data.length === 0) {
+                return res.status(404).json({ message: 'Aucune donnée trouvée.', success: false });
+            }
+            return res.status(200).json(data);
+        } catch (error) {
+            return res.status(500).json({ message: error.message, success: false });
+        }
+    } else {
+        return res.status(400).json({ message: 'Numéro de série manquant.', success: false });
+    }
+});
 // Requête pour obtenir une arme avec son id.
 router.get('/:IdArme', async (req, res) => {
     try {

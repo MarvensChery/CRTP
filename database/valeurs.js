@@ -38,6 +38,14 @@ function getValeurById(id) {
     return knex('IBVA')
         .where('IdIBVA', id);
 }
+function getValeurBynumserie(id) {
+    return knex('IBVA')
+        .where('Identifiant', id);
+}
+function getValeurByauteur(id) {
+    return knex('IBVA')
+        .where('Auteur', id);
+}
 
 // Retourne les donnees avec le meme NoEvenement.
 function getValeurByNoEvenement(id) {
@@ -46,6 +54,8 @@ function getValeurByNoEvenement(id) {
 }
 // Exporte les fonctions.
 module.exports = {
+    getValeurByauteur,
+    getValeurBynumserie,
     getValeursAll,
     postValeur,
     updateValeur,
