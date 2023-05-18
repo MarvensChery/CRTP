@@ -33,5 +33,38 @@ router.post('/', async (req, res) => {
         });
     } catch (error) { return res.status(500).json({ message: error.message }); }
 });
+router.post('/inscription/', async (req, res) => {
+    //  Creation d'un utilisateur
+    const {
+        identifiant, motDePasse, studentOrProf, NomFamille,
+    } = req.body;
+
+    // Vérifier si l'utilisateur existe déjà
+    const userExists = await request.getUtilisateurById('SELECT * FROM Utilisateurs WHERE idUtilisateur = $1', [identifiant]);
+    if (userExists.rows.length > 0) {
+        return res.status(409).json({ message: 'Utilisateur existe deja' });
+    }
+
+    // Hacher le mot de passe
+    const hashedPassword = await bcrypt.hash(motDePasse, 10);
+
+    // Insérer l'utilisateur en base de données
+    const result = await request.insertUtilisateurs(
+        'INSERT INTO Utilisateurs(identifiant, studentOrProf, NomFamille, hashedPassword) VALUES ($1, $2, $3, $4) RETURNING idUtilisateur',
+        [identifiant, studentOrProf, NomFamille, hashedPassword],
+    );
+
+    // Créer un jeton pour l'utilisateur
+    const token = jwt.sign({ id: result.rows[0].idUtilisateur }, secret, { expiresIn: '24h' });
+
+    // Retourner les informations de l'utilisateur (sauf le mot de passe) et le jeton
+    const utilisateur = {
+        id: result.rows[0].idUtilisateur,
+        identifiant,
+        studentOrProf,
+        NomFamille,
+    };
+    return res.status(201).json({ utilisateur, token });
+});
 
 module.exports = router;
