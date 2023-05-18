@@ -21,6 +21,7 @@ router.get('/:IdIPPE', async (req, res) => {
         }
 
         // retourne que les valeurs au client; necessaire a la recherche IPPE
+        console.log(resultat);
         return res.status(200).json(resultat[0]);
     } catch (error) {
         return res.status(500).json({ message: 'Il y a eu une erreur interne' });
@@ -46,20 +47,25 @@ router.post('/insertIppePersonne/:IdPersonne', async (req, res) => {
 // Route pour la modification d'un ippe
 router.put('/:IdIPPE', async (req, res) => {
     const { IdIPPE } = req.params;
-    const IPPE = req.body;
-
+    const IPPE = req.body.element.tableIPPE;
+    console.log(req.body.element.tableIPPE);
+    console.log(IdIPPE);
     if (req.body) {
         try {
+            console.log('try');
             if (!+(IdIPPE)) {
                 return res.status(400).json({ message: 'Le paramètre "IdIPPE" n\'est pas un int' });
             }
             const exist = await db.getIPPE(IdIPPE);
             if (!exist.length) return res.status(404).json({ message: 'L\'IPPE n\'a pas été trouvé' });
             const message = await db.updateIppe(IdIPPE, IPPE);
+            console.log('2');
             if (message !== 1) return res.status(404).json({ message: 'L\'IPPE n\'a pas été ajouté' });
             const returnData = await db.getIPPE(IdIPPE);
+            console.log('3');
             return res.status(200).json(returnData[0]);
         } catch (error) {
+            console.log('8');
             return res.status(500).json({ message: 'Il y a eu une erreur interne' });
         }
     }
