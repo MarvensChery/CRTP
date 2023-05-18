@@ -53,7 +53,7 @@ router.post('/', async (req, res) => {
         Contagieux, Violence, Fraude,
         ConduiteVehicule, IntroEffraction, Sexe, ArmeOffensive, Vol,
         Drogue, Mefait, Incendie, AutreInfraction, Race, Taille, Poids,
-        Yeux, Marques,
+        Yeux, Marques, Antecedents,
     } = req.body;
 
     const data = {
@@ -77,6 +77,7 @@ router.post('/', async (req, res) => {
         Mefait,
         Incendie,
         AutreInfraction,
+        Antecedents,
     };
 
     const description = {
